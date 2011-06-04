@@ -9,8 +9,7 @@ import forplay.core.Game;
 public abstract class AbstractGame implements Game{
 
     @Override
-    public void init() {
-        
+    public final void init() {
     }
 
     @Override
@@ -24,8 +23,8 @@ public abstract class AbstractGame implements Game{
     }
 
     @Override
-    public int updateRate() {
-        return 60;
+    public final int updateRate() {
+        return -1;
     }
 
 }

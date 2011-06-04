@@ -31,10 +31,6 @@ public class Splashscreen extends AbstractGame implements PreloadCallback {
 
     public Splashscreen(TooHardForYou tooHardForYou) {
         this.tooHardForYou = tooHardForYou;
-    }
-
-    @Override
-    public void init() {
         ImagePreloader splashscreenPreloader = new ImagePreloader(Resources.BLACK_IMG, Resources.SPLASHSCREEN_IMG);
         splashscreenPreloader.preload(this);
     }

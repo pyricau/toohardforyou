@@ -11,11 +11,6 @@ public abstract class GameDelegate implements Game {
     public Game delegate;
 
     @Override
-    public final void init() {
-        delegate.init();
-    }
-
-    @Override
     public final void update(float delta) {
         delegate.update(delta);
     }
