@@ -16,7 +16,7 @@ public class ImagePreloader {
     public interface PreloadCallback {
         void resourcesLoaded();
 
-        void error();
+        void resourceLoadingError();
     }
 
     private class ImageCallback implements ResourceCallback<Image> {
@@ -63,7 +63,7 @@ public class ImagePreloader {
     }
 
     public void loadingError(PreloadCallback callback) {
-        callback.error();
+        callback.resourceLoadingError();
     }
 
 }
