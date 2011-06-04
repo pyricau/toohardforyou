@@ -12,9 +12,9 @@ public class TooHardForYou extends GameDelegate  {
         setDelegate(splashscreen);
     }
     
-    public void splashscreenDone(this) {
+    public void splashscreenDone() {
         splashscreen = null;
-        engine = new Engine();
+        engine = new Engine(this);
         setDelegate(engine);
     }
 

@@ -77,7 +77,7 @@ public class Splashscreen extends AbstractGame implements PreloadCallback {
     }
 
     private void preloadGameImages() {
-        ImagePreloader imagePreloader = new ImagePreloader(Resources.BACKGROUND_IMG);
+        ImagePreloader imagePreloader = new ImagePreloader(Resources.BACKGROUND_IMG, Resources.PADDLE_CENTER_IMG, Resources.PADDLE_LEFT_IMG, Resources.PADDLE_RIGHT_IMG);
         imagePreloader.preload(new PreloadCallback() {
             @Override
             public void resourcesLoaded() {
