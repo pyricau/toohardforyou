@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module SYSTEM "http://google-web-toolkit.googlecode.com/svn/tags/2.3.0-rc1/distro-source/core/src/gwt-module.dtd">
+<module rename-to='toohardforyou'>
+  <inherits name='com.google.gwt.user.User'/>
+
+  <inherits name='com.google.gwt.user.theme.standard.Standard'/>
+
+  <entry-point class='info.piwai.toohardforyou.client.TooHardForYou'/>
+
+  <source path='client'/>
+  <source path='shared'/>
+
+</module>
