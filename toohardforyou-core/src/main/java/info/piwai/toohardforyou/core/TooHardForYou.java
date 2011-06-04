@@ -4,7 +4,7 @@ package info.piwai.toohardforyou.core;
 public class TooHardForYou extends GameDelegate  {
 
     private Splashscreen splashscreen;
-    private Engine engine;
+    private TooHardForYouEngine engine;
 
     @Override
     public void init() {
@@ -14,12 +14,9 @@ public class TooHardForYou extends GameDelegate  {
     
     public void splashscreenDone() {
         splashscreen = null;
-        engine = new Engine(this);
+        engine = new TooHardForYouEngine(this);
         setDelegate(engine);
     }
-
-
-    
 
 
 }

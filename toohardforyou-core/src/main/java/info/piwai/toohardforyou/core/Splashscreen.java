@@ -3,13 +3,15 @@ package info.piwai.toohardforyou.core;
 import static forplay.core.ForPlay.assetManager;
 import static forplay.core.ForPlay.currentTime;
 import static forplay.core.ForPlay.graphics;
+import info.piwai.toohardforyou.core.entities.Ball;
+import info.piwai.toohardforyou.core.entities.Paddle;
+import forplay.core.AssetWatcher;
 import forplay.core.Image;
-import info.piwai.toohardforyou.core.ImagePreloader.PreloadCallback;
 
 /**
  * TODO allow for skipping splashscreen via touch / click / enter
  */
-public class Splashscreen extends AbstractGame implements PreloadCallback {
+public class Splashscreen implements GameScreen {
 
     private static final int SPLASHSCREEN_DURATION = 2000;
 
@@ -31,8 +33,24 @@ public class Splashscreen extends AbstractGame implements PreloadCallback {
 
     public Splashscreen(TooHardForYou tooHardForYou) {
         this.tooHardForYou = tooHardForYou;
-        ImagePreloader splashscreenPreloader = new ImagePreloader(Resources.BLACK_IMG, Resources.SPLASHSCREEN_IMG);
-        splashscreenPreloader.preload(this);
+
+        AssetWatcher assetWatcher = new AssetWatcher(new AssetWatcher.Listener() {
+            @Override
+            public void done() {
+                initAfterResourcesLoaded();
+
+                preloadGameImages();
+            }
+
+            @Override
+            public void error(Throwable e) {
+                // TODO Show an error message
+            }
+        });
+
+        addAll(assetWatcher, Resources.BLACK_IMG, Resources.SPLASHSCREEN_IMG);
+
+        assetWatcher.start();
     }
 
     @Override
@@ -43,17 +61,10 @@ public class Splashscreen extends AbstractGame implements PreloadCallback {
 
         if (currentTime() - animationStart > SPLASHSCREEN_DURATION) {
             animationDone = true;
-            startGame();
+            mayStartGame();
         }
 
         // This place begs for being able to set alpha value for a layer
-    }
-
-    @Override
-    public void resourcesLoaded() {
-        initAfterResourcesLoaded();
-
-        preloadGameImages();
     }
 
     private void initAfterResourcesLoaded() {
@@ -77,22 +88,30 @@ public class Splashscreen extends AbstractGame implements PreloadCallback {
     }
 
     private void preloadGameImages() {
-        ImagePreloader imagePreloader = new ImagePreloader(Resources.BACKGROUND_IMG, Resources.PADDLE_CENTER_IMG, Resources.PADDLE_LEFT_IMG, Resources.PADDLE_RIGHT_IMG);
-        imagePreloader.preload(new PreloadCallback() {
+        AssetWatcher assetWatcher = new AssetWatcher(new AssetWatcher.Listener() {
             @Override
-            public void resourcesLoaded() {
+            public void done() {
                 gameResourcesLoaded = true;
-                startGame();
+                mayStartGame();
             }
 
             @Override
-            public void resourceLoadingError() {
+            public void error(Throwable e) {
                 // TODO Show an error message
             }
         });
+
+        addAll(assetWatcher, Resources.BACKGROUND_IMG, Paddle.IMAGE, Ball.IMAGE);
+        assetWatcher.start();
     }
 
-    private void startGame() {
+    private void addAll(AssetWatcher assetWatcher, String... imagePaths) {
+        for (String imagePath : imagePaths) {
+            assetWatcher.add(assetManager().getImage(imagePath));
+        }
+    }
+
+    private void mayStartGame() {
         if (gameResourcesLoaded && animationDone) {
             graphics().rootLayer().clear();
             tooHardForYou.splashscreenDone();
@@ -100,8 +119,8 @@ public class Splashscreen extends AbstractGame implements PreloadCallback {
     }
 
     @Override
-    public void resourceLoadingError() {
-        // TODO Show an error message
+    public void paint(float alpha) {
+
     }
 
 }

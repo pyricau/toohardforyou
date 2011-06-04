@@ -2,13 +2,9 @@ package info.piwai.toohardforyou.core;
 
 import forplay.core.Game;
 
-/**
- * Delegates game handling stuff to a delegate, except for updateRate which
- * returns 60.
- */
 public abstract class GameDelegate implements Game {
 
-    public Game delegate;
+    public GameScreen delegate;
 
     @Override
     public final void update(float delta) {
@@ -22,10 +18,10 @@ public abstract class GameDelegate implements Game {
 
     @Override
     public final int updateRate() {
-        return 60;
+        return 25;
     }
 
-    public void setDelegate(Game delegate) {
+    public void setDelegate(GameScreen delegate) {
         this.delegate = delegate;
     }
 
