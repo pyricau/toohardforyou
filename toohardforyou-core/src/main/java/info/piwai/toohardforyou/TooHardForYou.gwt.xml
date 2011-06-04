@@ -5,9 +5,13 @@
 
   <inherits name='com.google.gwt.user.theme.standard.Standard'/>
 
-  <entry-point class='info.piwai.toohardforyou.client.TooHardForYouEntryPoint'/>
+  <entry-point class='info.piwai.toohardforyou.gwt.TooHardForYouEntryPoint'/>
+  
+  <public path="resources" />
+  
+  <inherits name='forplay.ForPlay'/>
 
-  <source path='client'/>
-  <source path='shared'/>
+  <source path='gwt'/>
+  <source path='core'/>
 
 </module>

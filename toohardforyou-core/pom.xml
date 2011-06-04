@@ -19,6 +19,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>forplay</groupId>
+			<artifactId>core</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>1.0.0.GA</version>
@@ -31,7 +36,6 @@
 			<classifier>sources</classifier>
 			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
@@ -87,7 +91,6 @@
 					</modules>
 					<runTarget>toohardforyou.html</runTarget>
 					<hostedWebapp>${webappDirectory}</hostedWebapp>
-					<i18nMessagesBundle>info.piwai.toohardforyou.client.Messages</i18nMessagesBundle>
 				</configuration>
 				<dependencies>
 					<dependency>
