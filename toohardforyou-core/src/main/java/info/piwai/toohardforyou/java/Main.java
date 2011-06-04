@@ -3,8 +3,8 @@ package info.piwai.toohardforyou.java;
 import info.piwai.toohardforyou.core.TooHardForYou;
 
 import java.lang.reflect.Field;
-
-import javax.swing.JFrame;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import forplay.core.ForPlay;
 import forplay.java.JavaAssetManager;
@@ -12,7 +12,7 @@ import forplay.java.JavaPlatform;
 
 public class Main {
 
-    public static void main(String[] args) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+    public static void main(String[] args) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         JavaPlatform platform = JavaPlatform.register();
         JavaAssetManager assets = platform.assetManager();
         assets.setPathPrefix("src/main/java/info/piwai/toohardforyou/resources");
@@ -21,9 +21,11 @@ public class Main {
         Field frameField = platform.getClass().getDeclaredField("frame");
         frameField.setAccessible(true);
         
-        JFrame jframe = (JFrame) frameField.get(platform);
+        Object jframe = frameField.get(platform);
         
-        jframe.setTitle("2H4U : Too Hard For You");
+        Method method = jframe.getClass().getMethod("setTitle", String.class);
+        
+        method.invoke(jframe, "2H4U : Too Hard For You");
       }
     
 }
