@@ -55,8 +55,11 @@ public abstract class EntityEngine implements GameScreen, ContactListener {
 
     protected boolean showDebugDraw = false;
     private DebugDrawBox2D debugDraw;
+    
+    protected final GroupLayer scaledLayer;
 
     public EntityEngine(GroupLayer scaledLayer) {
+        this.scaledLayer = scaledLayer;
         staticLayerBack = graphics().createGroupLayer();
         scaledLayer.add(staticLayerBack);
         dynamicLayer = graphics().createGroupLayer();
