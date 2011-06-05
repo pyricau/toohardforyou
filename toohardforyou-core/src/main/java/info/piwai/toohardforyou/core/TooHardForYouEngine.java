@@ -107,7 +107,7 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
 
     @Override
     protected Vec2 getGravity() {
-        return new Vec2(0.0f, 0.0f);
+        return new Vec2(0.0f, 0.1f);
     }
 
     @Override
@@ -174,6 +174,12 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
     @Override
     protected float getPhysicalUnitPerScreenUnit() {
         return Constants.PHYS_UNIT_PER_SCREEN_UNIT;
+    }
+
+    public void ballOut(Ball ball) {
+        numberOfBalls--;
+        uiTexts.updateNumberOfBalls(numberOfBalls);
+        remove(ball);
     }
 
 }

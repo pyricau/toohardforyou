@@ -52,6 +52,8 @@ public abstract class EntityEngine implements GameScreen, ContactListener {
     private List<Entity> entities = new ArrayList<Entity>(0);
     private HashMap<Body, PhysicsEntity> bodyEntityLUT = new HashMap<Body, PhysicsEntity>();
     private Stack<Contact> contacts = new Stack<Contact>();
+    
+    private Stack<Entity> entitiesToRemove = new Stack<Entity>();
 
     protected boolean showDebugDraw = false;
     private DebugDrawBox2D debugDraw;
@@ -102,6 +104,10 @@ public abstract class EntityEngine implements GameScreen, ContactListener {
         for (Entity e : entities) {
             e.update(delta);
         }
+        while (!entitiesToRemove.isEmpty()) {
+            Entity entity = entitiesToRemove.pop();
+            doRemove(entity);
+        } 
         // the step delta is fixed so box2d isn't affected by framerate
         world.step(0.033f, 10, 10);
         processContacts();
@@ -123,6 +129,21 @@ public abstract class EntityEngine implements GameScreen, ContactListener {
         if (entity instanceof PhysicsEntity) {
             PhysicsEntity physicsEntity = (PhysicsEntity) entity;
             bodyEntityLUT.put(physicsEntity.getBody(), physicsEntity);
+        }
+    }
+    
+    protected void remove(Entity entity) {
+        entitiesToRemove.push(entity);
+    }
+    
+    private void doRemove(Entity entity) {
+        entities.remove(entity);
+        entity.getLayer().destroy();
+        if (entity instanceof PhysicsEntity) {
+            PhysicsEntity physicsEntity = (PhysicsEntity) entity;
+            Body body = physicsEntity.getBody();
+            bodyEntityLUT.remove(body);
+            world.destroyBody(body);
         }
     }
 

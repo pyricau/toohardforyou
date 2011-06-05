@@ -16,8 +16,8 @@
 package info.piwai.toohardforyou.core.entities;
 
 import info.piwai.toohardforyou.core.Constants;
-import info.piwai.toohardforyou.core.EntityEngine;
 import info.piwai.toohardforyou.core.Resources;
+import info.piwai.toohardforyou.core.TooHardForYouEngine;
 
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.common.Vec2;
@@ -31,12 +31,17 @@ public class Ball extends DynamicPhysicsEntity {
 
     private static final float BALL_RADIUS = 10 * Constants.PHYS_UNIT_PER_SCREEN_UNIT;
 
+    private static final float MAX_POS_Y = Constants.GAME_HEIGHT + BALL_RADIUS;
+
     private static final float BALL_DIAMETER = 2 * BALL_RADIUS;
 
     public final static String IMAGE = Resources.GAME_PATH + "ball.png";
 
-    public Ball(EntityEngine entityEngine, World world, float x, float y, float angle) {
+    private final TooHardForYouEngine engine;
+
+    public Ball(TooHardForYouEngine entityEngine, World world, float x, float y, float angle) {
         super(entityEngine, world, x, y, angle);
+        this.engine = entityEngine;
     }
 
     @Override
@@ -46,7 +51,7 @@ public class Ball extends DynamicPhysicsEntity {
         bodyDef.type = BodyType.DYNAMIC;
         bodyDef.position = new Vec2(0, 0);
         Body body = world.createBody(bodyDef);
-
+        
         CircleShape circleShape = new CircleShape();
         circleShape.m_radius = getRadius();
         fixtureDef.shape = circleShape;
@@ -58,6 +63,14 @@ public class Ball extends DynamicPhysicsEntity {
         body.setLinearDamping(0f);
         body.setTransform(new Vec2(x, y), angle);
         return body;
+    }
+    
+    @Override
+    public void update(float delta) {
+        super.update(delta);
+        if (getPosY() > MAX_POS_Y) {
+            engine.ballOut(this);
+        }
     }
 
     @Override
