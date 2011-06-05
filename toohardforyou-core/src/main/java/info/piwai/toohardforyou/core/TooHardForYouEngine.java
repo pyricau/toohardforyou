@@ -23,6 +23,9 @@ import static forplay.core.ForPlay.random;
 import info.piwai.toohardforyou.core.entities.Ball;
 import info.piwai.toohardforyou.core.entities.Paddle;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -39,11 +42,13 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
 
     private final Paddle paddle;
 
-    private int numberOfBalls = 0;
-
     private final UiTexts uiTexts;
 
     private final FpsCounter fpsCounter;
+
+    private List<Ball> balls = new ArrayList<Ball>();
+
+    private Wall wall;
 
     public TooHardForYouEngine(TooHardForYouGame game) {
         super(buildWorldLayer());
@@ -71,13 +76,12 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         paddle = new Paddle(this);
         add(paddle);
 
-        Wall wall = new Wall(this);
-        wall.fillRandomly(5);
+        wall = new Wall(this);
 
         new Timer() {
             @Override
             public void run() {
-                if (numberOfBalls < 10) {
+                if (balls.size() < 10) {
                     createBallOnPaddle();
                 }
             }
@@ -86,6 +90,18 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         // hook up our pointer listener
         pointer().setListener(this);
         keyboard().setListener(this);
+
+        newGame();
+    }
+
+    private void newGame() {
+        for (Ball ball : balls) {
+            remove(ball);
+        }
+        balls.clear();
+        uiTexts.updateNumberOfBalls(balls.size());
+
+        wall.fillRandomly(5);
     }
 
     private void createBallOnPaddle() {
@@ -95,8 +111,8 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         velocity.mulLocal(5);
         ball.getBody().setLinearVelocity(velocity);
         add(ball);
-        numberOfBalls++;
-        uiTexts.updateNumberOfBalls(numberOfBalls);
+        balls.add(ball);
+        uiTexts.updateNumberOfBalls(balls.size());
     }
 
     // create our world layer (scaled to "world space")
@@ -184,8 +200,8 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
     }
 
     public void ballOut(Ball ball) {
-        numberOfBalls--;
-        uiTexts.updateNumberOfBalls(numberOfBalls);
+        balls.remove(ball);
+        uiTexts.updateNumberOfBalls(balls.size());
         remove(ball);
     }
 

@@ -2,7 +2,7 @@ package info.piwai.toohardforyou.core;
 
 public enum BrickType {
 
-    RED("b00"), BLUE("b10"), ORANGE("b20"), LIGHT_GREEN("b30"), YELLOW("b40"), PURPLE("b50"), DARK_GREEN("b60");
+    BAD_BONUS("b00"), CLASSIC("b10"), UNBREAKABLE("b20"), THICK("b30"), GOOD_BONUS("b40"), BOMB("b50"), THICKER("b60");
 
     private final String imagePath;
 
