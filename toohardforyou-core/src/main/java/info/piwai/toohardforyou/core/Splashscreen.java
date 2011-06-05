@@ -3,15 +3,16 @@ package info.piwai.toohardforyou.core;
 import static forplay.core.ForPlay.assetManager;
 import static forplay.core.ForPlay.currentTime;
 import static forplay.core.ForPlay.graphics;
+import static forplay.core.ForPlay.keyboard;
+import static forplay.core.ForPlay.pointer;
 import info.piwai.toohardforyou.core.entities.Ball;
 import info.piwai.toohardforyou.core.entities.Paddle;
 import forplay.core.AssetWatcher;
 import forplay.core.Image;
+import forplay.core.Keyboard;
+import forplay.core.Pointer;
 
-/**
- * TODO allow for skipping splashscreen via touch / click / enter
- */
-public class Splashscreen implements GameScreen {
+public class Splashscreen implements GameScreen, Pointer.Listener, Keyboard.Listener {
 
     private static final int SPLASHSCREEN_DURATION = 2000;
 
@@ -51,6 +52,9 @@ public class Splashscreen implements GameScreen {
         addAll(assetWatcher, Resources.BLACK_IMG, Resources.SPLASHSCREEN_IMG);
 
         assetWatcher.start();
+        
+        pointer().setListener(this);
+        keyboard().setListener(this);
     }
 
     @Override
@@ -121,6 +125,33 @@ public class Splashscreen implements GameScreen {
     @Override
     public void paint(float alpha) {
 
+    }
+
+    @Override
+    public void onKeyDown(int keyCode) {
+        animationDone = true;
+        mayStartGame();        
+    }
+
+    @Override
+    public void onKeyUp(int keyCode) {
+        
+    }
+
+    @Override
+    public void onPointerStart(float x, float y) {
+        animationDone = true;
+        mayStartGame();        
+    }
+
+    @Override
+    public void onPointerEnd(float x, float y) {
+        
+    }
+
+    @Override
+    public void onPointerDrag(float x, float y) {
+        
     }
 
 }
