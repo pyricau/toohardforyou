@@ -82,6 +82,14 @@ public abstract class Entity {
   public void setPos(float x, float y) {
     layer.setTranslation(x, y);
   }
+  
+  public float getPosX() {
+      return layer.transform().tx();
+  }
+  
+  public float getPosY() {
+      return layer.transform().ty();
+  }
 
   public void setAngle(float a) {
     layer.setRotation(a);

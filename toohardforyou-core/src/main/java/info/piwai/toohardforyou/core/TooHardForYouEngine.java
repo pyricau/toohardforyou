@@ -39,14 +39,14 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
     private final Paddle paddle;
 
     private int numberOfBalls = 0;
-    
+
     private final UiTexts uiTexts;
-    
+
     private final FpsCounter fpsCounter;
 
     public TooHardForYouEngine(TooHardForYouGame game) {
         super(buildWorldLayer());
-        
+
         uiTexts = new UiTexts();
         fpsCounter = new FpsCounter(uiTexts);
 
@@ -72,17 +72,24 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         new Timer() {
             @Override
             public void run() {
-                Ball ball = new Ball(TooHardForYouEngine.this, world, random() * Constants.GAME_WIDTH, random() * Constants.GAME_HEIGHT, 0);
-                ball.getBody().setLinearVelocity(new Vec2((-1 + random()) * 3, (-1 + random()) * 3));
-                add(ball);
-                numberOfBalls++;
-                uiTexts.updateNumberOfBalls(numberOfBalls);
+                createBallOnPaddle();
             }
         }.scheduleRepeating(500);
 
         // hook up our pointer listener
         pointer().setListener(this);
         keyboard().setListener(this);
+    }
+
+    private void createBallOnPaddle() {
+        Ball ball = new Ball(this, world, paddle.getPosX(), paddle.getPosY() - paddle.getHeight(), 0);
+        Vec2 velocity = new Vec2(random() - 0.5f, random() - 1);
+        velocity.normalize();
+        velocity.mulLocal(5);
+        ball.getBody().setLinearVelocity(velocity);
+        add(ball);
+        numberOfBalls++;
+        uiTexts.updateNumberOfBalls(numberOfBalls);
     }
 
     // create our world layer (scaled to "world space")
