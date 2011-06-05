@@ -6,9 +6,7 @@ public class Wall {
 
     private static final int WALL_WIDTH = 26;
 
-    private static final int WALL_HIDDEN_HEIGHT = 3;
-
-    private static final int WALL_HEIGHT = 16 + WALL_HIDDEN_HEIGHT;
+    private static final int WALL_HEIGHT = 16;
 
     private final Brick[][] bricks = new Brick[WALL_WIDTH][WALL_HEIGHT];
 
@@ -27,7 +25,7 @@ public class Wall {
             for (int x = 0; x < WALL_WIDTH; x++) {
                 if (random() > 0.5) {
                     BrickType brickType = brickTypes[(int) Math.floor(random() * brickTypes.length)];
-                    bricks[x][y] = new Brick(entityEngine, brickType, x, y - WALL_HIDDEN_HEIGHT);
+                    addBrick(new Brick(entityEngine, brickType, x, y), x, y);
                 }
             }
         }
@@ -47,6 +45,14 @@ public class Wall {
             bricks[x][y] = null;
             entityEngine.remove(brick.getEntity());
         }
+    }
+    
+    public boolean isFree(int x, int y) {
+        return bricks[x][y] == null;
+    }
+    
+    public void addBrick(Brick brick, int x, int y) {
+        bricks[x][y] = brick;
     }
 
 }
