@@ -2,16 +2,41 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<!-- POM file generated with GWT webAppCreator -->
 	<modelVersion>4.0.0</modelVersion>
+
 	<groupId>info.piwai.toohardforyou</groupId>
 	<artifactId>toohardforyou-core</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>GWT Maven Archetype</name>
+
+	<name>2H4U</name>
+	<description>2H4U, which stands for Too Hard For You, is an open source game, and a mix between a Tetris-like game and a wall breaker. It requires good reflexes, coordination, and ambidexters should have some advantages. Will 2H4U be too hard for you ?</description>
+	<url>https://github.com/pyricau/toohardforyou</url>
+
+	<inceptionYear>2011</inceptionYear>
+
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<distribution>repo</distribution>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>pyricau</id>
+			<name>Pierre-Yves Ricau</name>
+			<roles>
+				<role>Created 2H4U.</role>
+			</roles>
+			<url>http://cv.piwai.info</url>
+			<organization>Excilys</organization>
+			<organizationUrl>http://www.excilys.com</organizationUrl>
+		</developer>
+	</developers>
 
 	<properties>
-		<!-- GWT needs at least java 1.5 -->
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
 		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
@@ -60,6 +85,12 @@
 			<version>4.7</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.8.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -105,7 +136,38 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-
+			<plugin>
+				<!-- Checks for license headers. Use "mvn license:format" to update files. -->
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<version>1.9.0</version>
+				<configuration>
+					<header>src/etc/header.txt</header>
+					<excludes>
+						<exclude>.idea/**</exclude>
+						<exclude>.gitignore</exclude>
+					</excludes>
+					<strictCheck>true</strictCheck>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<findbugsXmlOutput>true</findbugsXmlOutput>
+					<findbugsXmlWithMessages>true</findbugsXmlWithMessages>
+					<xmlOutput>true</xmlOutput>
+				</configuration>
+			</plugin>
 			<!-- Copy static web files before executing gwt:run -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -123,8 +185,13 @@
 					<webappDirectory>${webappDirectory}</webappDirectory>
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
+
+	<scm>
+		<connection>scm:git:git@github.com:pyricau/toohardforyou.git</connection>
+		<developerConnection>scm:git:git@github.com:pyricau/toohardforyou.git</developerConnection>
+		<url>scm:git:git@github.com:pyricau/toohardforyou.git</url>
+	</scm>
 
 </project>
