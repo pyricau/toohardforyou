@@ -39,8 +39,8 @@ public class Ball extends DynamicPhysicsEntity {
 
     private final TooHardForYouEngine engine;
 
-    public Ball(TooHardForYouEngine entityEngine, World world, float x, float y, float angle) {
-        super(entityEngine, world, x, y, angle);
+    public Ball(TooHardForYouEngine entityEngine, float x, float y) {
+        super(entityEngine, x, y, 0);
         this.engine = entityEngine;
     }
 

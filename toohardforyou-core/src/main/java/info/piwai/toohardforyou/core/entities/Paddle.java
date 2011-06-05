@@ -52,8 +52,8 @@ public class Paddle extends DynamicPhysicsEntity {
 
     private float minX;
 
-    public Paddle(EntityEngine entityEngine, World world, float x, float y, float angle) {
-        super(entityEngine, world, x, y, angle);
+    public Paddle(EntityEngine entityEngine) {
+        super(entityEngine);
         top = Constants.GAME_HEIGHT - (getHeight() / 2);
         left = Constants.GAME_WIDTH / 2;
         maxX = Constants.GAME_WIDTH - getWidth() / 2;

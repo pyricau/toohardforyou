@@ -25,42 +25,42 @@ import org.jbox2d.dynamics.World;
  * which is licensed under the Apache License, Version 2.0.
  */
 public abstract class StaticPhysicsEntity extends Entity implements PhysicsEntity {
-  private Body body;
-  
-  public StaticPhysicsEntity(final EntityEngine entityEngine, World world, float x, float y, float angle) {
-    super(entityEngine, x, y, angle);
-    body = initPhysicsBody(world, x, y, angle);
-  }
+    private Body body;
 
-  abstract Body initPhysicsBody(World world, float x, float y, float angle);
+    public StaticPhysicsEntity(final EntityEngine entityEngine, float x, float y, float angle) {
+        super(entityEngine, x, y, angle);
+        body = initPhysicsBody(entityEngine.getWorld(), x, y, angle);
+    }
 
-  @Override
-  public void paint(float alpha) {
-  }
+    abstract Body initPhysicsBody(World world, float x, float y, float angle);
 
-  @Override
-  public void update(float delta) {
-  }
+    @Override
+    public void paint(float alpha) {
+    }
 
-  public void initPreLoad(final EntityEngine entityEngine) {
-  }
+    @Override
+    public void update(float delta) {
+    }
 
-  public void initPostLoad(final EntityEngine entityEngine) {
-    entityEngine.staticLayerBack.add(layer);
-  }
+    public void initPreLoad(final EntityEngine entityEngine) {
+    }
 
-  @Override
-  public void setPos(float x, float y) {
-    throw new RuntimeException("Error setting position on static entity");
-  }
+    public void initPostLoad(final EntityEngine entityEngine) {
+        entityEngine.staticLayerBack.add(layer);
+    }
 
-  @Override
-  public void setAngle(float a) {
-    throw new RuntimeException("Error setting angle on static entity");
-  }
+    @Override
+    public void setPos(float x, float y) {
+        throw new RuntimeException("Error setting position on static entity");
+    }
 
-  @Override
-  public Body getBody() {
-    return body;
-  }
+    @Override
+    public void setAngle(float a) {
+        throw new RuntimeException("Error setting angle on static entity");
+    }
+
+    @Override
+    public Body getBody() {
+        return body;
+    }
 }

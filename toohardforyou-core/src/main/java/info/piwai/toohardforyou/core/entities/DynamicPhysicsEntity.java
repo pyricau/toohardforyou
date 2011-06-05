@@ -29,10 +29,14 @@ public abstract class DynamicPhysicsEntity extends Entity implements PhysicsEnti
   // for calculating interpolation
   private float prevX, prevY, prevA;
   private Body body;
+  
+  public DynamicPhysicsEntity(EntityEngine entityEngine) {
+      this(entityEngine, 0, 0, 0);
+  }
 
-  public DynamicPhysicsEntity(EntityEngine entityEngine, World world, float x, float y, float angle) {
+  public DynamicPhysicsEntity(EntityEngine entityEngine, float x, float y, float angle) {
     super(entityEngine, x, y, angle);
-    body = initPhysicsBody(world, x, y, angle);
+    body = initPhysicsBody(entityEngine.getWorld(), x, y, angle);
     setPos(x, y);
     setAngle(angle);
   }

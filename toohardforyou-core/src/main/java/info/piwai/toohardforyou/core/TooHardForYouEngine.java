@@ -27,6 +27,7 @@ import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.World;
 
 import forplay.core.GroupLayer;
 import forplay.core.Image;
@@ -50,6 +51,10 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         uiTexts = new UiTexts();
         fpsCounter = new FpsCounter(uiTexts);
 
+         // x26 * y16
+        
+        
+        World world = getWorld();
         // create the ceil
         Body ceil = world.createBody(new BodyDef());
         PolygonShape ceilShape = new PolygonShape();
@@ -66,7 +71,7 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         wallRightShape.setAsEdge(new Vec2(Constants.GAME_WIDTH, 0), new Vec2(Constants.GAME_WIDTH, Constants.GAME_HEIGHT));
         wallRight.createFixture(wallRightShape, 0f);
 
-        paddle = new Paddle(this, world, 0, 0, 0);
+        paddle = new Paddle(this);
         add(paddle);
 
         new Timer() {
@@ -82,7 +87,7 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
     }
 
     private void createBallOnPaddle() {
-        Ball ball = new Ball(this, world, paddle.getPosX(), paddle.getPosY() - paddle.getHeight(), 0);
+        Ball ball = new Ball(this, paddle.getPosX(), paddle.getPosY() - paddle.getHeight());
         Vec2 velocity = new Vec2(random() - 0.5f, random() - 1);
         velocity.normalize();
         velocity.mulLocal(5);

@@ -42,12 +42,13 @@ import forplay.core.GroupLayer;
  * which is licensed under the Apache License, Version 2.0.
  */
 public abstract class EntityEngine implements GameScreen, ContactListener {
+
     public GroupLayer staticLayerBack;
     public GroupLayer dynamicLayer;
     public GroupLayer staticLayerFront;
 
     // box2d object containing physics world
-    protected World world;
+    private World world;
 
     private List<Entity> entities = new ArrayList<Entity>(0);
     private HashMap<Body, PhysicsEntity> bodyEntityLUT = new HashMap<Body, PhysicsEntity>();
@@ -186,5 +187,9 @@ public abstract class EntityEngine implements GameScreen, ContactListener {
     // Box2d's post solve
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
+    }
+    
+    public World getWorld() {
+        return world;
     }
 }

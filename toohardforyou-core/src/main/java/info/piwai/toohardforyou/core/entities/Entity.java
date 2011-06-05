@@ -31,6 +31,10 @@ public abstract class Entity {
     ImageLayer layer;
     Image image;
     float x, y, angle;
+    
+    public Entity(final EntityEngine entityEngine) {
+        this(entityEngine, 0, 0, 0);
+    }
 
     public Entity(final EntityEngine entityEngine, float px, float py, float pangle) {
         this.x = px;
