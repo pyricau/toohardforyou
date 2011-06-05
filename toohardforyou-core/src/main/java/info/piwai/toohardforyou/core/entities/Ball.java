@@ -35,8 +35,8 @@ public class Ball extends DynamicPhysicsEntity {
 
     public final static String IMAGE = Resources.GAME_PATH + "ball.png";
 
-    public Ball(EntityEngine peaWorld, World world, float x, float y, float angle) {
-        super(peaWorld, world, x, y, angle);
+    public Ball(EntityEngine entityEngine, World world, float x, float y, float angle) {
+        super(entityEngine, world, x, y, angle);
     }
 
     @Override

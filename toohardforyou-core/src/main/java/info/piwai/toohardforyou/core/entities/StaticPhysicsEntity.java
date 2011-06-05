@@ -27,8 +27,8 @@ import org.jbox2d.dynamics.World;
 public abstract class StaticPhysicsEntity extends Entity implements PhysicsEntity {
   private Body body;
   
-  public StaticPhysicsEntity(final EntityEngine peaWorld, World world, float x, float y, float angle) {
-    super(peaWorld, x, y, angle);
+  public StaticPhysicsEntity(final EntityEngine entityEngine, World world, float x, float y, float angle) {
+    super(entityEngine, x, y, angle);
     body = initPhysicsBody(world, x, y, angle);
   }
 
@@ -42,11 +42,11 @@ public abstract class StaticPhysicsEntity extends Entity implements PhysicsEntit
   public void update(float delta) {
   }
 
-  public void initPreLoad(final EntityEngine peaWorld) {
+  public void initPreLoad(final EntityEngine entityEngine) {
   }
 
-  public void initPostLoad(final EntityEngine peaWorld) {
-    peaWorld.staticLayerBack.add(layer);
+  public void initPostLoad(final EntityEngine entityEngine) {
+    entityEngine.staticLayerBack.add(layer);
   }
 
   @Override

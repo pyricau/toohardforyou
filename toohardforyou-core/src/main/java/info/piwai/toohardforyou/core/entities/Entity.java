@@ -32,13 +32,13 @@ public abstract class Entity {
   Image image;
   float x, y, angle;
 
-  public Entity(final EntityEngine peaWorld, float px, float py, float pangle) {
+  public Entity(final EntityEngine entityEngine, float px, float py, float pangle) {
     this.x = px;
     this.y = py;
     this.angle = pangle;
     image = assetManager().getImage(getImagePath());
     layer = graphics().createImageLayer(image);
-    initPreLoad(peaWorld);
+    initPreLoad(entityEngine);
     image.addCallback(new ResourceCallback<Image>() {
       @Override
       public void done(Image image) {
@@ -49,7 +49,7 @@ public abstract class Entity {
         layer.setScale(getWidth() / image.width(), getHeight() / image.height());
         layer.setTranslation(x, y);
         layer.setRotation(angle);
-        initPostLoad(peaWorld);
+        initPostLoad(entityEngine);
       }
 
       @Override
@@ -60,18 +60,18 @@ public abstract class Entity {
   }
 
   /**
-   * Perform pre-image load initialization (e.g., attaching to PeaWorld layers).
+   * Perform pre-image load initialization (e.g., attaching to entityEngine layers).
    * 
-   * @param peaWorld
+   * @param entityEngine
    */
-  public abstract void initPreLoad(final EntityEngine peaWorld);
+  public abstract void initPreLoad(final EntityEngine entityEngine);
 
   /**
-   * Perform post-image load initialization (e.g., attaching to PeaWorld layers).
+   * Perform post-image load initialization (e.g., attaching to entityEngine layers).
    * 
-   * @param peaWorld
+   * @param entityEngine
    */
-  public abstract void initPostLoad(final EntityEngine peaWorld);
+  public abstract void initPostLoad(final EntityEngine entityEngine);
 
   public void paint(float alpha) {
   }
