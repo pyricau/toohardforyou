@@ -59,12 +59,20 @@ public abstract class Timer {
      *            how long to wait before the timer elapses, in milliseconds
      */
     public void schedule(int delayMillis) {
-        if (delayMillis <= 0) {
+        checkPositive(delayMillis);
+        periodMillis = 0;
+        scheduleInternal(delayMillis);
+    }
+
+    private void checkPositive(int param) {
+        if (param <= 0) {
             throw new IllegalArgumentException("must be positive");
         }
+    }
+    
+    private void scheduleInternal(double stepMillis) {
         cancel();
-        periodMillis = 0;
-        nextExecution = currentTime() + delayMillis;
+        nextExecution = currentTime() + stepMillis;
         timers.add(this);
     }
 
@@ -76,13 +84,9 @@ public abstract class Timer {
      *            between each repetition
      */
     public void scheduleRepeating(int periodMillis) {
-        if (periodMillis <= 0) {
-            throw new IllegalArgumentException("must be positive");
-        }
-        cancel();
+        checkPositive(periodMillis);
         this.periodMillis = periodMillis;
-        nextExecution = currentTime() + periodMillis;
-        timers.add(this);
+        scheduleInternal(periodMillis);
     }
 
 }
