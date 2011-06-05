@@ -16,7 +16,6 @@
 package info.piwai.toohardforyou.core;
 
 import static forplay.core.ForPlay.assetManager;
-import static forplay.core.ForPlay.currentTime;
 import static forplay.core.ForPlay.graphics;
 import static forplay.core.ForPlay.keyboard;
 import static forplay.core.ForPlay.pointer;
@@ -29,10 +28,6 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 
-import forplay.core.Canvas;
-import forplay.core.CanvasLayer;
-import forplay.core.Color;
-import forplay.core.ForPlay;
 import forplay.core.GroupLayer;
 import forplay.core.Image;
 import forplay.core.Keyboard;
@@ -42,26 +37,18 @@ import forplay.core.Pointer;
 public class TooHardForYouEngine extends EntityEngine implements Pointer.Listener, Listener {
 
     private final Paddle paddle;
-    private CanvasLayer textLayer;
-    private boolean textDataChanged = true;
-    
-    private static final int FPS_COUNTER_MAX = 300;
-
-    private int frameCounter = 0;
-    private double frameCounterStart = 0;
-
-    private int frameRate = 0;
-
 
     private int numberOfBalls = 0;
+    
+    private final UiTexts uiTexts;
+    
+    private final FpsCounter fpsCounter;
 
     public TooHardForYouEngine(TooHardForYouGame game) {
         super(buildWorldLayer());
-
-        Image backgroundImage = assetManager().getImage(Resources.BACKGROUND_IMG);
-        textLayer = graphics().createCanvasLayer(backgroundImage.width(), backgroundImage.height());
-
-        graphics().rootLayer().add(textLayer);
+        
+        uiTexts = new UiTexts();
+        fpsCounter = new FpsCounter(uiTexts);
 
         // create the ceil
         Body ceil = world.createBody(new BodyDef());
@@ -89,7 +76,7 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
                 ball.getBody().setLinearVelocity(new Vec2((-1 + random()) * 3, (-1 + random()) * 3));
                 add(ball);
                 numberOfBalls++;
-                textDataChanged = true;
+                uiTexts.updateNumberOfBalls(numberOfBalls);
             }
         }.scheduleRepeating(500);
 
@@ -173,29 +160,8 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
     @Override
     public void paint(float delta) {
         super.paint(delta);
-
-        if (frameCounter == 0) {
-            frameCounterStart = currentTime();
-        }
-
-        frameCounter++;
-        if (frameCounter == FPS_COUNTER_MAX) {
-            frameRate = (int) (frameCounter / ((currentTime() - frameCounterStart) / 1000.0));
-            frameCounter = 0;
-            textDataChanged = true;
-        }
-
-        if (textDataChanged) {
-            drawTexts();
-        }
-    }
-
-    public void drawTexts() {
-        textDataChanged = false;
-        Canvas canvas = textLayer.canvas();
-        canvas.clear();
-        canvas.drawText("Balls: " + numberOfBalls, 550, 50);
-        canvas.drawText("FPS: " + frameRate, 550, 70);
+        fpsCounter.update();
+        uiTexts.mayRedrawTexts();
     }
 
     @Override
