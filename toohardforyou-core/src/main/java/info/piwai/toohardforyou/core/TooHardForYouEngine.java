@@ -51,7 +51,6 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         uiTexts = new UiTexts();
         fpsCounter = new FpsCounter(uiTexts);
 
-        
         World world = getWorld();
         // create the ceil
         Body ceil = world.createBody(new BodyDef());
@@ -71,15 +70,16 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
 
         paddle = new Paddle(this);
         add(paddle);
-        
-        
+
         Wall wall = new Wall(this);
         wall.fillRandomly(5);
 
         new Timer() {
             @Override
             public void run() {
-                createBallOnPaddle();
+                if (numberOfBalls < 10) {
+                    createBallOnPaddle();
+                }
             }
         }.scheduleRepeating(500);
 
