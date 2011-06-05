@@ -1,7 +1,6 @@
 package info.piwai.toohardforyou.core;
 
 import static forplay.core.ForPlay.assetManager;
-import static forplay.core.ForPlay.currentTime;
 import static forplay.core.ForPlay.graphics;
 import static forplay.core.ForPlay.keyboard;
 import static forplay.core.ForPlay.pointer;
@@ -29,8 +28,6 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
     public static final float WIDTH = 520 * physUnitPerScreenUnit;
     public static final float HEIGHT = 600 * physUnitPerScreenUnit;
 
-    private double lastBall;
-
     private Paddle paddle;
 
     public TooHardForYouEngine(TooHardForYou tooHardForYou) {
@@ -52,13 +49,23 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         wallRightShape.setAsEdge(new Vec2(WIDTH, 0), new Vec2(WIDTH, HEIGHT));
         wallRight.createFixture(wallRightShape, 0f);
 
-        // hook up our pointer listener
-        pointer().setListener(this);
 
-        keyboard().setListener(this);
 
         paddle = new Paddle(this, world, 0, 0, 0);
         add(paddle);
+        
+        new Timer() {
+            @Override
+            public void run() {
+                Ball ball = new Ball(TooHardForYouEngine.this, world, random() * WIDTH, random() * HEIGHT, 0);
+                ball.getBody().setLinearVelocity(new Vec2((-1 + random()) * 3, (-1 + random()) * 3));
+                add(ball);
+            }
+        }.scheduleRepeating(500);
+        
+        // hook up our pointer listener
+        pointer().setListener(this);
+        keyboard().setListener(this);
     }
 
     // create our world layer (scaled to "world space")
@@ -109,12 +116,7 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
     @Override
     public void update(float delta) {
         super.update(delta);
-        if (currentTime() - lastBall > 500) {
-            lastBall = currentTime();
-            Ball ball = new Ball(this, world, random() * WIDTH, random() * HEIGHT, 0);
-            ball.getBody().setLinearVelocity(new Vec2((-1 + random()) * 3, (-1 + random()) * 3));
-            add(ball);
-        }
+        Timer.update();
     }
 
     @Override
