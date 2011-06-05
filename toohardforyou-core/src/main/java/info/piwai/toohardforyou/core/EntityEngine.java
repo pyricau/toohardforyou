@@ -171,12 +171,12 @@ public abstract class EntityEngine implements GameScreen, ContactListener {
     // Box2d's begin contact
     @Override
     public void beginContact(Contact contact) {
-        contacts.push(contact);
     }
 
     // Box2d's end contact
     @Override
     public void endContact(Contact contact) {
+        contacts.push(contact);
     }
 
     // Box2d's pre solve

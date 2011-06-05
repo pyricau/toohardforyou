@@ -40,7 +40,7 @@ public class Ball extends DynamicPhysicsEntity {
     private final TooHardForYouEngine engine;
 
     public Ball(TooHardForYouEngine entityEngine, float x, float y) {
-        super(entityEngine, x, y, 0);
+        super(entityEngine, IMAGE, x, y, 0);
         this.engine = entityEngine;
     }
 
@@ -87,8 +87,4 @@ public class Ball extends DynamicPhysicsEntity {
         return BALL_RADIUS;
     }
 
-    @Override
-    public String getImagePath() {
-        return IMAGE;
-    }
 }

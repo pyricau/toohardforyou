@@ -51,8 +51,6 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         uiTexts = new UiTexts();
         fpsCounter = new FpsCounter(uiTexts);
 
-         // x26 * y16
-        
         
         World world = getWorld();
         // create the ceil
@@ -73,6 +71,10 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
 
         paddle = new Paddle(this);
         add(paddle);
+        
+        
+        Wall wall = new Wall(this);
+        wall.fillRandomly(5);
 
         new Timer() {
             @Override

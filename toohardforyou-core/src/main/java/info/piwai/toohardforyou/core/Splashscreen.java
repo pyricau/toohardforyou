@@ -21,6 +21,7 @@ import static forplay.core.ForPlay.graphics;
 import static forplay.core.ForPlay.keyboard;
 import static forplay.core.ForPlay.pointer;
 import info.piwai.toohardforyou.core.entities.Ball;
+import info.piwai.toohardforyou.core.entities.BrokenBrick;
 import info.piwai.toohardforyou.core.entities.Paddle;
 import forplay.core.AssetWatcher;
 import forplay.core.Image;
@@ -67,7 +68,7 @@ public class Splashscreen implements GameScreen, Pointer.Listener, Keyboard.List
         addAll(assetWatcher, Resources.BLACK_IMG, Resources.SPLASHSCREEN_IMG);
 
         assetWatcher.start();
-        
+
         pointer().setListener(this);
         keyboard().setListener(this);
     }
@@ -120,14 +121,23 @@ public class Splashscreen implements GameScreen, Pointer.Listener, Keyboard.List
             }
         });
 
-        addAll(assetWatcher, Resources.BACKGROUND_IMG, Paddle.IMAGE, Ball.IMAGE);
+        addAll(assetWatcher, Resources.BACKGROUND_IMG, Paddle.IMAGE, Ball.IMAGE, BrokenBrick.IMAGE);
+
+        for (BrickType brickType : BrickType.values()) {
+            add(assetWatcher, brickType.getImagePath());
+        }
+
         assetWatcher.start();
     }
 
     private void addAll(AssetWatcher assetWatcher, String... imagePaths) {
         for (String imagePath : imagePaths) {
-            assetWatcher.add(assetManager().getImage(imagePath));
+            add(assetWatcher, imagePath);
         }
+    }
+
+    private void add(AssetWatcher assetWatcher, String imagePath) {
+        assetWatcher.add(assetManager().getImage(imagePath));
     }
 
     private void mayStartGame() {
@@ -145,28 +155,28 @@ public class Splashscreen implements GameScreen, Pointer.Listener, Keyboard.List
     @Override
     public void onKeyDown(int keyCode) {
         animationDone = true;
-        mayStartGame();        
+        mayStartGame();
     }
 
     @Override
     public void onKeyUp(int keyCode) {
-        
+
     }
 
     @Override
     public void onPointerStart(float x, float y) {
         animationDone = true;
-        mayStartGame();        
+        mayStartGame();
     }
 
     @Override
     public void onPointerEnd(float x, float y) {
-        
+
     }
 
     @Override
     public void onPointerDrag(float x, float y) {
-        
+
     }
 
 }

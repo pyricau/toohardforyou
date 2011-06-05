@@ -15,9 +15,9 @@
  */
 package info.piwai.toohardforyou.core.entities;
 
+import info.piwai.toohardforyou.core.BrickType;
 import info.piwai.toohardforyou.core.Constants;
 import info.piwai.toohardforyou.core.EntityEngine;
-import info.piwai.toohardforyou.core.Resources;
 
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -27,38 +27,17 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
-public class Paddle extends DynamicPhysicsEntity {
+public class SolidBrick extends DynamicPhysicsEntity implements PhysicsEntity.HasContactListener {
 
-    private static final float PADDLE_HEIGHT = 20 * Constants.PHYS_UNIT_PER_SCREEN_UNIT;
+    private final BrokenListener listener;
 
-    private static final float PADDLE_WIDTH = 100 * Constants.PHYS_UNIT_PER_SCREEN_UNIT;
-
-    public final static String IMAGE = Resources.GAME_PATH + "paddle.png";
-
-    private boolean moveLeft;
-
-    private boolean moveRight;
-
-    /**
-     * in px/s
-     */
-    private float speed = 20;
-
-    private float maxX;
-
-    private float top;
-
-    private float left;
-
-    private float minX;
-
-    public Paddle(EntityEngine entityEngine) {
-        super(entityEngine, IMAGE, 0, 0, 0);
-        top = Constants.GAME_HEIGHT - (getHeight() / 2);
-        left = Constants.GAME_WIDTH / 2;
-        maxX = Constants.GAME_WIDTH - getWidth() / 2;
-        minX = getWidth() / 2;
-        setPos(left, top);
+    public interface BrokenListener {
+        void broken();
+    }
+    
+    public SolidBrick(EntityEngine entityEngine, BrickType brickType, BrokenListener listener, float x, float y) {
+        super(entityEngine, brickType.getImagePath(), x, y, 0);
+        this.listener = listener;
     }
 
     @Override
@@ -83,46 +62,20 @@ public class Paddle extends DynamicPhysicsEntity {
         body.setTransform(new Vec2(x, y), angle);
         return body;
     }
-    
-    @Override
-    public void update(float delta) {
-        super.update(delta);
-        if (moveLeft) {
-            moveTo(left - (speed * delta) / 1000);
-        } else if (moveRight) {
-            moveTo(left + (speed * delta) / 1000);
-        }
-
-    }
-    
-    public void moveTo(float x) {
-        if (x < minX) {
-            x = minX;
-        } else if (x > maxX) {
-            x = maxX;
-        }
-
-        left = x;
-        
-        setPos(x, top);
-
-    }
 
     @Override
     public float getWidth() {
-        return PADDLE_WIDTH;
+        return Constants.BRICK_WIDTH;
     }
 
     @Override
     public float getHeight() {
-        return PADDLE_HEIGHT;
+        return Constants.BRICK_HEIGHT;
     }
 
-    public void moveLeft(boolean moveLeft) {
-        this.moveLeft = moveLeft;
+    @Override
+    public void contact(PhysicsEntity other) {
+        listener.broken();
     }
 
-    public void moveRight(boolean moveRight) {
-        this.moveRight = moveRight;
-    }
 }

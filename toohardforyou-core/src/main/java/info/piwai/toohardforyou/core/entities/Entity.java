@@ -32,15 +32,11 @@ public abstract class Entity {
     Image image;
     float x, y, angle;
     
-    public Entity(final EntityEngine entityEngine) {
-        this(entityEngine, 0, 0, 0);
-    }
-
-    public Entity(final EntityEngine entityEngine, float px, float py, float pangle) {
+    public Entity(final EntityEngine entityEngine, String imagePath, float px, float py, float pangle) {
         this.x = px;
         this.y = py;
         this.angle = pangle;
-        image = assetManager().getImage(getImagePath());
+        image = assetManager().getImage(imagePath);
         layer = graphics().createImageLayer(image);
         initPreLoad(entityEngine);
         image.addCallback(new ResourceCallback<Image>() {
@@ -108,8 +104,6 @@ public abstract class Entity {
     abstract float getWidth();
 
     abstract float getHeight();
-
-    abstract String getImagePath();
 
     public Image getImage() {
         return image;

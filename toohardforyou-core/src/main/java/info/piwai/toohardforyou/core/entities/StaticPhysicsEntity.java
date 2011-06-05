@@ -27,8 +27,8 @@ import org.jbox2d.dynamics.World;
 public abstract class StaticPhysicsEntity extends Entity implements PhysicsEntity {
     private Body body;
 
-    public StaticPhysicsEntity(final EntityEngine entityEngine, float x, float y, float angle) {
-        super(entityEngine, x, y, angle);
+    public StaticPhysicsEntity(final EntityEngine entityEngine, String imagePath, float x, float y, float angle) {
+        super(entityEngine, imagePath, x, y, angle);
         body = initPhysicsBody(entityEngine.getWorld(), x, y, angle);
     }
 

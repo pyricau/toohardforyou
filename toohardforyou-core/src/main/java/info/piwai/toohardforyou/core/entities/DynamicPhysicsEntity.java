@@ -30,12 +30,8 @@ public abstract class DynamicPhysicsEntity extends Entity implements PhysicsEnti
   private float prevX, prevY, prevA;
   private Body body;
   
-  public DynamicPhysicsEntity(EntityEngine entityEngine) {
-      this(entityEngine, 0, 0, 0);
-  }
-
-  public DynamicPhysicsEntity(EntityEngine entityEngine, float x, float y, float angle) {
-    super(entityEngine, x, y, angle);
+  public DynamicPhysicsEntity(EntityEngine entityEngine, String imagePath, float x, float y, float angle) {
+    super(entityEngine, imagePath, x, y, angle);
     body = initPhysicsBody(entityEngine.getWorld(), x, y, angle);
     setPos(x, y);
     setAngle(angle);
@@ -62,7 +58,6 @@ public abstract class DynamicPhysicsEntity extends Entity implements PhysicsEnti
   }
 
   public void initPreLoad(final EntityEngine entityEngine) {
-    // attach our layer to the dynamic layer
     entityEngine.dynamicLayer.add(layer);
   }
 

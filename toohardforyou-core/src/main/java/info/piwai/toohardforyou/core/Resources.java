@@ -21,6 +21,8 @@ public class Resources {
 
     public static final String GAME_PATH = IMAGES_PATH + "game/";
     
+    public static final String BRICKS_PATH = GAME_PATH + "bricks/";
+    
     public static final String MENU_PATH = IMAGES_PATH + "menu/";
     
     public static final String BACKGROUND_IMG = GAME_PATH + "background.jpg";
