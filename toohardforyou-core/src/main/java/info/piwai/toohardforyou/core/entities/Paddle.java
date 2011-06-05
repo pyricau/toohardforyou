@@ -15,9 +15,9 @@
  */
 package info.piwai.toohardforyou.core.entities;
 
+import info.piwai.toohardforyou.core.Constants;
 import info.piwai.toohardforyou.core.EntityEngine;
 import info.piwai.toohardforyou.core.Resources;
-import info.piwai.toohardforyou.core.TooHardForYouEngine;
 
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -28,6 +28,10 @@ import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
 public class Paddle extends DynamicPhysicsEntity {
+
+    private static final float PADDLE_HEIGHT = 20 * Constants.PHYS_UNIT_PER_SCREEN_UNIT;
+
+    private static final float PADDLE_WIDTH = 100 * Constants.PHYS_UNIT_PER_SCREEN_UNIT;
 
     public final static String IMAGE = Resources.GAME_PATH + "paddle.png";
 
@@ -50,9 +54,9 @@ public class Paddle extends DynamicPhysicsEntity {
 
     public Paddle(EntityEngine peaWorld, World world, float x, float y, float angle) {
         super(peaWorld, world, x, y, angle);
-        top = TooHardForYouEngine.HEIGHT - (getHeight() / 2);
-        left = TooHardForYouEngine.WIDTH / 2;
-        maxX = TooHardForYouEngine.WIDTH - getWidth() / 2;
+        top = Constants.GAME_HEIGHT - (getHeight() / 2);
+        left = Constants.GAME_WIDTH / 2;
+        maxX = Constants.GAME_WIDTH - getWidth() / 2;
         minX = getWidth() / 2;
         setPos(left, top);
     }
@@ -106,12 +110,12 @@ public class Paddle extends DynamicPhysicsEntity {
 
     @Override
     public float getWidth() {
-        return 100 * TooHardForYouEngine.physUnitPerScreenUnit;
+        return PADDLE_WIDTH;
     }
 
     @Override
     public float getHeight() {
-        return 20 * TooHardForYouEngine.physUnitPerScreenUnit;
+        return PADDLE_HEIGHT;
     }
 
     @Override

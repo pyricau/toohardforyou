@@ -15,9 +15,9 @@
  */
 package info.piwai.toohardforyou.core.entities;
 
+import info.piwai.toohardforyou.core.Constants;
 import info.piwai.toohardforyou.core.EntityEngine;
 import info.piwai.toohardforyou.core.Resources;
-import info.piwai.toohardforyou.core.TooHardForYouEngine;
 
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.common.Vec2;
@@ -28,6 +28,10 @@ import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
 public class Ball extends DynamicPhysicsEntity {
+
+    private static final float BALL_RADIUS = 10 * Constants.PHYS_UNIT_PER_SCREEN_UNIT;
+
+    private static final float BALL_DIAMETER = 2 * BALL_RADIUS;
 
     public final static String IMAGE = Resources.GAME_PATH + "ball.png";
 
@@ -58,16 +62,16 @@ public class Ball extends DynamicPhysicsEntity {
 
     @Override
     float getWidth() {
-        return 2 * getRadius();
+        return BALL_DIAMETER;
     }
 
     @Override
     float getHeight() {
-        return 2 * getRadius();
+        return BALL_DIAMETER;
     }
 
     float getRadius() {
-        return 10 * TooHardForYouEngine.physUnitPerScreenUnit;
+        return BALL_RADIUS;
     }
 
     @Override

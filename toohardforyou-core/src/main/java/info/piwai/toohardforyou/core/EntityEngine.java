@@ -1,18 +1,3 @@
-/**
- * Copyright 2011 The ForPlay Authors
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
 package info.piwai.toohardforyou.core;
 
 import static forplay.core.ForPlay.graphics;
@@ -37,6 +22,10 @@ import forplay.core.CanvasLayer;
 import forplay.core.DebugDrawBox2D;
 import forplay.core.GroupLayer;
 
+/**
+ * Based on the forplay-peaphysics example (Copyright 2011 The ForPlay Authors),
+ * which is licensed under the Apache License, Version 2.0.
+ */
 public abstract class EntityEngine implements GameScreen, ContactListener {
     public GroupLayer staticLayerBack;
     public GroupLayer dynamicLayer;
@@ -49,7 +38,7 @@ public abstract class EntityEngine implements GameScreen, ContactListener {
     private HashMap<Body, PhysicsEntity> bodyEntityLUT = new HashMap<Body, PhysicsEntity>();
     private Stack<Contact> contacts = new Stack<Contact>();
 
-    private static boolean showDebugDraw = false;
+    protected boolean showDebugDraw = false;
     private DebugDrawBox2D debugDraw;
 
     public EntityEngine(GroupLayer scaledLayer) {
@@ -66,10 +55,8 @@ public abstract class EntityEngine implements GameScreen, ContactListener {
         world.setAutoClearForces(true);
         world.setContactListener(this);
 
-
-
         if (showDebugDraw) {
-            CanvasLayer canvasLayer = graphics().createCanvasLayer((int) (getWidth() / TooHardForYouEngine.physUnitPerScreenUnit), (int) (getHeight() / TooHardForYouEngine.physUnitPerScreenUnit));
+            CanvasLayer canvasLayer = graphics().createCanvasLayer((int) (getWidth() / getPhysicalUnitPerScreenUnit()), (int) (getHeight() / getPhysicalUnitPerScreenUnit()));
             graphics().rootLayer().add(canvasLayer);
             debugDraw = new DebugDrawBox2D();
             debugDraw.setCanvas(canvasLayer);
@@ -78,14 +65,16 @@ public abstract class EntityEngine implements GameScreen, ContactListener {
             debugDraw.setFillAlpha(75);
             debugDraw.setStrokeWidth(2.0f);
             debugDraw.setFlags(DebugDraw.e_shapeBit | DebugDraw.e_jointBit | DebugDraw.e_aabbBit);
-            debugDraw.setCamera(0, 0, 1f / TooHardForYouEngine.physUnitPerScreenUnit);
+            debugDraw.setCamera(0, 0, 1f / getPhysicalUnitPerScreenUnit());
             world.setDebugDraw(debugDraw);
         }
 
     }
 
+    protected abstract float getPhysicalUnitPerScreenUnit();
+
     protected abstract float getWidth();
-    
+
     protected abstract float getHeight();
 
     protected abstract Vec2 getGravity();

@@ -21,35 +21,26 @@ import forplay.core.Pointer;
 
 public class TooHardForYouEngine extends EntityEngine implements Pointer.Listener, Listener {
 
-    // scale difference between screen space (pixels) and world space (physics).
-    public static float physUnitPerScreenUnit = 1 / 26.666667f;
+    private final Paddle paddle;
 
-    // size of world
-    public static final float WIDTH = 520 * physUnitPerScreenUnit;
-    public static final float HEIGHT = 600 * physUnitPerScreenUnit;
-
-    private Paddle paddle;
-
-    public TooHardForYouEngine(TooHardForYou tooHardForYou) {
+    public TooHardForYouEngine(TooHardForYouGame game) {
         super(buildWorldLayer());
 
         // create the ceil
         Body ceil = world.createBody(new BodyDef());
         PolygonShape ceilShape = new PolygonShape();
-        ceilShape.setAsEdge(new Vec2(0, 0), new Vec2(WIDTH, 0));
+        ceilShape.setAsEdge(new Vec2(0, 0), new Vec2(Constants.GAME_WIDTH, 0));
         ceil.createFixture(ceilShape, 0.0f);
 
         // create the walls
         Body wallLeft = world.createBody(new BodyDef());
         PolygonShape wallLeftShape = new PolygonShape();
-        wallLeftShape.setAsEdge(new Vec2(0, 0), new Vec2(0, HEIGHT));
+        wallLeftShape.setAsEdge(new Vec2(0, 0), new Vec2(0, Constants.GAME_HEIGHT));
         wallLeft.createFixture(wallLeftShape, 0.0f);
         Body wallRight = world.createBody(new BodyDef());
         PolygonShape wallRightShape = new PolygonShape();
-        wallRightShape.setAsEdge(new Vec2(WIDTH, 0), new Vec2(WIDTH, HEIGHT));
+        wallRightShape.setAsEdge(new Vec2(Constants.GAME_WIDTH, 0), new Vec2(Constants.GAME_WIDTH, Constants.GAME_HEIGHT));
         wallRight.createFixture(wallRightShape, 0f);
-
-
 
         paddle = new Paddle(this, world, 0, 0, 0);
         add(paddle);
@@ -57,7 +48,7 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         new Timer() {
             @Override
             public void run() {
-                Ball ball = new Ball(TooHardForYouEngine.this, world, random() * WIDTH, random() * HEIGHT, 0);
+                Ball ball = new Ball(TooHardForYouEngine.this, world, random() * Constants.GAME_WIDTH, random() * Constants.GAME_HEIGHT, 0);
                 ball.getBody().setLinearVelocity(new Vec2((-1 + random()) * 3, (-1 + random()) * 3));
                 add(ball);
             }
@@ -67,6 +58,8 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         pointer().setListener(this);
         keyboard().setListener(this);
     }
+    
+    
 
     // create our world layer (scaled to "world space")
     // main layer that holds the world. note: this gets scaled to world space
@@ -76,7 +69,7 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
 
         GroupLayer worldLayer = graphics().createGroupLayer();
         worldLayer.setTranslation(2, 0);
-        worldLayer.setScale(1f / physUnitPerScreenUnit);
+        worldLayer.setScale(1f / Constants.PHYS_UNIT_PER_SCREEN_UNIT);
         graphics().rootLayer().add(worldLayer);
         return worldLayer;
     }
@@ -88,19 +81,16 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
 
     @Override
     protected float getWidth() {
-        return WIDTH;
+        return Constants.GAME_WIDTH;
     }
 
     @Override
     protected float getHeight() {
-        return HEIGHT;
+        return Constants.GAME_HEIGHT;
     }
 
     @Override
     public void onPointerStart(float x, float y) {
-        Ball ball = new Ball(this, world, physUnitPerScreenUnit * x, physUnitPerScreenUnit * y, 0);
-        ball.getBody().setLinearVelocity(new Vec2((-1 + random()) * 3, (-1 + random()) * 3));
-        add(ball);
     }
 
     @Override
@@ -141,6 +131,13 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
             paddle.moveRight(false);
             break;
         }
+    }
+
+
+
+    @Override
+    protected float getPhysicalUnitPerScreenUnit() {
+        return Constants.PHYS_UNIT_PER_SCREEN_UNIT;
     }
 
 }

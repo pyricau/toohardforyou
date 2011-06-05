@@ -1,6 +1,6 @@
 package info.piwai.toohardforyou.gwt;
 
-import info.piwai.toohardforyou.core.TooHardForYou;
+import info.piwai.toohardforyou.core.TooHardForYouGame;
 import forplay.core.ForPlay;
 import forplay.html.HtmlAssetManager;
 import forplay.html.HtmlGame;
@@ -12,7 +12,7 @@ public class TooHardForYouEntryPoint extends HtmlGame {
     public void start() {
         HtmlAssetManager assets = HtmlPlatform.register().assetManager();
         assets.setPathPrefix("toohardforyou/");
-        ForPlay.run(new TooHardForYou());        
+        ForPlay.run(new TooHardForYouGame());        
     }
 
 }

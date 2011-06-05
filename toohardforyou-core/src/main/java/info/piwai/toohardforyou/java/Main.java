@@ -1,6 +1,6 @@
 package info.piwai.toohardforyou.java;
 
-import info.piwai.toohardforyou.core.TooHardForYou;
+import info.piwai.toohardforyou.core.TooHardForYouGame;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -16,7 +16,7 @@ public class Main {
         JavaPlatform platform = JavaPlatform.register();
         JavaAssetManager assets = platform.assetManager();
         assets.setPathPrefix("src/main/java/info/piwai/toohardforyou/resources");
-        ForPlay.run(new TooHardForYou());
+        ForPlay.run(new TooHardForYouGame());
         
         Field frameField = platform.getClass().getDeclaredField("frame");
         frameField.setAccessible(true);

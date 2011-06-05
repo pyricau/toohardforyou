@@ -16,7 +16,7 @@ public class Splashscreen implements GameScreen, Pointer.Listener, Keyboard.List
 
     private static final int SPLASHSCREEN_DURATION = 2000;
 
-    private final TooHardForYou tooHardForYou;
+    private final TooHardForYouGame tooHardForYou;
 
     private boolean splashscreenLoaded;
 
@@ -32,7 +32,7 @@ public class Splashscreen implements GameScreen, Pointer.Listener, Keyboard.List
 
     private double animationStart;
 
-    public Splashscreen(TooHardForYou tooHardForYou) {
+    public Splashscreen(TooHardForYouGame tooHardForYou) {
         this.tooHardForYou = tooHardForYou;
 
         AssetWatcher assetWatcher = new AssetWatcher(new AssetWatcher.Listener() {
