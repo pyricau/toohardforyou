@@ -23,6 +23,8 @@ public abstract class Resources {
     
     public static final String BRICKS_PATH = GAME_PATH + "bricks/";
     
+    public static final String BONUS_PATH = GAME_PATH + "bonus/";
+    
     public static final String MENU_PATH = IMAGES_PATH + "menu/";
     
     public static final String BACKGROUND_IMG = GAME_PATH + "background.jpg";

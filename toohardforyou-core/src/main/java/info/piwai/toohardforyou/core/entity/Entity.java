@@ -56,6 +56,8 @@ public abstract class Entity {
                 ForPlay.log().error("Error loading image: " + err.getMessage());
             }
         });
+        
+        entityEngine.add(this);
     }
 
     /**
@@ -100,9 +102,9 @@ public abstract class Entity {
         layer.setRotation(a);
     }
 
-    protected abstract float getWidth();
+    public abstract float getWidth();
 
-    protected abstract float getHeight();
+    public abstract float getHeight();
 
     public Image getImage() {
         return image;

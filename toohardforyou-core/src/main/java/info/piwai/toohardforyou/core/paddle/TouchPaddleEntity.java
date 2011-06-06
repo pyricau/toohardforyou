@@ -13,12 +13,13 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package info.piwai.toohardforyou.core.ball;
+package info.piwai.toohardforyou.core.paddle;
 
 import info.piwai.toohardforyou.core.Constants;
-import info.piwai.toohardforyou.core.Resources;
+import info.piwai.toohardforyou.core.NewGameListener;
 import info.piwai.toohardforyou.core.TooHardForYouEngine;
 import info.piwai.toohardforyou.core.entity.DynamicPhysicsEntity;
+import info.piwai.toohardforyou.core.entity.PhysicsEntity;
 
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.common.Vec2;
@@ -28,21 +29,20 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
-public class Ball extends DynamicPhysicsEntity {
+public abstract class TouchPaddleEntity extends DynamicPhysicsEntity implements PhysicsEntity.HasContactListener, NewGameListener{
 
-    private static final float BALL_RADIUS = 10 * Constants.PHYS_UNIT_PER_SCREEN_UNIT;
+    private static final float RADIUS = 10 * Constants.PHYS_UNIT_PER_SCREEN_UNIT;
 
-    private static final float MAX_POS_Y = Constants.GAME_HEIGHT + BALL_RADIUS;
+    private static final float MAX_POS_Y = Constants.GAME_HEIGHT + RADIUS;
 
-    private static final float BALL_DIAMETER = 2 * BALL_RADIUS;
-
-    public final static String IMAGE = Resources.GAME_PATH + "ball.png";
+    private static final float DIAMETER = 2 * RADIUS;
 
     private final TooHardForYouEngine engine;
 
-    public Ball(TooHardForYouEngine engine, float x, float y) {
-        super(engine.getEntityEngine(), IMAGE, x, y, 0);
+    public TouchPaddleEntity(TooHardForYouEngine engine, String image, float x, float y) {
+        super(engine.getEntityEngine(), image, x, y - RADIUS, 0);
         this.engine = engine;
+        engine.addNewGameListener(this);
     }
 
     @Override
@@ -70,22 +70,46 @@ public class Ball extends DynamicPhysicsEntity {
     public void update(float delta) {
         super.update(delta);
         if (getPosY() > MAX_POS_Y) {
-            engine.ballOut(this);
+            destroy();
+            outOfGame();
+        }
+    }
+    
+    public void destroy() {
+        engine.removeNewGameListener(this);
+        engine.getEntityEngine().remove(this);
+    }
+    
+    protected abstract void outOfGame();
+    
+    @Override
+    public void contact(PhysicsEntity other) {
+        if (other instanceof Paddle) {
+            destroy();
+            touchedPaddle();
         }
     }
 
+    protected abstract void touchedPaddle();
+
     @Override
     public float getWidth() {
-        return BALL_DIAMETER;
+        return DIAMETER;
     }
 
     @Override
     public float getHeight() {
-        return BALL_DIAMETER;
+        return DIAMETER;
     }
 
     private float getRadius() {
-        return BALL_RADIUS;
+        return RADIUS;
+    }
+    
+    @Override
+    public boolean onNewGame() {
+        destroy();
+        return true;
     }
 
 }

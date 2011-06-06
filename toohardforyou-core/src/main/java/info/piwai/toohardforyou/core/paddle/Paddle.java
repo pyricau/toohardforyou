@@ -19,6 +19,7 @@ import info.piwai.toohardforyou.core.Constants;
 import info.piwai.toohardforyou.core.Resources;
 import info.piwai.toohardforyou.core.entity.DynamicPhysicsEntity;
 import info.piwai.toohardforyou.core.entity.EntityEngine;
+import info.piwai.toohardforyou.core.util.Timer;
 
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -29,6 +30,13 @@ import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
 public class Paddle extends DynamicPhysicsEntity {
+
+    private final Timer frozenTimer = new Timer() {
+        @Override
+        public void run() {
+            frozen = false;
+        }
+    };
 
     private static final float PADDLE_HEIGHT = 20 * Constants.PHYS_UNIT_PER_SCREEN_UNIT;
 
@@ -53,13 +61,15 @@ public class Paddle extends DynamicPhysicsEntity {
 
     private float minX;
 
+    private boolean frozen = false;
+
     public Paddle(EntityEngine entityEngine) {
         super(entityEngine, IMAGE, 0, 0, 0);
         maxX = Constants.GAME_WIDTH - getWidth() / 2;
         minX = getWidth() / 2;
         resetPosition();
     }
-    
+
     public void resetPosition() {
         top = Constants.GAME_HEIGHT - (getHeight() / 2);
         left = Constants.GAME_WIDTH / 2;
@@ -88,18 +98,21 @@ public class Paddle extends DynamicPhysicsEntity {
         body.setTransform(new Vec2(x, y), angle);
         return body;
     }
-    
+
     @Override
     public void update(float delta) {
         super.update(delta);
-        if (moveLeft) {
-            moveTo(left - (speed * delta) / 1000);
-        } else if (moveRight) {
-            moveTo(left + (speed * delta) / 1000);
+
+        if (!frozen) {
+            if (moveLeft) {
+                moveTo(left - (speed * delta) / 1000);
+            } else if (moveRight) {
+                moveTo(left + (speed * delta) / 1000);
+            }
         }
 
     }
-    
+
     public void moveTo(float x) {
         if (x < minX) {
             x = minX;
@@ -108,7 +121,7 @@ public class Paddle extends DynamicPhysicsEntity {
         }
 
         left = x;
-        
+
         setPos(x, top);
 
     }
@@ -129,5 +142,10 @@ public class Paddle extends DynamicPhysicsEntity {
 
     public void moveRight(boolean moveRight) {
         this.moveRight = moveRight;
+    }
+
+    public void freeze() {
+        frozen = true;
+        frozenTimer.schedule(Constants.PADDLE_FREEZE_TIME);
     }
 }

@@ -17,8 +17,10 @@ package info.piwai.toohardforyou.core;
 
 import static forplay.core.ForPlay.*;
 import info.piwai.toohardforyou.core.ball.Ball;
+import info.piwai.toohardforyou.core.bonus.BiggerPaddleBonus;
 import info.piwai.toohardforyou.core.brick.BrickFactory;
 import info.piwai.toohardforyou.core.entity.EntityEngine;
+import info.piwai.toohardforyou.core.malus.StaticPaddleMalus;
 import info.piwai.toohardforyou.core.paddle.Paddle;
 import info.piwai.toohardforyou.core.piece.Piece;
 import info.piwai.toohardforyou.core.piece.PieceFactory;
@@ -50,6 +52,8 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
     private final FpsCounter fpsCounter;
 
     private final List<Ball> balls = new ArrayList<Ball>();
+    
+    private final List<NewGameListener> newGamelisteners = new ArrayList<NewGameListener>();
 
     private final Wall wall;
 
@@ -73,9 +77,8 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
         createBoundaries();
 
         paddle = new Paddle(entityEngine);
-        entityEngine.add(paddle);
-        
-        BrickFactory brickFactory = new BrickFactory(this, entityEngine);
+
+        BrickFactory brickFactory = new BrickFactory(this);
 
         wall = new Wall(brickFactory);
 
@@ -107,6 +110,18 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
     }
 
     private void newGame() {
+        
+        ArrayList<NewGameListener> listenersToRemove = new ArrayList<NewGameListener>();
+        for(NewGameListener listener : new ArrayList<NewGameListener>(newGamelisteners)) {
+            boolean remove = listener.onNewGame();
+            if (remove) {
+                listenersToRemove.add(listener);
+            }
+        }
+        
+        newGamelisteners.removeAll(listenersToRemove);
+        listenersToRemove.clear();
+        
         paddle.resetPosition();
 
         score = 0;
@@ -137,12 +152,11 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
 
     private void createBallOnPaddle() {
         if (balls.size() < Constants.MAX_BALLS) {
-            Ball ball = new Ball(this, entityEngine, paddle.getPosX(), paddle.getPosY() - paddle.getHeight());
+            Ball ball = new Ball(this, paddle.getPosX(), paddle.getPosY() - paddle.getHeight());
             Vec2 velocity = new Vec2(random() - 0.5f, random() - 1);
             velocity.normalize();
             velocity.mulLocal(5);
             ball.getBody().setLinearVelocity(velocity);
-            entityEngine.add(ball);
             balls.add(ball);
             uiTexts.updateNumberOfBalls(balls.size());
         }
@@ -160,7 +174,6 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
         graphics().rootLayer().add(worldLayer);
         return worldLayer;
     }
-    
 
     @Override
     public void update(float delta) {
@@ -168,7 +181,6 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
         Timer.update();
         piece.update(delta);
     }
-    
 
     @Override
     public void paint(float delta) {
@@ -176,7 +188,6 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
         fpsCounter.update();
         uiTexts.mayRedrawTexts();
     }
-
 
     @Override
     public void onPointerStart(float x, float y) {
@@ -290,14 +301,39 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
     }
 
     public void newMalus(float x, float y) {
+        StaticPaddleMalus malus = new StaticPaddleMalus(this, paddle, x, y);
         
+        Vec2 velocity = new Vec2(0, 3);
+        malus.getBody().setLinearVelocity(velocity);
     }
 
-    public void newBonus(float posX, float posY) {
+    public void newBonus(float x, float y) {
+        BiggerPaddleBonus bonus = new BiggerPaddleBonus(this, paddle, x, y);
+        
+        Vec2 velocity = new Vec2(0, 3);
+        bonus.getBody().setLinearVelocity(velocity);
+    }
+    
+    public void addNewGameListener(NewGameListener newGamelistener) {
+        newGamelisteners.add(newGamelistener);
+    }
+    
+    public void removeNewGameListener(NewGameListener newGamelistener) {
+        newGamelisteners.remove(newGamelistener);
     }
 
     public void explodeLine(int lineY) {
-        
+        /*
+         * Should the whole line (two halfs) be destroyed ? Or maybe only a part
+         * around the bomb ? But then we should recompute to check if no
+         * complete line appeared.
+         */
     }
+
+    public EntityEngine getEntityEngine() {
+        return entityEngine;
+    }
+    
+    
 
 }

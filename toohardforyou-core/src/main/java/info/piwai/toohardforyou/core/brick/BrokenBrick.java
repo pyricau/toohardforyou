@@ -5,15 +5,16 @@ import info.piwai.toohardforyou.core.entity.EntityEngine;
 
 public class BrokenBrick extends Brick {
 
-    public BrokenBrick(TooHardForYouEngine engine, EntityEngine entityEngine, int x, int y) {
-        super(engine, entityEngine, BrickType.BONUS, x, y);
+    public BrokenBrick(TooHardForYouEngine engine, int x, int y) {
+        super(engine, BrickType.BONUS, x, y);
+        
+        EntityEngine entityEngine = engine.getEntityEngine();
         
         entityEngine.remove(entity);
         float savedX = entity.getPosX();
         float savedY = entity.getPosY();
         
         entity = new BrokenBrickEntity(entityEngine);
-        entityEngine.add(entity);
         entity.setPos(savedX, savedY);
     }
 

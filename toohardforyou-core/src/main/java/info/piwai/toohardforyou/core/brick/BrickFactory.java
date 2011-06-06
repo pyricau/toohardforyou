@@ -2,16 +2,13 @@ package info.piwai.toohardforyou.core.brick;
 
 import static forplay.core.ForPlay.*;
 import info.piwai.toohardforyou.core.TooHardForYouEngine;
-import info.piwai.toohardforyou.core.entity.EntityEngine;
 
 public class BrickFactory {
 
     private final TooHardForYouEngine engine;
-    private final EntityEngine entityEngine;
 
-    public BrickFactory(TooHardForYouEngine engine, EntityEngine entityEngine) {
+    public BrickFactory(TooHardForYouEngine engine) {
         this.engine = engine;
-        this.entityEngine = entityEngine;
     }
 
     public Brick newRandomBrick() {
@@ -21,24 +18,25 @@ public class BrickFactory {
     public Brick newRandomBrick(int x, int y) {
         BrickType[] brickTypes = BrickType.values();
         BrickType brickType = brickTypes[(int) Math.floor(random() * brickTypes.length)];
+        
 
         switch (brickType) {
         case UNBREAKABLE:
-            return new UnbreakableBrick(engine, entityEngine, x, y);
+            return new UnbreakableBrick(engine, x, y);
         case THICK:
-            return new ThickBrick(engine, entityEngine, x, y);
+            return new ThickBrick(engine, x, y);
         case THICKER:
-            return new ThickerBrick(engine, entityEngine, x, y);
+            return new ThickerBrick(engine, x, y);
         case BONUS:
-            return new BonusBrick(engine, entityEngine, x, y);
+            return new BonusBrick(engine, x, y);
         case MALUS:
-            return new MalusBrick(engine, entityEngine, x, y);
+            return new MalusBrick(engine, x, y);
         case BROKEN:
-            return new BrokenBrick(engine, entityEngine, x, y);
+            return new BrokenBrick(engine, x, y);
         case BOMB:
-            return new BombBrick(engine, entityEngine, x, y);
+            return new BombBrick(engine, x, y);
         default:
-            return new Brick(engine, entityEngine, BrickType.CLASSIC, x, y);
+            return new Brick(engine, BrickType.CLASSIC, x, y);
         }
 
     }

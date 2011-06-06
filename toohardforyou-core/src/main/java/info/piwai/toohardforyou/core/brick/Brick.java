@@ -24,17 +24,14 @@ import info.piwai.toohardforyou.core.entity.EntityEngine;
 public class Brick implements BrokenListener {
 
     protected Entity entity;
-    protected final EntityEngine entityEngine;
     protected final TooHardForYouEngine engine;
     protected int wallX;
     protected int wallY;
 
-    public Brick(TooHardForYouEngine engine, EntityEngine entityEngine, BrickType initialBrickType, int wallX, int wallY) {
+    public Brick(TooHardForYouEngine engine, BrickType initialBrickType, int wallX, int wallY) {
         this.engine = engine;
-        this.entityEngine = entityEngine;
         
-        entity = new SolidBrickEntity(entityEngine, initialBrickType, this);
-        entityEngine.add(entity);
+        entity = new SolidBrickEntity(engine.getEntityEngine(), initialBrickType, this);
         
         setPos(wallX, wallY);
     }
@@ -58,15 +55,15 @@ public class Brick implements BrokenListener {
     }
 
     public void destroy() {
-        entityEngine.remove(entity);
+        engine.getEntityEngine().remove(entity);
     }
 
     @Override
     public void hit() {
+        EntityEngine entityEngine = engine.getEntityEngine();
         entityEngine.remove(entity);
         
         entity = new BrokenBrickEntity(entityEngine);
-        entityEngine.add(entity);
         
         setPos(wallX, wallY);
 
