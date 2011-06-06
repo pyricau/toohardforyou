@@ -15,7 +15,7 @@
  */
 package info.piwai.toohardforyou.core;
 
-public class Resources {
+public abstract class Resources {
 
     private static final String IMAGES_PATH = "images/";
 
@@ -37,6 +37,8 @@ public class Resources {
     
     public static final String SPLASHSCREEN_IMG = MENU_PATH + "splashscreen.jpg";
     
-    
+    private Resources() {
+        throw new UnsupportedOperationException();
+    }
 
 }

@@ -13,9 +13,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package info.piwai.toohardforyou.core;
+package info.piwai.toohardforyou.core.util;
 
 import static forplay.core.ForPlay.currentTime;
+import info.piwai.toohardforyou.core.UiTexts;
 
 public class FpsCounter {
     

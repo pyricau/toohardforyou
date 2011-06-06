@@ -13,12 +13,11 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package info.piwai.toohardforyou.core.entities;
+package info.piwai.toohardforyou.core.brick;
 
 import info.piwai.toohardforyou.core.Constants;
-import info.piwai.toohardforyou.core.EntityEngine;
-import info.piwai.toohardforyou.core.Resources;
-import info.piwai.toohardforyou.core.brick.BrickType;
+import info.piwai.toohardforyou.core.entity.Entity;
+import info.piwai.toohardforyou.core.entity.EntityEngine;
 
 public class BrokenBrickEntity extends Entity {
     

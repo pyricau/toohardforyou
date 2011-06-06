@@ -15,15 +15,10 @@
  */
 package info.piwai.toohardforyou.core;
 
-import static forplay.core.ForPlay.assetManager;
-import static forplay.core.ForPlay.currentTime;
-import static forplay.core.ForPlay.graphics;
-import static forplay.core.ForPlay.keyboard;
-import static forplay.core.ForPlay.pointer;
+import static forplay.core.ForPlay.*;
+import info.piwai.toohardforyou.core.ball.Ball;
 import info.piwai.toohardforyou.core.brick.BrickType;
-import info.piwai.toohardforyou.core.entities.Ball;
-import info.piwai.toohardforyou.core.entities.BrokenBrickEntity;
-import info.piwai.toohardforyou.core.entities.Paddle;
+import info.piwai.toohardforyou.core.paddle.Paddle;
 import forplay.core.AssetWatcher;
 import forplay.core.Image;
 import forplay.core.Keyboard;

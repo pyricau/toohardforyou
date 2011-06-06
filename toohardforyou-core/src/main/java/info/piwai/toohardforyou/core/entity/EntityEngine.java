@@ -13,11 +13,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package info.piwai.toohardforyou.core;
+package info.piwai.toohardforyou.core.entity;
 
 import static forplay.core.ForPlay.graphics;
-import info.piwai.toohardforyou.core.entities.Entity;
-import info.piwai.toohardforyou.core.entities.PhysicsEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,20 +46,22 @@ public class EntityEngine implements ContactListener {
     public GroupLayer staticLayerFront;
 
     // box2d object containing physics world
-    private World world;
+    private final World world;
 
-    private List<Entity> entities = new ArrayList<Entity>(0);
-    private HashMap<Body, PhysicsEntity> bodyEntityLUT = new HashMap<Body, PhysicsEntity>();
-    private Stack<Contact> contacts = new Stack<Contact>();
+    private final List<Entity> entities = new ArrayList<Entity>(0);
+    private final HashMap<Body, PhysicsEntity> bodyEntityLUT = new HashMap<Body, PhysicsEntity>();
+    private final Stack<Contact> contacts = new Stack<Contact>();
     
-    private Stack<Entity> entitiesToRemove = new Stack<Entity>();
+    private final Stack<Entity> entitiesToRemove = new Stack<Entity>();
+    
+    private final Stack<Entity> entitiesToAdd = new Stack<Entity>();
 
-    protected boolean showDebugDraw = false;
-    private DebugDrawBox2D debugDraw;
+    private final boolean showDebugDraw;
+    private final DebugDrawBox2D debugDraw;
     
     protected final GroupLayer scaledLayer;
 
-    public EntityEngine(GroupLayer scaledLayer, Vec2 gravity, float width, float height, float physicalUnitPerScreenUnit) {
+    public EntityEngine(GroupLayer scaledLayer, Vec2 gravity, float width, float height, float physicalUnitPerScreenUnit, boolean showDebugDraw) {
         this.scaledLayer = scaledLayer;
         staticLayerBack = graphics().createGroupLayer();
         scaledLayer.add(staticLayerBack);
@@ -76,6 +76,8 @@ public class EntityEngine implements ContactListener {
         world.setAutoClearForces(true);
         world.setContactListener(this);
 
+        this.showDebugDraw = showDebugDraw;
+        
         if (showDebugDraw) {
             CanvasLayer canvasLayer = graphics().createCanvasLayer((int) (width / physicalUnitPerScreenUnit), (int) (height / physicalUnitPerScreenUnit));
             graphics().rootLayer().add(canvasLayer);
@@ -88,6 +90,8 @@ public class EntityEngine implements ContactListener {
             debugDraw.setFlags(DebugDraw.e_shapeBit | DebugDraw.e_jointBit | DebugDraw.e_aabbBit);
             debugDraw.setCamera(0, 0, 1f / physicalUnitPerScreenUnit);
             world.setDebugDraw(debugDraw);
+        } else {
+            debugDraw = null;
         }
 
     }
@@ -96,6 +100,11 @@ public class EntityEngine implements ContactListener {
         for (Entity e : entities) {
             e.update(delta);
         }
+        while (!entitiesToAdd.isEmpty()) {
+            Entity entity = entitiesToAdd.pop();
+            doAdd(entity);
+        } 
+        
         while (!entitiesToRemove.isEmpty()) {
             Entity entity = entitiesToRemove.pop();
             doRemove(entity);
@@ -116,6 +125,10 @@ public class EntityEngine implements ContactListener {
     }
 
     public void add(Entity entity) {
+        entitiesToAdd.push(entity);
+    }
+    
+    public void doAdd(Entity entity) {
         entities.add(entity);
         if (entity instanceof PhysicsEntity) {
             PhysicsEntity physicsEntity = (PhysicsEntity) entity;

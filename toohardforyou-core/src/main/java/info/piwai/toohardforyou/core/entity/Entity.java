@@ -13,11 +13,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package info.piwai.toohardforyou.core.entities;
+package info.piwai.toohardforyou.core.entity;
 
 import static forplay.core.ForPlay.assetManager;
 import static forplay.core.ForPlay.graphics;
-import info.piwai.toohardforyou.core.EntityEngine;
 import forplay.core.ForPlay;
 import forplay.core.Image;
 import forplay.core.ImageLayer;
@@ -28,7 +27,7 @@ import forplay.core.ResourceCallback;
  * which is licensed under the Apache License, Version 2.0.
  */
 public abstract class Entity {
-    ImageLayer layer;
+    protected ImageLayer layer;
     Image image;
     float x, y, angle;
     
@@ -101,9 +100,9 @@ public abstract class Entity {
         layer.setRotation(a);
     }
 
-    abstract float getWidth();
+    protected abstract float getWidth();
 
-    abstract float getHeight();
+    protected abstract float getHeight();
 
     public Image getImage() {
         return image;

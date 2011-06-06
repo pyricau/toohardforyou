@@ -13,9 +13,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package info.piwai.toohardforyou.core;
+package info.piwai.toohardforyou.core.wall;
 
 import static forplay.core.ForPlay.*;
+import info.piwai.toohardforyou.core.Constants;
 import info.piwai.toohardforyou.core.brick.Brick;
 import info.piwai.toohardforyou.core.brick.BrickFactory;
 

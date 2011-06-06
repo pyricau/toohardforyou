@@ -13,11 +13,14 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package info.piwai.toohardforyou.core;
+package info.piwai.toohardforyou.core.piece;
 
 import static forplay.core.ForPlay.currentTime;
 
+import info.piwai.toohardforyou.core.Constants;
+import info.piwai.toohardforyou.core.TooHardForYouEngine;
 import info.piwai.toohardforyou.core.brick.BrickHolder;
+import info.piwai.toohardforyou.core.wall.Wall;
 
 import java.util.ArrayList;
 import java.util.List;

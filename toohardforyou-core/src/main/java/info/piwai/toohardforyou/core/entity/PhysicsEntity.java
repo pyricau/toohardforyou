@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package info.piwai.toohardforyou.core.entities;
+package info.piwai.toohardforyou.core.entity;
 
 import org.jbox2d.dynamics.Body;
 

@@ -13,9 +13,8 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package info.piwai.toohardforyou.core.entities;
+package info.piwai.toohardforyou.core.entity;
 
-import info.piwai.toohardforyou.core.EntityEngine;
 
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.World;
@@ -32,7 +31,7 @@ public abstract class StaticPhysicsEntity extends Entity implements PhysicsEntit
         body = initPhysicsBody(entityEngine.getWorld(), x, y, angle);
     }
 
-    abstract Body initPhysicsBody(World world, float x, float y, float angle);
+    protected abstract Body initPhysicsBody(World world, float x, float y, float angle);
 
     @Override
     public void paint(float alpha) {

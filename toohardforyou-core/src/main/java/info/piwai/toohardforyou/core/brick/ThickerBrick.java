@@ -1,8 +1,7 @@
 package info.piwai.toohardforyou.core.brick;
 
-import info.piwai.toohardforyou.core.EntityEngine;
 import info.piwai.toohardforyou.core.TooHardForYouEngine;
-import info.piwai.toohardforyou.core.entities.SolidBrickEntity;
+import info.piwai.toohardforyou.core.entity.EntityEngine;
 
 public class ThickerBrick extends ThickBrick {
 

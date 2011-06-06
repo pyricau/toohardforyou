@@ -13,12 +13,13 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package info.piwai.toohardforyou.core.entities;
+package info.piwai.toohardforyou.core.ball;
 
 import info.piwai.toohardforyou.core.Constants;
-import info.piwai.toohardforyou.core.EntityEngine;
 import info.piwai.toohardforyou.core.Resources;
 import info.piwai.toohardforyou.core.TooHardForYouEngine;
+import info.piwai.toohardforyou.core.entity.DynamicPhysicsEntity;
+import info.piwai.toohardforyou.core.entity.EntityEngine;
 
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.common.Vec2;
@@ -46,7 +47,7 @@ public class Ball extends DynamicPhysicsEntity {
     }
 
     @Override
-    Body initPhysicsBody(World world, float x, float y, float angle) {
+    protected Body initPhysicsBody(World world, float x, float y, float angle) {
         FixtureDef fixtureDef = new FixtureDef();
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DYNAMIC;
@@ -75,12 +76,12 @@ public class Ball extends DynamicPhysicsEntity {
     }
 
     @Override
-    float getWidth() {
+    protected float getWidth() {
         return BALL_DIAMETER;
     }
 
     @Override
-    float getHeight() {
+    protected float getHeight() {
         return BALL_DIAMETER;
     }
 

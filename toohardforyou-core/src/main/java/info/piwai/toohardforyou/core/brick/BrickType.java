@@ -19,7 +19,7 @@ import info.piwai.toohardforyou.core.Resources;
 
 public enum BrickType {
 
-    MALUS("b00"), CLASSIC("b10"), UNBREAKABLE("b20"), THICK("b30"), BONUS("b40"), BOMB("b50"), THICKER("b60"), BROKEN("bgrey.png");
+    MALUS("b00"), CLASSIC("b10"), UNBREAKABLE("b20"), THICK("b30"), BONUS("b40"), BOMB("b50"), THICKER("b60"), BROKEN("bgrey");
 
     private final String imagePath;
 

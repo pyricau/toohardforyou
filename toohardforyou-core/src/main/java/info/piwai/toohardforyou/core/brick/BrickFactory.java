@@ -1,8 +1,8 @@
 package info.piwai.toohardforyou.core.brick;
 
 import static forplay.core.ForPlay.*;
-import info.piwai.toohardforyou.core.EntityEngine;
 import info.piwai.toohardforyou.core.TooHardForYouEngine;
+import info.piwai.toohardforyou.core.entity.EntityEngine;
 
 public class BrickFactory {
 

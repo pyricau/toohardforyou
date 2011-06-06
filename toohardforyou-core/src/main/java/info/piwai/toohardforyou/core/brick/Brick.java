@@ -16,12 +16,10 @@
 package info.piwai.toohardforyou.core.brick;
 
 import info.piwai.toohardforyou.core.Constants;
-import info.piwai.toohardforyou.core.EntityEngine;
 import info.piwai.toohardforyou.core.TooHardForYouEngine;
-import info.piwai.toohardforyou.core.entities.BrokenBrickEntity;
-import info.piwai.toohardforyou.core.entities.Entity;
-import info.piwai.toohardforyou.core.entities.SolidBrickEntity;
-import info.piwai.toohardforyou.core.entities.SolidBrickEntity.BrokenListener;
+import info.piwai.toohardforyou.core.brick.SolidBrickEntity.BrokenListener;
+import info.piwai.toohardforyou.core.entity.Entity;
+import info.piwai.toohardforyou.core.entity.EntityEngine;
 
 public class Brick implements BrokenListener {
 

@@ -16,9 +16,15 @@
 package info.piwai.toohardforyou.core;
 
 import static forplay.core.ForPlay.*;
+import info.piwai.toohardforyou.core.ball.Ball;
 import info.piwai.toohardforyou.core.brick.BrickFactory;
-import info.piwai.toohardforyou.core.entities.Ball;
-import info.piwai.toohardforyou.core.entities.Paddle;
+import info.piwai.toohardforyou.core.entity.EntityEngine;
+import info.piwai.toohardforyou.core.paddle.Paddle;
+import info.piwai.toohardforyou.core.piece.Piece;
+import info.piwai.toohardforyou.core.piece.PieceFactory;
+import info.piwai.toohardforyou.core.util.FpsCounter;
+import info.piwai.toohardforyou.core.util.Timer;
+import info.piwai.toohardforyou.core.wall.Wall;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +65,7 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
 
         GroupLayer worldlayer = buildWorldLayer();
         Vec2 gravity = new Vec2(0.0f, 0.1f);
-        entityEngine = new EntityEngine(worldlayer, gravity, Constants.GAME_WIDTH, Constants.GAME_HEIGHT, Constants.PHYS_UNIT_PER_SCREEN_UNIT);
+        entityEngine = new EntityEngine(worldlayer, gravity, Constants.GAME_WIDTH, Constants.GAME_HEIGHT, Constants.PHYS_UNIT_PER_SCREEN_UNIT, Constants.DEBUG_DRAW);
 
         uiTexts = new UiTexts();
         fpsCounter = new FpsCounter(uiTexts);
