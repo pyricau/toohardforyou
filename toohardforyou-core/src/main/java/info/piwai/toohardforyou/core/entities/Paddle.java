@@ -54,10 +54,14 @@ public class Paddle extends DynamicPhysicsEntity {
 
     public Paddle(EntityEngine entityEngine) {
         super(entityEngine, IMAGE, 0, 0, 0);
-        top = Constants.GAME_HEIGHT - (getHeight() / 2);
-        left = Constants.GAME_WIDTH / 2;
         maxX = Constants.GAME_WIDTH - getWidth() / 2;
         minX = getWidth() / 2;
+        resetPosition();
+    }
+    
+    public void resetPosition() {
+        top = Constants.GAME_HEIGHT - (getHeight() / 2);
+        left = Constants.GAME_WIDTH / 2;
         setPos(left, top);
     }
 

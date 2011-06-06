@@ -32,6 +32,7 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;
 
+import forplay.core.ForPlay;
 import forplay.core.GroupLayer;
 import forplay.core.Image;
 import forplay.core.Keyboard;
@@ -49,6 +50,10 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
     private List<Ball> balls = new ArrayList<Ball>();
 
     private Wall wall;
+
+    private PieceFactory pieceFactory;
+
+    private Piece piece;
 
     public TooHardForYouEngine(TooHardForYouGame game) {
         super(buildWorldLayer());
@@ -78,6 +83,8 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
 
         wall = new Wall(this);
 
+        pieceFactory = new PieceFactory(this, wall);
+
         new Timer() {
             @Override
             public void run() {
@@ -95,6 +102,13 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
     }
 
     private void newGame() {
+        paddle.resetPosition();
+
+        if (piece != null) {
+            piece.destroy();
+        }
+        piece = pieceFactory.newRandomPiece();
+
         for (Ball ball : balls) {
             remove(ball);
         }
@@ -161,11 +175,26 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
     public void update(float delta) {
         super.update(delta);
         Timer.update();
+        piece.update(delta);
     }
 
     @Override
     public void onKeyDown(int keyCode) {
         switch (keyCode) {
+        case 65: // a
+        case 81: // q
+            piece.moveLeft(true);
+            break;
+        case 68: // d
+            piece.moveRight(true);
+            break;
+        case 90: // z
+        case 87: // w
+            piece.rotate();
+            break;
+        case 83:
+            piece.moveDown(true);
+            break;
         case Keyboard.KEY_LEFT:
             paddle.moveLeft(true);
             break;
@@ -178,6 +207,16 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
     @Override
     public void onKeyUp(int keyCode) {
         switch (keyCode) {
+        case 65: // a
+        case 81: // q
+            piece.moveLeft(false);
+            break;
+        case 68: // d
+            piece.moveRight(false);
+            break;
+        case 83:
+            piece.moveDown(false);
+            break;
         case Keyboard.KEY_LEFT:
             paddle.moveLeft(false);
             break;
@@ -203,6 +242,14 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         balls.remove(ball);
         uiTexts.updateNumberOfBalls(balls.size());
         remove(ball);
+    }
+
+    public void pieceFrozen() {
+        if (wall.isFull()) {
+                newGame();
+        } else {
+            piece = pieceFactory.newRandomPiece();
+        }
     }
 
 }

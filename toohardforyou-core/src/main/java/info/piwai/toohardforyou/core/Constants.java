@@ -28,6 +28,10 @@ public abstract class Constants {
 
     public static final float BRICK_WIDTH = 20 * Constants.PHYS_UNIT_PER_SCREEN_UNIT;
     
+    public static final int WALL_WIDTH = 26;
+
+    public static final int WALL_HEIGHT = 16;
+    
     private Constants() {
         throw new UnsupportedOperationException();
     }

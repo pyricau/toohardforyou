@@ -39,7 +39,7 @@ public class SolidBrick extends DynamicPhysicsEntity implements PhysicsEntity.Ha
         super(entityEngine, brickType.getImagePath(), x, y, 0);
         this.listener = listener;
     }
-
+    
     @Override
     Body initPhysicsBody(World world, float x, float y, float angle) {
         FixtureDef fixtureDef = new FixtureDef();
