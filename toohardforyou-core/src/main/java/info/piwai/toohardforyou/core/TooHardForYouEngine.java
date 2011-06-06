@@ -108,7 +108,7 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         uiTexts.updateNumberOfBalls(balls.size());
 
         wall.fillRandomly(5);
-        
+
         createBallOnPaddle();
     }
 
@@ -252,11 +252,22 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         balls.remove(ball);
         uiTexts.updateNumberOfBalls(balls.size());
         remove(ball);
+
+        if (balls.size() == 0) {
+            wall.addRandomBottomLine();
+
+            if (wall.isFull()) {
+                gameOver();
+            } else {
+                piece.moveUpIfContact();
+                createBallOnPaddle();
+            }
+        }
     }
 
     public void pieceFrozen() {
         if (wall.isFull()) {
-            newGame();
+            gameOver();
         } else {
             int fullLines = wall.checkFullLines();
 
@@ -268,6 +279,10 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
 
             piece = pieceFactory.newRandomPiece();
         }
+    }
+
+    private void gameOver() {
+        newGame();
     }
 
 }

@@ -32,14 +32,19 @@ public class Wall {
     public void fillRandomly(int numberOfLines) {
         full = false;
         clear();
-        BrickType[] brickTypes = BrickType.values();
+        
         int firstLine = Constants.WALL_HEIGHT - numberOfLines;
         for (int y = firstLine; y < Constants.WALL_HEIGHT; y++) {
-            for (int x = 0; x < Constants.WALL_WIDTH; x++) {
-                if (random() > 0.5) {
-                    BrickType brickType = brickTypes[(int) Math.floor(random() * brickTypes.length)];
-                    addBrick(new Brick(entityEngine, brickType, x, y), x, y);
-                }
+            fillLineRandomly(y);
+        }
+    }
+
+    private void fillLineRandomly(int y) {
+        BrickType[] brickTypes = BrickType.values();
+        for (int x = 0; x < Constants.WALL_WIDTH; x++) {
+            if (random() > 0.5) {
+                BrickType brickType = brickTypes[(int) Math.floor(random() * brickTypes.length)];
+                addBrick(new Brick(entityEngine, brickType, x, y), x, y);
             }
         }
     }
@@ -70,6 +75,10 @@ public class Wall {
             return true;
         }
 
+        return isFreeUnchecked(x, y);
+    }
+    
+    public boolean isFreeUnchecked(int x, int y) {
         return bricks[x][y] == null;
     }
 
@@ -79,7 +88,7 @@ public class Wall {
             return false;
         }
 
-        return bricks[x][y] == null;
+        return isFreeUnchecked(x, y);
     }
 
     public int checkFullLines() {
@@ -108,12 +117,13 @@ public class Wall {
         }
 
         for (int y = removedY; y > 0; y--) {
+            int previousY = y - 1;
             for (int x = fromX; x < maxX; x++) {
-                Brick brick = bricks[x][y - 1];
+                Brick brick = bricks[x][previousY];
                 bricks[x][y] = brick;
                 if (brick != null) {
                     brick.setPos(x, y);
-                    bricks[x][y - 1] = null;
+                    bricks[x][previousY] = null;
                 }
             }
         }
@@ -122,7 +132,7 @@ public class Wall {
 
     private boolean isFull(int fromX, int maxX, int y) {
         for (int x = fromX; x < maxX; x++) {
-            if (bricks[x][y] == null) {
+            if (isFreeUnchecked(x, y)) {
                 return false;
             }
         }
@@ -140,6 +150,42 @@ public class Wall {
 
     public boolean isFull() {
         return full;
+    }
+
+    public void addRandomBottomLine() {
+        if (!isFirstLineFree()) {
+            full = true;
+            return;
+        }
+        
+        int maxY = Constants.WALL_HEIGHT - 1;
+        moveLinesUp(maxY);
+        
+        fillLineRandomly(maxY);
+        
+    }
+
+    private void moveLinesUp(int maxY) {
+        for (int y = 0; y < maxY; y++) {
+            int nextY = y + 1;
+            for (int x = 0; x < Constants.WALL_WIDTH; x++) {
+                Brick brick = bricks[x][nextY];
+                bricks[x][y] = brick;
+                if (brick != null) {
+                    brick.setPos(x, y);
+                    bricks[x][nextY] = null;
+                }
+            }
+        }
+    }
+    
+    private boolean isFirstLineFree() {
+        for (int x = 0; x < Constants.WALL_WIDTH; x++) {
+            if (!isFreeUnchecked(x, 0)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

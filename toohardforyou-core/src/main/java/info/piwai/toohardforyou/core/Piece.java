@@ -179,4 +179,18 @@ public class Piece {
         }
     }
 
+    public void moveUpIfContact() {
+        boolean free = true;
+        for (BrickHolder brickHolder : bricks) {
+            if (!wall.isFreeOrUp(x + brickHolder.getX(), y + brickHolder.getY())) {
+                free = false;
+                break;
+            }
+        }
+        
+        if (!free) {
+           moveTo(x, y-1);
+        }
+    }
+
 }
