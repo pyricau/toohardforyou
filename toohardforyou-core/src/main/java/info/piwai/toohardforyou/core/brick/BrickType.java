@@ -13,26 +13,23 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package info.piwai.toohardforyou.core;
+package info.piwai.toohardforyou.core.brick;
 
-public class BrickTransformation {
-    
-    private final int deltaX;
-    private final int deltaY;
+import info.piwai.toohardforyou.core.Resources;
 
-    public BrickTransformation(int deltaX, int deltaY) {
-        this.deltaX = deltaX;
-        this.deltaY = deltaY;
+public enum BrickType {
+
+    MALUS("b00"), CLASSIC("b10"), UNBREAKABLE("b20"), THICK("b30"), BONUS("b40"), BOMB("b50"), THICKER("b60"), BROKEN("bgrey.png");
+
+    private final String imagePath;
+
+    BrickType(String image) {
+        imagePath = Resources.BRICKS_PATH + image + ".png";
     }
 
-    public int getDeltaX() {
-        return deltaX;
+    public String getImagePath() {
+        return imagePath;
     }
-
-    public int getDeltaY() {
-        return deltaY;
-    }
-    
     
 
 }

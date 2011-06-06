@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package info.piwai.toohardforyou.core;
+package info.piwai.toohardforyou.core.brick;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -20,8 +20,9 @@ import static forplay.core.ForPlay.currentTime;
 import static forplay.core.ForPlay.graphics;
 import static forplay.core.ForPlay.keyboard;
 import static forplay.core.ForPlay.pointer;
+import info.piwai.toohardforyou.core.brick.BrickType;
 import info.piwai.toohardforyou.core.entities.Ball;
-import info.piwai.toohardforyou.core.entities.BrokenBrick;
+import info.piwai.toohardforyou.core.entities.BrokenBrickEntity;
 import info.piwai.toohardforyou.core.entities.Paddle;
 import forplay.core.AssetWatcher;
 import forplay.core.Image;
@@ -121,7 +122,7 @@ public class Splashscreen implements GameScreen, Pointer.Listener, Keyboard.List
             }
         });
 
-        addAll(assetWatcher, Resources.BACKGROUND_IMG, Paddle.IMAGE, Ball.IMAGE, BrokenBrick.IMAGE);
+        addAll(assetWatcher, Resources.BACKGROUND_IMG, Paddle.IMAGE, Ball.IMAGE);
 
         for (BrickType brickType : BrickType.values()) {
             add(assetWatcher, brickType.getImagePath());

@@ -15,9 +15,9 @@
  */
 package info.piwai.toohardforyou.core.entities;
 
-import info.piwai.toohardforyou.core.BrickType;
 import info.piwai.toohardforyou.core.Constants;
 import info.piwai.toohardforyou.core.EntityEngine;
+import info.piwai.toohardforyou.core.brick.BrickType;
 
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -27,16 +27,16 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
-public class SolidBrick extends DynamicPhysicsEntity implements PhysicsEntity.HasContactListener {
+public class SolidBrickEntity extends DynamicPhysicsEntity implements PhysicsEntity.HasContactListener {
 
     private final BrokenListener listener;
 
     public interface BrokenListener {
-        void broken();
+        void hit();
     }
     
-    public SolidBrick(EntityEngine entityEngine, BrickType brickType, BrokenListener listener, float x, float y) {
-        super(entityEngine, brickType.getImagePath(), x, y, 0);
+    public SolidBrickEntity(EntityEngine entityEngine, BrickType brickType, BrokenListener listener) {
+        super(entityEngine, brickType.getImagePath(), 0, 0, 0);
         this.listener = listener;
     }
     
@@ -75,7 +75,7 @@ public class SolidBrick extends DynamicPhysicsEntity implements PhysicsEntity.Ha
 
     @Override
     public void contact(PhysicsEntity other) {
-        listener.broken();
+        listener.hit();
     }
 
 }

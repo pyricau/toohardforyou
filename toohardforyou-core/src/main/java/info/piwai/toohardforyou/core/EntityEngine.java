@@ -123,7 +123,7 @@ public class EntityEngine implements ContactListener {
         }
     }
     
-    protected void remove(Entity entity) {
+    public void remove(Entity entity) {
         entitiesToRemove.push(entity);
     }
     

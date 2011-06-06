@@ -17,6 +17,8 @@ package info.piwai.toohardforyou.core;
 
 import static forplay.core.ForPlay.currentTime;
 
+import info.piwai.toohardforyou.core.brick.BrickHolder;
+
 import java.util.ArrayList;
 import java.util.List;
 

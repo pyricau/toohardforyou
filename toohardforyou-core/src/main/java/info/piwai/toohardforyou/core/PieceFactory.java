@@ -16,6 +16,8 @@
 package info.piwai.toohardforyou.core;
 
 import static forplay.core.ForPlay.*;
+import info.piwai.toohardforyou.core.brick.BrickFactory;
+import info.piwai.toohardforyou.core.brick.BrickHolder;
 
 public class PieceFactory {
 

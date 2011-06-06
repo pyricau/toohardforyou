@@ -18,13 +18,12 @@ package info.piwai.toohardforyou.core.entities;
 import info.piwai.toohardforyou.core.Constants;
 import info.piwai.toohardforyou.core.EntityEngine;
 import info.piwai.toohardforyou.core.Resources;
+import info.piwai.toohardforyou.core.brick.BrickType;
 
-public class BrokenBrick extends Entity {
+public class BrokenBrickEntity extends Entity {
     
-    public static final String IMAGE = Resources.BRICKS_PATH + "bgrey.png";
-
-    public BrokenBrick(EntityEngine entityEngine, float x, float y) {
-        super(entityEngine, IMAGE, x, y, 0);
+    public BrokenBrickEntity(EntityEngine entityEngine) {
+        super(entityEngine, BrickType.BROKEN.getImagePath(), 0, 0, 0);
     }
 
     @Override

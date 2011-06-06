@@ -16,6 +16,7 @@
 package info.piwai.toohardforyou.core;
 
 import static forplay.core.ForPlay.*;
+import info.piwai.toohardforyou.core.brick.BrickFactory;
 import info.piwai.toohardforyou.core.entities.Ball;
 import info.piwai.toohardforyou.core.entities.Paddle;
 
@@ -280,6 +281,17 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
 
     public void brickBroken() {
         incrementScore(Constants.BRICK_SCORE_BASE);
+    }
+
+    public void newMalus(float x, float y) {
+        
+    }
+
+    public void newBonus(float posX, float posY) {
+    }
+
+    public void explodeLine(int lineY) {
+        
     }
 
 }
