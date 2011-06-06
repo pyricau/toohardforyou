@@ -28,6 +28,7 @@ public class UiTexts {
     
     private int numberOfBalls;
     private int frameRate;
+    private int score;
 
     public UiTexts() {
         Image backgroundImage = assetManager().getImage(Resources.BACKGROUND_IMG);
@@ -41,8 +42,9 @@ public class UiTexts {
             textDataChanged = false;
             Canvas canvas = textLayer.canvas();
             canvas.clear();
-            canvas.drawText("Balls: " + numberOfBalls, 550, 50);
-            canvas.drawText("FPS: " + frameRate, 550, 70);
+            canvas.drawText("Score: " + score, 550, 50);
+            canvas.drawText("Balls: " + numberOfBalls, 550, 70);
+            canvas.drawText("FPS: " + frameRate, 550, 90);
         }
     }
 
@@ -58,6 +60,19 @@ public class UiTexts {
             textDataChanged = true;
             this.frameRate = frameRate;
         }
+    }
+    
+    public void updateScore(int score) {
+        if (this.score != score) {
+            textDataChanged = true;
+            this.score = score;
+        }
+    }
+
+    public void resetAll() {
+        numberOfBalls = 0;
+        score = 0;
+        textDataChanged = true;
     }
 
 }

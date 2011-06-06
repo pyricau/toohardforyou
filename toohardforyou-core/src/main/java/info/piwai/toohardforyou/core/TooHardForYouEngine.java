@@ -50,6 +50,8 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
 
     private Piece piece;
 
+    private int score;
+
     public TooHardForYouEngine(TooHardForYouGame game) {
         super(buildWorldLayer());
 
@@ -80,15 +82,6 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
 
         pieceFactory = new PieceFactory(this, wall);
 
-        new Timer() {
-            @Override
-            public void run() {
-                if (balls.size() < 10) {
-                    createBallOnPaddle();
-                }
-            }
-        }.scheduleRepeating(500);
-
         // hook up our pointer listener
         pointer().setListener(this);
         keyboard().setListener(this);
@@ -98,6 +91,10 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
 
     private void newGame() {
         paddle.resetPosition();
+
+        score = 0;
+
+        uiTexts.resetAll();
 
         if (piece != null) {
             piece.destroy();
@@ -111,17 +108,27 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         uiTexts.updateNumberOfBalls(balls.size());
 
         wall.fillRandomly(5);
+        
+        createBallOnPaddle();
+    }
+
+    private void createBallsOnPaddle(int numberOfBalls) {
+        for (int i = 0; i < numberOfBalls; i++) {
+            createBallOnPaddle();
+        }
     }
 
     private void createBallOnPaddle() {
-        Ball ball = new Ball(this, paddle.getPosX(), paddle.getPosY() - paddle.getHeight());
-        Vec2 velocity = new Vec2(random() - 0.5f, random() - 1);
-        velocity.normalize();
-        velocity.mulLocal(5);
-        ball.getBody().setLinearVelocity(velocity);
-        add(ball);
-        balls.add(ball);
-        uiTexts.updateNumberOfBalls(balls.size());
+        if (balls.size() < Constants.MAX_BALLS) {
+            Ball ball = new Ball(this, paddle.getPosX(), paddle.getPosY() - paddle.getHeight());
+            Vec2 velocity = new Vec2(random() - 0.5f, random() - 1);
+            velocity.normalize();
+            velocity.mulLocal(5);
+            ball.getBody().setLinearVelocity(velocity);
+            add(ball);
+            balls.add(ball);
+            uiTexts.updateNumberOfBalls(balls.size());
+        }
     }
 
     // create our world layer (scaled to "world space")
@@ -224,6 +231,11 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         }
     }
 
+    private void incrementScore(int increment) {
+        score += increment;
+        uiTexts.updateScore(score);
+    }
+
     @Override
     public void paint(float delta) {
         super.paint(delta);
@@ -247,6 +259,13 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
             newGame();
         } else {
             int fullLines = wall.checkFullLines();
+
+            if (fullLines > 0) {
+                createBallsOnPaddle(fullLines - 1);
+
+                incrementScore((int) (Math.pow(fullLines, Constants.LINE_POWER) * Constants.LINE_SCORE_BASE));
+            }
+
             piece = pieceFactory.newRandomPiece();
         }
     }

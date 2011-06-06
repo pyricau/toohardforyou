@@ -32,6 +32,12 @@ public abstract class Constants {
 
     public static final int WALL_HEIGHT = 16;
     
+    public static final int LINE_SCORE_BASE = 400;
+    
+    public static final int LINE_POWER = 2;
+    
+    public static final int MAX_BALLS = 10;
+    
     public static final int KEY_A = 65;
     public static final int KEY_Q = 81;
     public static final int KEY_D = 68;
