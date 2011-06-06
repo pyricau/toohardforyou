@@ -29,6 +29,7 @@ public class UiTexts {
     private int numberOfBalls;
     private int frameRate;
     private int score;
+    private int newGameListeners;
 
     public UiTexts() {
         Image backgroundImage = assetManager().getImage(Resources.BACKGROUND_IMG);
@@ -42,9 +43,10 @@ public class UiTexts {
             textDataChanged = false;
             Canvas canvas = textLayer.canvas();
             canvas.clear();
-            canvas.drawText("Score: " + score, 550, 50);
-            canvas.drawText("Balls: " + numberOfBalls, 550, 70);
-            canvas.drawText("FPS: " + frameRate, 550, 90);
+            canvas.drawText("Score: " + score, 550, 60);
+            canvas.drawText("Balls: " + numberOfBalls, 550, 80);
+            canvas.drawText("FPS: " + frameRate, 550, 100);
+            canvas.drawText("NGL: " + newGameListeners, 550, 120);
         }
     }
 
@@ -73,6 +75,13 @@ public class UiTexts {
         numberOfBalls = 0;
         score = 0;
         textDataChanged = true;
+    }
+
+    public void updateNewGameListeners(int newGameListeners) {
+        if (this.newGameListeners != newGameListeners) {
+            textDataChanged = true;
+            this.newGameListeners = newGameListeners;
+        }
     }
 
 }

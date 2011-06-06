@@ -16,6 +16,7 @@
 package info.piwai.toohardforyou.core.brick;
 
 import info.piwai.toohardforyou.core.Constants;
+import info.piwai.toohardforyou.core.ball.Ball;
 import info.piwai.toohardforyou.core.entity.DynamicPhysicsEntity;
 import info.piwai.toohardforyou.core.entity.EntityEngine;
 import info.piwai.toohardforyou.core.entity.PhysicsEntity;
@@ -35,12 +36,12 @@ public class SolidBrickEntity extends DynamicPhysicsEntity implements PhysicsEnt
     public interface BrokenListener {
         void hit();
     }
-    
+
     public SolidBrickEntity(EntityEngine entityEngine, BrickType brickType, BrokenListener listener) {
         super(entityEngine, brickType.getImagePath(), 0, 0, 0);
         this.listener = listener;
     }
-    
+
     @Override
     protected Body initPhysicsBody(World world, float x, float y, float angle) {
         FixtureDef fixtureDef = new FixtureDef();
@@ -76,7 +77,9 @@ public class SolidBrickEntity extends DynamicPhysicsEntity implements PhysicsEnt
 
     @Override
     public void contact(PhysicsEntity other) {
-        listener.hit();
+        if (other instanceof Ball) {
+            listener.hit();
+        }
     }
 
 }

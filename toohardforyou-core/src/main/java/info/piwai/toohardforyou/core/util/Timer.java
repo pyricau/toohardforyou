@@ -38,7 +38,7 @@ public abstract class Timer {
     public static void update() {
         double currentTime = currentTime();
 
-        for (Timer timer : timers) {
+        for (Timer timer : new ArrayList<Timer>(timers)) {
             if (currentTime > timer.nextExecution) {
                 if (timer.periodMillis > 0) {
                     timer.nextExecution = currentTime() + timer.periodMillis;

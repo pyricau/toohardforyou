@@ -120,6 +120,7 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
         }
         
         newGamelisteners.removeAll(listenersToRemove);
+        uiTexts.updateNewGameListeners(newGamelisteners.size());
         listenersToRemove.clear();
         
         paddle.resetPosition();
@@ -316,10 +317,12 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
     
     public void addNewGameListener(NewGameListener newGamelistener) {
         newGamelisteners.add(newGamelistener);
+        uiTexts.updateNewGameListeners(newGamelisteners.size());
     }
     
     public void removeNewGameListener(NewGameListener newGamelistener) {
         newGamelisteners.remove(newGamelistener);
+        uiTexts.updateNewGameListeners(newGamelisteners.size());
     }
 
     public void explodeLine(int lineY) {

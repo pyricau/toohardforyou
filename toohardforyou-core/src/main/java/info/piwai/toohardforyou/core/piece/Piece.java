@@ -115,7 +115,7 @@ public class Piece {
         } while (free);
         newY = newY - 1;
         if (newY != y) {
-            moveTo(x, newY - 1);
+            moveTo(x, newY);
         }
         freeze();
     }

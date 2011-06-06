@@ -68,7 +68,7 @@ public class Wall {
 
     public boolean isFreeOrUp(int x, int y) {
 
-        if (x < 0 || x >= Constants.WALL_WIDTH || y > Constants.WALL_HEIGHT) {
+        if (x < 0 || x >= Constants.WALL_WIDTH || y >= Constants.WALL_HEIGHT) {
             return false;
         }
 
@@ -85,7 +85,7 @@ public class Wall {
 
     private boolean isFree(int x, int y) {
 
-        if (x < 0 || x >= Constants.WALL_WIDTH || y < 0 || y > Constants.WALL_HEIGHT) {
+        if (x < 0 || x >= Constants.WALL_WIDTH || y < 0 || y >= Constants.WALL_HEIGHT) {
             return false;
         }
 

@@ -26,11 +26,11 @@ public abstract class AbstractMalus extends TouchPaddleEntity {
 
     @Override
     protected final void outOfGame() {
-        activate();
     }
 
     @Override
     protected final void touchedPaddle() {
+        activate();
     }
     
     protected abstract void activate();
