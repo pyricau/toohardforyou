@@ -32,6 +32,13 @@ public abstract class Constants {
 
     public static final int WALL_HEIGHT = 16;
     
+    public static final int KEY_A = 65;
+    public static final int KEY_Q = 81;
+    public static final int KEY_D = 68;
+    public static final int KEY_Z = 90;
+    public static final int KEY_W = 87;
+    public static final int KEY_S = 83;
+    
     private Constants() {
         throw new UnsupportedOperationException();
     }

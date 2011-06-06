@@ -15,11 +15,7 @@
  */
 package info.piwai.toohardforyou.core;
 
-import static forplay.core.ForPlay.assetManager;
-import static forplay.core.ForPlay.graphics;
-import static forplay.core.ForPlay.keyboard;
-import static forplay.core.ForPlay.pointer;
-import static forplay.core.ForPlay.random;
+import static forplay.core.ForPlay.*;
 import info.piwai.toohardforyou.core.entities.Ball;
 import info.piwai.toohardforyou.core.entities.Paddle;
 
@@ -32,7 +28,6 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;
 
-import forplay.core.ForPlay;
 import forplay.core.GroupLayer;
 import forplay.core.Image;
 import forplay.core.Keyboard;
@@ -181,18 +176,18 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
     @Override
     public void onKeyDown(int keyCode) {
         switch (keyCode) {
-        case 65: // a
-        case 81: // q
+        case Constants.KEY_A:
+        case Constants.KEY_Q:
             piece.moveLeft(true);
             break;
-        case 68: // d
+        case Constants.KEY_D:
             piece.moveRight(true);
             break;
-        case 90: // z
-        case 87: // w
+        case Constants.KEY_Z:
+        case Constants.KEY_W:
             piece.rotate();
             break;
-        case 83: // s
+        case Constants.KEY_S:
             piece.moveDown(true);
             break;
         case Keyboard.KEY_SPACE:
@@ -210,14 +205,14 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
     @Override
     public void onKeyUp(int keyCode) {
         switch (keyCode) {
-        case 65: // a
-        case 81: // q
+        case Constants.KEY_A:
+        case Constants.KEY_Q:
             piece.moveLeft(false);
             break;
-        case 68: // d
+        case Constants.KEY_D:
             piece.moveRight(false);
             break;
-        case 83: // s
+        case Constants.KEY_S:
             piece.moveDown(false);
             break;
         case Keyboard.KEY_LEFT:
@@ -249,7 +244,7 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
 
     public void pieceFrozen() {
         if (wall.isFull()) {
-                newGame();
+            newGame();
         } else {
             int fullLines = wall.checkFullLines();
             piece = pieceFactory.newRandomPiece();
