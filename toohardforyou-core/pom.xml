@@ -109,8 +109,6 @@
 						<goals>
 							<goal>compile</goal>
 							<goal>test</goal>
-							<goal>i18n</goal>
-							<goal>generateAsync</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -118,7 +116,7 @@
 					documentation at codehaus.org -->
 				<configuration>
 					<modules>
-						<module>info.piwai.toohardforyou.toohardforyou</module>
+						<module>info.piwai.toohardforyou.TooHardForYou</module>
 					</modules>
 					<runTarget>toohardforyou.html</runTarget>
 					<hostedWebapp>${webappDirectory}</hostedWebapp>
