@@ -42,41 +42,28 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
 
     private final FpsCounter fpsCounter;
 
-    private List<Ball> balls = new ArrayList<Ball>();
+    private final List<Ball> balls = new ArrayList<Ball>();
 
-    private Wall wall;
+    private final Wall wall;
 
-    private PieceFactory pieceFactory;
+    private final PieceFactory pieceFactory;
 
     private Piece piece;
 
     private int score;
 
-    private EntityEngine entityEngine;
+    private final EntityEngine entityEngine;
 
     public TooHardForYouEngine(TooHardForYouGame game) {
 
-        entityEngine = new EntityEngine(buildWorldLayer(), new Vec2(0.0f, 0.1f), Constants.GAME_WIDTH, Constants.GAME_HEIGHT, Constants.PHYS_UNIT_PER_SCREEN_UNIT);
+        GroupLayer worldlayer = buildWorldLayer();
+        Vec2 gravity = new Vec2(0.0f, 0.1f);
+        entityEngine = new EntityEngine(worldlayer, gravity, Constants.GAME_WIDTH, Constants.GAME_HEIGHT, Constants.PHYS_UNIT_PER_SCREEN_UNIT);
 
         uiTexts = new UiTexts();
         fpsCounter = new FpsCounter(uiTexts);
 
-        World world = entityEngine.getWorld();
-        // create the ceil
-        Body ceil = world.createBody(new BodyDef());
-        PolygonShape ceilShape = new PolygonShape();
-        ceilShape.setAsEdge(new Vec2(0, 0), new Vec2(Constants.GAME_WIDTH, 0));
-        ceil.createFixture(ceilShape, 0.0f);
-
-        // create the walls
-        Body wallLeft = world.createBody(new BodyDef());
-        PolygonShape wallLeftShape = new PolygonShape();
-        wallLeftShape.setAsEdge(new Vec2(0, 0), new Vec2(0, Constants.GAME_HEIGHT));
-        wallLeft.createFixture(wallLeftShape, 0.0f);
-        Body wallRight = world.createBody(new BodyDef());
-        PolygonShape wallRightShape = new PolygonShape();
-        wallRightShape.setAsEdge(new Vec2(Constants.GAME_WIDTH, 0), new Vec2(Constants.GAME_WIDTH, Constants.GAME_HEIGHT));
-        wallRight.createFixture(wallRightShape, 0f);
+        createBoundaries();
 
         paddle = new Paddle(entityEngine);
         entityEngine.add(paddle);
@@ -92,6 +79,24 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
         keyboard().setListener(this);
 
         newGame();
+    }
+
+    private void createBoundaries() {
+        World world = entityEngine.getWorld();
+        // create the ceil
+        Body ceil = world.createBody(new BodyDef());
+        PolygonShape ceilShape = new PolygonShape();
+        ceilShape.setAsEdge(new Vec2(0, 0), new Vec2(Constants.GAME_WIDTH, 0));
+        ceil.createFixture(ceilShape, 0.0f);
+        // create the walls
+        Body wallLeft = world.createBody(new BodyDef());
+        PolygonShape wallLeftShape = new PolygonShape();
+        wallLeftShape.setAsEdge(new Vec2(0, 0), new Vec2(0, Constants.GAME_HEIGHT));
+        wallLeft.createFixture(wallLeftShape, 0.0f);
+        Body wallRight = world.createBody(new BodyDef());
+        PolygonShape wallRightShape = new PolygonShape();
+        wallRightShape.setAsEdge(new Vec2(Constants.GAME_WIDTH, 0), new Vec2(Constants.GAME_WIDTH, Constants.GAME_HEIGHT));
+        wallRight.createFixture(wallRightShape, 0f);
     }
 
     private void newGame() {
