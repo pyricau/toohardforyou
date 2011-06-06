@@ -20,10 +20,12 @@ import static forplay.core.ForPlay.*;
 public class PieceFactory {
 
     private final TooHardForYouEngine engine;
+    private final EntityEngine entityEngine;
     private final Wall wall;
 
-    public PieceFactory(TooHardForYouEngine engine, Wall wall) {
+    public PieceFactory(TooHardForYouEngine engine, EntityEngine entityEngine, Wall wall) {
         this.engine = engine;
+        this.entityEngine = entityEngine;
         this.wall = wall;
     }
 
@@ -312,7 +314,7 @@ public class PieceFactory {
     private Brick newRandomBrick() {
         BrickType[] brickTypes = BrickType.values();
         BrickType brickType = brickTypes[(int) Math.floor(random() * brickTypes.length)];
-        return new Brick(engine, brickType, 0, 0);
+        return new Brick(entityEngine, brickType, 0, 0);
     }
 
 }

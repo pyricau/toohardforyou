@@ -61,7 +61,7 @@ public class Wall {
         Brick brick = bricks[x][y];
         if (brick != null) {
             bricks[x][y] = null;
-            entityEngine.remove(brick.getEntity());
+            brick.destroy();
         }
     }
 
@@ -127,7 +127,6 @@ public class Wall {
                 }
             }
         }
-
     }
 
     private boolean isFull(int fromX, int maxX, int y) {
@@ -143,7 +142,7 @@ public class Wall {
         if (isFree(x, y)) {
             bricks[x][y] = brick;
         } else {
-            entityEngine.remove(brick.getEntity());
+            brick.destroy();
             full = true;
         }
     }

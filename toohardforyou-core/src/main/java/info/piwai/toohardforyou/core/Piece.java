@@ -150,7 +150,7 @@ public class Piece {
 
     public void destroy() {
         for (BrickHolder brickHolder : bricks) {
-            engine.remove(brickHolder.getBrick().getEntity());
+            brickHolder.getBrick().destroy();
         }
     }
 

@@ -41,7 +41,7 @@ import forplay.core.GroupLayer;
  * Based on the forplay-peaphysics example (Copyright 2011 The ForPlay Authors),
  * which is licensed under the Apache License, Version 2.0.
  */
-public abstract class EntityEngine implements GameScreen, ContactListener {
+public class EntityEngine implements ContactListener {
 
     public GroupLayer staticLayerBack;
     public GroupLayer dynamicLayer;
@@ -61,7 +61,7 @@ public abstract class EntityEngine implements GameScreen, ContactListener {
     
     protected final GroupLayer scaledLayer;
 
-    public EntityEngine(GroupLayer scaledLayer) {
+    public EntityEngine(GroupLayer scaledLayer, Vec2 gravity, float width, float height, float physicalUnitPerScreenUnit) {
         this.scaledLayer = scaledLayer;
         staticLayerBack = graphics().createGroupLayer();
         scaledLayer.add(staticLayerBack);
@@ -71,13 +71,13 @@ public abstract class EntityEngine implements GameScreen, ContactListener {
         scaledLayer.add(staticLayerFront);
 
         // create the physics world
-        world = new World(getGravity(), true);
+        world = new World(gravity, true);
         world.setWarmStarting(true);
         world.setAutoClearForces(true);
         world.setContactListener(this);
 
         if (showDebugDraw) {
-            CanvasLayer canvasLayer = graphics().createCanvasLayer((int) (getWidth() / getPhysicalUnitPerScreenUnit()), (int) (getHeight() / getPhysicalUnitPerScreenUnit()));
+            CanvasLayer canvasLayer = graphics().createCanvasLayer((int) (width / physicalUnitPerScreenUnit), (int) (height / physicalUnitPerScreenUnit));
             graphics().rootLayer().add(canvasLayer);
             debugDraw = new DebugDrawBox2D();
             debugDraw.setCanvas(canvasLayer);
@@ -86,21 +86,12 @@ public abstract class EntityEngine implements GameScreen, ContactListener {
             debugDraw.setFillAlpha(75);
             debugDraw.setStrokeWidth(2.0f);
             debugDraw.setFlags(DebugDraw.e_shapeBit | DebugDraw.e_jointBit | DebugDraw.e_aabbBit);
-            debugDraw.setCamera(0, 0, 1f / getPhysicalUnitPerScreenUnit());
+            debugDraw.setCamera(0, 0, 1f / physicalUnitPerScreenUnit);
             world.setDebugDraw(debugDraw);
         }
 
     }
 
-    protected abstract float getPhysicalUnitPerScreenUnit();
-
-    protected abstract float getWidth();
-
-    protected abstract float getHeight();
-
-    protected abstract Vec2 getGravity();
-
-    @Override
     public void update(float delta) {
         for (Entity e : entities) {
             e.update(delta);
@@ -114,7 +105,6 @@ public abstract class EntityEngine implements GameScreen, ContactListener {
         processContacts();
     }
 
-    @Override
     public void paint(float delta) {
         if (showDebugDraw) {
             debugDraw.getCanvas().canvas().clear();

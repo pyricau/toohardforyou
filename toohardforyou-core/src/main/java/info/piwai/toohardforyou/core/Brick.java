@@ -47,8 +47,8 @@ public class Brick implements BrokenListener {
         entity.setPos(entity.getPosX() + x * Constants.BRICK_WIDTH, entity.getPosY() + y * Constants.BRICK_HEIGHT);
     }
 
-    public Entity getEntity() {
-        return entity;
+    public void destroy() {
+        entityEngine.remove(entity);
     }
 
     @Override

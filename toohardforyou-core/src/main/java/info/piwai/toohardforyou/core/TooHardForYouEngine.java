@@ -34,7 +34,7 @@ import forplay.core.Keyboard;
 import forplay.core.Keyboard.Listener;
 import forplay.core.Pointer;
 
-public class TooHardForYouEngine extends EntityEngine implements Pointer.Listener, Listener {
+public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listener {
 
     private final Paddle paddle;
 
@@ -52,13 +52,16 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
 
     private int score;
 
+    private EntityEngine entityEngine;
+
     public TooHardForYouEngine(TooHardForYouGame game) {
-        super(buildWorldLayer());
+
+        entityEngine = new EntityEngine(buildWorldLayer(), new Vec2(0.0f, 0.1f), Constants.GAME_WIDTH, Constants.GAME_HEIGHT, Constants.PHYS_UNIT_PER_SCREEN_UNIT);
 
         uiTexts = new UiTexts();
         fpsCounter = new FpsCounter(uiTexts);
 
-        World world = getWorld();
+        World world = entityEngine.getWorld();
         // create the ceil
         Body ceil = world.createBody(new BodyDef());
         PolygonShape ceilShape = new PolygonShape();
@@ -75,12 +78,12 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         wallRightShape.setAsEdge(new Vec2(Constants.GAME_WIDTH, 0), new Vec2(Constants.GAME_WIDTH, Constants.GAME_HEIGHT));
         wallRight.createFixture(wallRightShape, 0f);
 
-        paddle = new Paddle(this);
-        add(paddle);
+        paddle = new Paddle(entityEngine);
+        entityEngine.add(paddle);
 
-        wall = new Wall(this);
+        wall = new Wall(entityEngine);
 
-        pieceFactory = new PieceFactory(this, wall);
+        pieceFactory = new PieceFactory(this, entityEngine, wall);
 
         // hook up our pointer listener
         pointer().setListener(this);
@@ -102,7 +105,7 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         piece = pieceFactory.newRandomPiece();
 
         for (Ball ball : balls) {
-            remove(ball);
+            entityEngine.remove(ball);
         }
         balls.clear();
         uiTexts.updateNumberOfBalls(balls.size());
@@ -120,12 +123,12 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
 
     private void createBallOnPaddle() {
         if (balls.size() < Constants.MAX_BALLS) {
-            Ball ball = new Ball(this, paddle.getPosX(), paddle.getPosY() - paddle.getHeight());
+            Ball ball = new Ball(this, entityEngine, paddle.getPosX(), paddle.getPosY() - paddle.getHeight());
             Vec2 velocity = new Vec2(random() - 0.5f, random() - 1);
             velocity.normalize();
             velocity.mulLocal(5);
             ball.getBody().setLinearVelocity(velocity);
-            add(ball);
+            entityEngine.add(ball);
             balls.add(ball);
             uiTexts.updateNumberOfBalls(balls.size());
         }
@@ -133,7 +136,7 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
 
     // create our world layer (scaled to "world space")
     // main layer that holds the world. note: this gets scaled to world space
-    private static GroupLayer buildWorldLayer() {
+    private GroupLayer buildWorldLayer() {
         Image backgroundImage = assetManager().getImage(Resources.BACKGROUND_IMG);
         graphics().rootLayer().add(graphics().createImageLayer(backgroundImage));
 
@@ -143,21 +146,23 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         graphics().rootLayer().add(worldLayer);
         return worldLayer;
     }
+    
 
     @Override
-    protected Vec2 getGravity() {
-        return new Vec2(0.0f, 0.1f);
+    public void update(float delta) {
+        entityEngine.update(delta);
+        Timer.update();
+        piece.update(delta);
     }
+    
 
     @Override
-    protected float getWidth() {
-        return Constants.GAME_WIDTH;
+    public void paint(float delta) {
+        entityEngine.paint(delta);
+        fpsCounter.update();
+        uiTexts.mayRedrawTexts();
     }
 
-    @Override
-    protected float getHeight() {
-        return Constants.GAME_HEIGHT;
-    }
 
     @Override
     public void onPointerStart(float x, float y) {
@@ -171,13 +176,6 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
     @Override
     public void onPointerDrag(float x, float y) {
 
-    }
-
-    @Override
-    public void update(float delta) {
-        super.update(delta);
-        Timer.update();
-        piece.update(delta);
     }
 
     @Override
@@ -236,22 +234,10 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         uiTexts.updateScore(score);
     }
 
-    @Override
-    public void paint(float delta) {
-        super.paint(delta);
-        fpsCounter.update();
-        uiTexts.mayRedrawTexts();
-    }
-
-    @Override
-    protected float getPhysicalUnitPerScreenUnit() {
-        return Constants.PHYS_UNIT_PER_SCREEN_UNIT;
-    }
-
     public void ballOut(Ball ball) {
         balls.remove(ball);
         uiTexts.updateNumberOfBalls(balls.size());
-        remove(ball);
+        entityEngine.remove(ball);
 
         if (balls.size() == 0) {
             wall.addRandomBottomLine();

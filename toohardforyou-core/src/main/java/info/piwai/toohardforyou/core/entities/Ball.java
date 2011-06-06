@@ -16,6 +16,7 @@
 package info.piwai.toohardforyou.core.entities;
 
 import info.piwai.toohardforyou.core.Constants;
+import info.piwai.toohardforyou.core.EntityEngine;
 import info.piwai.toohardforyou.core.Resources;
 import info.piwai.toohardforyou.core.TooHardForYouEngine;
 
@@ -39,9 +40,9 @@ public class Ball extends DynamicPhysicsEntity {
 
     private final TooHardForYouEngine engine;
 
-    public Ball(TooHardForYouEngine entityEngine, float x, float y) {
+    public Ball(TooHardForYouEngine engine, EntityEngine entityEngine, float x, float y) {
         super(entityEngine, IMAGE, x, y, 0);
-        this.engine = entityEngine;
+        this.engine = engine;
     }
 
     @Override
