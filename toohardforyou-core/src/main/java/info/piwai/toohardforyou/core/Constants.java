@@ -32,7 +32,15 @@ public abstract class Constants {
 
     public static final int WALL_HEIGHT = 16;
     
+    /**
+     * TODO Should become dynamic, linked to levels
+     */
     public static final int LINE_SCORE_BASE = 400;
+    
+    /**
+     * TODO Should become dynamic, linked to levels
+     */
+    public static final int BRICK_SCORE_BASE = 400;
     
     public static final int LINE_POWER = 2;
     

@@ -24,8 +24,10 @@ public class Brick implements BrokenListener {
 
     private Entity entity;
     private final EntityEngine entityEngine;
+    private final TooHardForYouEngine engine;
 
-    public Brick(EntityEngine entityEngine, BrickType brickType, int x, int y) {
+    public Brick(TooHardForYouEngine engine, EntityEngine entityEngine, BrickType brickType, int x, int y) {
+        this.engine = engine;
         this.entityEngine = entityEngine;
         entity = new SolidBrick(entityEngine, brickType, this, convertX(x), convertY(y));
         entityEngine.add(entity);
@@ -58,6 +60,7 @@ public class Brick implements BrokenListener {
         float posY = entity.getPosY();
         entity = new BrokenBrick(entityEngine, posX, posY);
         entityEngine.add(entity);
+        engine.brickBroken();
     }
 
 }

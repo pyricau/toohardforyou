@@ -15,18 +15,18 @@
  */
 package info.piwai.toohardforyou.core;
 
-import static forplay.core.ForPlay.random;
+import static forplay.core.ForPlay.*;
 
 public class Wall {
 
     private final Brick[][] bricks = new Brick[Constants.WALL_WIDTH][Constants.WALL_HEIGHT];
 
-    private final EntityEngine entityEngine;
-
     private boolean full;
 
-    public Wall(EntityEngine entityEngine) {
-        this.entityEngine = entityEngine;
+    private final BrickFactory brickFactory;
+
+    public Wall(BrickFactory brickFactory) {
+        this.brickFactory = brickFactory;
     }
 
     public void fillRandomly(int numberOfLines) {
@@ -40,11 +40,9 @@ public class Wall {
     }
 
     private void fillLineRandomly(int y) {
-        BrickType[] brickTypes = BrickType.values();
         for (int x = 0; x < Constants.WALL_WIDTH; x++) {
             if (random() > 0.5) {
-                BrickType brickType = brickTypes[(int) Math.floor(random() * brickTypes.length)];
-                addBrick(new Brick(entityEngine, brickType, x, y), x, y);
+                addBrick(brickFactory.newRandomBrick(x, y), x, y);
             }
         }
     }

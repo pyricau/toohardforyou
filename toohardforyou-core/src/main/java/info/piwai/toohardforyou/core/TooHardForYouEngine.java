@@ -80,10 +80,12 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
 
         paddle = new Paddle(entityEngine);
         entityEngine.add(paddle);
+        
+        BrickFactory brickFactory = new BrickFactory(this, entityEngine);
 
-        wall = new Wall(entityEngine);
+        wall = new Wall(brickFactory);
 
-        pieceFactory = new PieceFactory(this, entityEngine, wall);
+        pieceFactory = new PieceFactory(this, brickFactory, wall);
 
         // hook up our pointer listener
         pointer().setListener(this);
@@ -269,6 +271,10 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
 
     private void gameOver() {
         newGame();
+    }
+
+    public void brickBroken() {
+        incrementScore(Constants.BRICK_SCORE_BASE);
     }
 
 }
