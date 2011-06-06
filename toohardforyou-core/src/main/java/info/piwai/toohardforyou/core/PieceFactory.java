@@ -15,8 +15,10 @@
  */
 package info.piwai.toohardforyou.core;
 
+import static forplay.core.ForPlay.*;
+
 public class PieceFactory {
-    
+
     private final TooHardForYouEngine engine;
     private final Wall wall;
 
@@ -24,22 +26,293 @@ public class PieceFactory {
         this.engine = engine;
         this.wall = wall;
     }
-    
+
     public Piece newRandomPiece() {
-        return newSquare();
+        int type = (int) Math.floor(random() * 7);
+
+        switch (type) {
+        case 0:
+            return newGamma();
+        case 1:
+            return newGun();
+        case 2:
+            return newIceT();
+        case 3:
+            return newS();
+        case 4:
+            return newSquare();
+        case 5:
+            return newStick();
+        default:
+            return newZ();
+        }
     }
-    
+
     private Piece newSquare() {
         Piece piece = new Piece(engine, wall);
-        piece.add(new BrickHolder(newRandomBrick(), 0, 0));
-        piece.add(new BrickHolder(newRandomBrick(), 1, 0));
-        piece.add(new BrickHolder(newRandomBrick(), 0, 1));
-        piece.add(new BrickHolder(newRandomBrick(), 1, 1));
+
+        BrickHolder brickHolder;
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -2);
+        brickHolder.addTransformation(1, 0);
+        brickHolder.addTransformation(0, 1);
+        brickHolder.addTransformation(-1, 0);
+        brickHolder.addTransformation(0, -1);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 1, -2);
+        brickHolder.addTransformation(0, 1);
+        brickHolder.addTransformation(-1, 0);
+        brickHolder.addTransformation(0, -1);
+        brickHolder.addTransformation(1, 0);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 1, -1);
+        brickHolder.addTransformation(-1, 0);
+        brickHolder.addTransformation(0, -1);
+        brickHolder.addTransformation(1, 0);
+        brickHolder.addTransformation(0, 1);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -1);
+        brickHolder.addTransformation(0, -1);
+        brickHolder.addTransformation(1, 0);
+        brickHolder.addTransformation(0, 1);
+        brickHolder.addTransformation(-1, 0);
+        piece.add(brickHolder);
+
+        return piece;
+    }
+
+    /**
+     * |
+     * 
+     * Stick starts vertically
+     */
+    private Piece newStick() {
+
+        Piece piece = new Piece(engine, wall);
+
+        BrickHolder brickHolder;
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -4);
+        brickHolder.addTransformation(2, 2);
+        brickHolder.addTransformation(-2, 1);
+        brickHolder.addTransformation(-1, -1);
+        brickHolder.addTransformation(1, -2);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -3);
+        brickHolder.addTransformation(1, 1);
+        brickHolder.addTransformation(-1, 0);
+        brickHolder.addTransformation(0, 0);
+        brickHolder.addTransformation(0, -1);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -2);
+        brickHolder.addTransformation(0, 0);
+        brickHolder.addTransformation(0, -1);
+        brickHolder.addTransformation(1, 1);
+        brickHolder.addTransformation(-1, 0);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -1);
+        brickHolder.addTransformation(-1, -1);
+        brickHolder.addTransformation(1, -2);
+        brickHolder.addTransformation(2, 2);
+        brickHolder.addTransformation(-2, 1);
+        piece.add(brickHolder);
+
+        return piece;
+    }
+
+    /**
+     * L
+     */
+    private Piece newGun() {
+        Piece piece = new Piece(engine, wall);
+
+        BrickHolder brickHolder;
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -3);
+        brickHolder.addTransformation(1, 1);
+        brickHolder.addTransformation(-1, 1);
+        brickHolder.addTransformation(-1, -1);
+        brickHolder.addTransformation(1, -1);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -2);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -1);
+        brickHolder.addTransformation(-1, -1);
+        brickHolder.addTransformation(1, -1);
+        brickHolder.addTransformation(1, 1);
+        brickHolder.addTransformation(-1, 1);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 1, -1);
+        brickHolder.addTransformation(-2, 0);
+        brickHolder.addTransformation(0, -2);
+        brickHolder.addTransformation(2, 0);
+        brickHolder.addTransformation(0, 2);
+        piece.add(brickHolder);
+
+        return piece;
+    }
+
+    /**
+     * _|
+     */
+    private Piece newGamma() {
+        Piece piece = new Piece(engine, wall);
+
+        BrickHolder brickHolder;
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -3);
+        brickHolder.addTransformation(1, 1);
+        brickHolder.addTransformation(-1, 1);
+        brickHolder.addTransformation(-1, -1);
+        brickHolder.addTransformation(1, -1);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -2);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -1);
+        brickHolder.addTransformation(-1, -1);
+        brickHolder.addTransformation(1, -1);
+        brickHolder.addTransformation(1, 1);
+        brickHolder.addTransformation(-1, 1);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), -1, -1);
+        brickHolder.addTransformation(0, -2);
+        brickHolder.addTransformation(2, 0);
+        brickHolder.addTransformation(0, 2);
+        brickHolder.addTransformation(-2, 0);
+        piece.add(brickHolder);
+
+        return piece;
+    }
+
+    /**
+     * S
+     */
+    private Piece newS() {
+        Piece piece = new Piece(engine, wall);
+
+        BrickHolder brickHolder;
+
+        brickHolder = new BrickHolder(newRandomBrick(), 1, -2);
+        brickHolder.addTransformation(0, 1);
+        brickHolder.addTransformation(-2, 0);
+        brickHolder.addTransformation(1, -2);
+        brickHolder.addTransformation(1, 1);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -2);
+        brickHolder.addTransformation(1, 0);
+        brickHolder.addTransformation(-1, 1);
+        brickHolder.addTransformation(0, -1);
+        brickHolder.addTransformation(0, 0);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -1);
+        brickHolder.addTransformation(0, -1);
+        brickHolder.addTransformation(0, 0);
+        brickHolder.addTransformation(1, 0);
+        brickHolder.addTransformation(-1, 1);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), -1, -1);
+        brickHolder.addTransformation(1, -2);
+        brickHolder.addTransformation(1, 1);
+        brickHolder.addTransformation(0, 1);
+        brickHolder.addTransformation(-2, 0);
+        piece.add(brickHolder);
+
+        return piece;
+    }
+
+    /**
+     * Z
+     */
+    private Piece newZ() {
+        Piece piece = new Piece(engine, wall);
+
+        BrickHolder brickHolder;
+
+        brickHolder = new BrickHolder(newRandomBrick(), -1, -2);
+        brickHolder.addTransformation(1, -1);
+        brickHolder.addTransformation(1, 2);
+        brickHolder.addTransformation(-2, 0);
+        brickHolder.addTransformation(0, -1);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -2);
+        brickHolder.addTransformation(0, 0);
+        brickHolder.addTransformation(0, 1);
+        brickHolder.addTransformation(-1, -1);
+        brickHolder.addTransformation(1, 0);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -1);
+        brickHolder.addTransformation(-1, -1);
+        brickHolder.addTransformation(1, 0);
+        brickHolder.addTransformation(0, 0);
+        brickHolder.addTransformation(0, 1);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 1, -1);
+        brickHolder.addTransformation(-2, 0);
+        brickHolder.addTransformation(0, -1);
+        brickHolder.addTransformation(1, -1);
+        brickHolder.addTransformation(1, 2);
+        piece.add(brickHolder);
+
+        return piece;
+    }
+
+    /**
+     * T
+     */
+    private Piece newIceT() {
+        Piece piece = new Piece(engine, wall);
+
+        BrickHolder brickHolder;
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -3);
+        brickHolder.addTransformation(1, 1);
+        brickHolder.addTransformation(-1, 1);
+        brickHolder.addTransformation(-1, -1);
+        brickHolder.addTransformation(1, -1);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -2);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 0, -1);
+        brickHolder.addTransformation(-1, -1);
+        brickHolder.addTransformation(1, -1);
+        brickHolder.addTransformation(1, 1);
+        brickHolder.addTransformation(-1, 1);
+        piece.add(brickHolder);
+
+        brickHolder = new BrickHolder(newRandomBrick(), 1, -2);
+        brickHolder.addTransformation(-1, 1);
+        brickHolder.addTransformation(-1, -1);
+        brickHolder.addTransformation(1, -1);
+        brickHolder.addTransformation(1, 1);
+        piece.add(brickHolder);
+
         return piece;
     }
 
     private Brick newRandomBrick() {
-        return new Brick(engine, BrickType.CLASSIC, 0, 0);
+        BrickType[] brickTypes = BrickType.values();
+        BrickType brickType = brickTypes[(int) Math.floor(random() * brickTypes.length)];
+        return new Brick(engine, brickType, 0, 0);
     }
 
 }

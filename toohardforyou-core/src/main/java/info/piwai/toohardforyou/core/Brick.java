@@ -30,19 +30,23 @@ public class Brick implements BrokenListener {
         entity = new SolidBrick(entityEngine, brickType, this, convertX(x), convertY(y));
         entityEngine.add(entity);
     }
-    
+
     private float convertX(int x) {
         return Constants.BRICK_WIDTH / 2 + x * Constants.BRICK_WIDTH;
     }
-    
+
     private float convertY(int y) {
-        return Constants.BRICK_HEIGHT / 2 +y * Constants.BRICK_HEIGHT;
+        return Constants.BRICK_HEIGHT / 2 + y * Constants.BRICK_HEIGHT;
     }
-    
+
     public void setPos(int x, int y) {
         entity.setPos(convertX(x), convertY(y));
     }
-    
+
+    public void transformPos(int x, int y) {
+        entity.setPos(entity.getPosX() + x * Constants.BRICK_WIDTH, entity.getPosY() + y * Constants.BRICK_HEIGHT);
+    }
+
     public Entity getEntity() {
         return entity;
     }

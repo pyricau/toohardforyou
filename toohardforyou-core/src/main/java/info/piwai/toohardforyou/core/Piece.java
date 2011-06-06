@@ -65,7 +65,7 @@ public class Piece {
                 int newY = y + deltaY;
                 boolean free = true;
                 for (BrickHolder brickHolder : bricks) {
-                    if (!wall.isFree(newX + brickHolder.x, newY + brickHolder.y)) {
+                    if (!wall.isFreeOrUp(newX + brickHolder.getX(), newY + brickHolder.getY())) {
                         free = false;
                         break;
                     }
@@ -81,7 +81,7 @@ public class Piece {
             int newY = y + 1;
             boolean free = true;
             for (BrickHolder brickHolder : bricks) {
-                if (!wall.isFree(x + brickHolder.x, newY + brickHolder.y)) {
+                if (!wall.isFreeOrUp(x + brickHolder.getX(), newY + brickHolder.getY())) {
                     free = false;
                     break;
                 }
@@ -95,9 +95,29 @@ public class Piece {
         }
     }
 
+    public void dropDown() {
+
+        int newY = y;
+        boolean free = true;
+        do {
+            newY = newY + 1;
+            for (BrickHolder brickHolder : bricks) {
+                if (!wall.isFreeOrUp(x + brickHolder.getX(), newY + brickHolder.getY())) {
+                    free = false;
+                    break;
+                }
+            }
+        } while (free);
+        newY = newY - 1;
+        if (newY != y) {
+            moveTo(x, newY - 1);
+        }
+        freeze();
+    }
+
     private void freeze() {
         for (BrickHolder brickHolder : bricks) {
-            wall.addBrick(brickHolder.brick, x + brickHolder.x, y + brickHolder.y);
+            wall.addBrick(brickHolder.getBrick(), x + brickHolder.getX(), y + brickHolder.getY());
         }
         bricks.clear();
         engine.pieceFrozen();
@@ -107,12 +127,12 @@ public class Piece {
         x = newX;
         y = newY;
         for (BrickHolder brickHolder : bricks) {
-            brickHolder.brick.setPos(x + brickHolder.x, y + brickHolder.y);
+            brickHolder.getBrick().setPos(x + brickHolder.getX(), y + brickHolder.getY());
         }
     }
 
     public void add(BrickHolder brickHolder) {
-        brickHolder.brick.setPos(x + brickHolder.x, y + brickHolder.y);
+        brickHolder.getBrick().setPos(x + brickHolder.getX(), y + brickHolder.getY());
         bricks.add(brickHolder);
     }
 
@@ -130,12 +150,33 @@ public class Piece {
 
     public void destroy() {
         for (BrickHolder brickHolder : bricks) {
-            engine.remove(brickHolder.brick.getEntity());
+            engine.remove(brickHolder.getBrick().getEntity());
         }
     }
 
     public void rotate() {
+        if (mayRotate()) {
+            doRotate();
+        }
+    }
 
+    private boolean mayRotate() {
+        for (BrickHolder brickHolder : bricks) {
+            if (brickHolder.hasTransformations()) {
+                int newBrickX = brickHolder.getNextX();
+                int newBrickY = brickHolder.getNextY();
+                if (!wall.isFreeOrUp(x + newBrickX, y + newBrickY)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void doRotate() {
+        for (BrickHolder brickHolder : bricks) {
+            brickHolder.transform();
+        }
     }
 
 }

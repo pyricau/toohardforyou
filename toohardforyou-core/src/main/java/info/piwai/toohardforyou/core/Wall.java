@@ -22,12 +22,11 @@ public class Wall {
     private final Brick[][] bricks = new Brick[Constants.WALL_WIDTH][Constants.WALL_HEIGHT];
 
     private final EntityEngine entityEngine;
-    
+
     private boolean full;
 
     public Wall(EntityEngine entityEngine) {
         this.entityEngine = entityEngine;
-
     }
 
     public void fillRandomly(int numberOfLines) {
@@ -61,11 +60,73 @@ public class Wall {
         }
     }
 
-    public boolean isFree(int x, int y) {
+    public boolean isFreeOrUp(int x, int y) {
+
+        if (x < 0 || x >= Constants.WALL_WIDTH || y > Constants.WALL_HEIGHT) {
+            return false;
+        }
+
+        if (y < 0) {
+            return true;
+        }
+
+        return bricks[x][y] == null;
+    }
+
+    private boolean isFree(int x, int y) {
+
         if (x < 0 || x >= Constants.WALL_WIDTH || y < 0 || y > Constants.WALL_HEIGHT) {
             return false;
         }
+
         return bricks[x][y] == null;
+    }
+
+    public int checkFullLines() {
+        int halfX = Constants.WALL_WIDTH / 2;
+        int fullCount = checkPartFullLines(0, halfX);
+        fullCount += checkPartFullLines(halfX, Constants.WALL_WIDTH);
+        return fullCount;
+    }
+
+    public int checkPartFullLines(int fromX, int maxX) {
+        int fullCount = 0;
+
+        for (int y = 0; y < Constants.WALL_HEIGHT; y++) {
+            if (isFull(fromX, maxX, y)) {
+                fullCount++;
+                deleteLine(fromX, maxX, y);
+            }
+        }
+
+        return fullCount;
+    }
+
+    private void deleteLine(int fromX, int maxX, int removedY) {
+        for (int x = fromX; x < maxX; x++) {
+            remove(x, removedY);
+        }
+
+        for (int y = removedY; y > 0; y--) {
+            for (int x = fromX; x < maxX; x++) {
+                Brick brick = bricks[x][y - 1];
+                bricks[x][y] = brick;
+                if (brick != null) {
+                    brick.setPos(x, y);
+                    bricks[x][y - 1] = null;
+                }
+            }
+        }
+
+    }
+
+    private boolean isFull(int fromX, int maxX, int y) {
+        for (int x = fromX; x < maxX; x++) {
+            if (bricks[x][y] == null) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void addBrick(Brick brick, int x, int y) {
@@ -76,7 +137,7 @@ public class Wall {
             full = true;
         }
     }
-    
+
     public boolean isFull() {
         return full;
     }

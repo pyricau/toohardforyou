@@ -20,16 +20,62 @@ import java.util.List;
 
 public class BrickHolder {
 
-    final Brick brick;
-    final List<BrickTransformation> transformations = new ArrayList<BrickTransformation>();
-    final int currentTransformationIndex = 0;
-    final int x;
-    final int y;
-    
+    private final Brick brick;
+    private final List<BrickTransformation> transformations = new ArrayList<BrickTransformation>();
+    private int nextTransformationIndex = 0;
+    private int x;
+    private int y;
+
     public BrickHolder(Brick brick, int x, int y) {
         this.brick = brick;
         this.x = x;
         this.y = y;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getNextX() {
+        return x + transformations.get(nextTransformationIndex).getDeltaX();
+    }
+
+    public int getNextY() {
+        return y + transformations.get(nextTransformationIndex).getDeltaY();
+    }
+
+    public Brick getBrick() {
+        return brick;
+    }
     
+    public void addTransformation(int deltaX, int deltaY) {
+        transformations.add(new BrickTransformation(deltaX, deltaY));   
+    }
+
+    public boolean hasTransformations() {
+        return transformations.size() > 0;
+    }
+
+    public void transform() {
+        if (hasTransformations()) {
+
+            BrickTransformation transformation = transformations.get(nextTransformationIndex);
+
+            x += transformation.getDeltaX();
+            y += transformation.getDeltaY();
+
+            brick.transformPos(transformation.getDeltaX(), transformation.getDeltaY());
+
+            nextTransformationIndex++;
+            if (nextTransformationIndex == transformations.size()) {
+                nextTransformationIndex = 0;
+            }
+        }
+
+    }
+
 }

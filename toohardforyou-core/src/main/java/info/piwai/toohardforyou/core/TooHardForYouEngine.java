@@ -192,8 +192,11 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         case 87: // w
             piece.rotate();
             break;
-        case 83:
+        case 83: // s
             piece.moveDown(true);
+            break;
+        case Keyboard.KEY_SPACE:
+            piece.dropDown();
             break;
         case Keyboard.KEY_LEFT:
             paddle.moveLeft(true);
@@ -214,7 +217,7 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         case 68: // d
             piece.moveRight(false);
             break;
-        case 83:
+        case 83: // s
             piece.moveDown(false);
             break;
         case Keyboard.KEY_LEFT:
@@ -248,6 +251,7 @@ public class TooHardForYouEngine extends EntityEngine implements Pointer.Listene
         if (wall.isFull()) {
                 newGame();
         } else {
+            int fullLines = wall.checkFullLines();
             piece = pieceFactory.newRandomPiece();
         }
     }

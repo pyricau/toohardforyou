@@ -14,7 +14,25 @@
  * the License.
  */
 package info.piwai.toohardforyou.core;
+
 public class BrickTransformation {
-    int deltaX;
-    int deltaY;
+    
+    private final int deltaX;
+    private final int deltaY;
+
+    public BrickTransformation(int deltaX, int deltaY) {
+        this.deltaX = deltaX;
+        this.deltaY = deltaY;
+    }
+
+    public int getDeltaX() {
+        return deltaX;
+    }
+
+    public int getDeltaY() {
+        return deltaY;
+    }
+    
+    
+
 }
