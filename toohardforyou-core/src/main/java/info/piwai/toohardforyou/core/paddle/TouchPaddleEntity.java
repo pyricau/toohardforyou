@@ -57,9 +57,9 @@ public abstract class TouchPaddleEntity extends DynamicPhysicsEntity implements 
         CircleShape circleShape = new CircleShape();
         circleShape.m_radius = getRadius();
         fixtureDef.shape = circleShape;
-        fixtureDef.density = 0.4f;
+        fixtureDef.density = 0.1f;
         fixtureDef.friction = 0f;
-        fixtureDef.restitution = 1f;
+        fixtureDef.restitution = 1.00f;
         circleShape.m_p.set(0, 0);
         body.createFixture(fixtureDef);
         body.setLinearDamping(0f);

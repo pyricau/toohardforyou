@@ -56,7 +56,7 @@ public class Ball extends DynamicPhysicsEntity {
         CircleShape circleShape = new CircleShape();
         circleShape.m_radius = getRadius();
         fixtureDef.shape = circleShape;
-        fixtureDef.density = 0.4f;
+        fixtureDef.density = 2f;
         fixtureDef.friction = 0f;
         fixtureDef.restitution = 1f;
         circleShape.m_p.set(0, 0);

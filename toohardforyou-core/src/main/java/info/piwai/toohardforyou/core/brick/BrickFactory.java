@@ -32,8 +32,25 @@ public class BrickFactory {
 
     public Brick newRandomBrick(int x, int y) {
         BrickType[] brickTypes = BrickType.values();
-        BrickType brickType = brickTypes[(int) Math.floor(random() * brickTypes.length)];
-        
+
+        float random = random();
+
+        BrickType brickType;
+        if (random < 0.9) {
+            brickType = BrickType.CLASSIC;
+        } else if (random<0.91){
+            brickType = BrickType.UNBREAKABLE;
+        } else if (random<0.93){
+            brickType = BrickType.THICK;
+        } else if (random<0.95){
+            brickType = BrickType.THICKER;
+        } else if (random<0.97){
+            brickType = BrickType.BONUS;
+        } else if (random<0.99){
+            brickType = BrickType.MALUS;
+        } else {
+            brickType = BrickType.BOMB;
+        }
 
         switch (brickType) {
         case UNBREAKABLE:
