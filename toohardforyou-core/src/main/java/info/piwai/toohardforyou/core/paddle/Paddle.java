@@ -92,8 +92,8 @@ public class Paddle extends DynamicPhysicsEntity {
         polygon[3] = new Vec2(-getWidth() / 2f, getHeight() / 2f);
         polygonShape.set(polygon, polygon.length);
         fixtureDef.shape = polygonShape;
-        fixtureDef.friction = 0.1f;
-        fixtureDef.restitution = 1.2f;
+        fixtureDef.friction = 0f;
+        fixtureDef.restitution = 1.0f;
         body.createFixture(fixtureDef);
         body.setTransform(new Vec2(x, y), angle);
         return body;
