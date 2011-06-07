@@ -185,6 +185,17 @@ public class EntityEngine implements ContactListener {
     // Box2d's pre solve
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
+        PhysicsEntity entityA = bodyEntityLUT.get(contact.m_fixtureA.m_body);
+        PhysicsEntity entityB = bodyEntityLUT.get(contact.m_fixtureB.m_body);
+
+        if (entityA != null && entityB != null) {
+            if (entityA instanceof PhysicsEntity.HasPresolveListener) {
+                ((PhysicsEntity.HasPresolveListener) entityA).presolve(contact, entityB);
+            }
+            if (entityB instanceof PhysicsEntity.HasPresolveListener) {
+                ((PhysicsEntity.HasPresolveListener) entityB).presolve(contact, entityA);
+            }
+        }
     }
 
     // Box2d's post solve

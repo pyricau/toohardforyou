@@ -16,6 +16,7 @@
 package info.piwai.toohardforyou.core.entity;
 
 import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.contacts.Contact;
 
 /**
  * Based on the forplay-peaphysics example (Copyright 2011 The ForPlay Authors),
@@ -27,5 +28,9 @@ public interface PhysicsEntity {
   
   public interface HasContactListener {
     public void contact(PhysicsEntity other);
+  }
+  
+  public interface HasPresolveListener {
+      public void presolve(Contact contact, PhysicsEntity other);
   }
 }

@@ -28,8 +28,9 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
+import org.jbox2d.dynamics.contacts.Contact;
 
-public abstract class TouchPaddleEntity extends DynamicPhysicsEntity implements PhysicsEntity.HasContactListener, NewGameListener{
+public abstract class TouchPaddleEntity extends DynamicPhysicsEntity implements PhysicsEntity.HasContactListener, PhysicsEntity.HasPresolveListener, NewGameListener {
 
     private static final float RADIUS = 10 * Constants.PHYS_UNIT_PER_SCREEN_UNIT;
 
@@ -52,7 +53,7 @@ public abstract class TouchPaddleEntity extends DynamicPhysicsEntity implements 
         bodyDef.type = BodyType.DYNAMIC;
         bodyDef.position = new Vec2(0, 0);
         Body body = world.createBody(bodyDef);
-        
+
         CircleShape circleShape = new CircleShape();
         circleShape.m_radius = getRadius();
         fixtureDef.shape = circleShape;
@@ -65,7 +66,7 @@ public abstract class TouchPaddleEntity extends DynamicPhysicsEntity implements 
         body.setTransform(new Vec2(x, y), angle);
         return body;
     }
-    
+
     @Override
     public void update(float delta) {
         super.update(delta);
@@ -74,14 +75,14 @@ public abstract class TouchPaddleEntity extends DynamicPhysicsEntity implements 
             outOfGame();
         }
     }
-    
+
     public void destroy() {
         engine.removeNewGameListener(this);
         engine.getEntityEngine().remove(this);
     }
-    
+
     protected abstract void outOfGame();
-    
+
     @Override
     public void contact(PhysicsEntity other) {
         if (other instanceof Paddle) {
@@ -105,11 +106,18 @@ public abstract class TouchPaddleEntity extends DynamicPhysicsEntity implements 
     private float getRadius() {
         return RADIUS;
     }
-    
+
     @Override
     public boolean onNewGame() {
         destroy();
         return true;
+    }
+
+    @Override
+    public void presolve(Contact contact, PhysicsEntity other) {
+        if (!(other instanceof Paddle)) {
+            contact.setEnabled(false);
+        }
     }
 
 }
