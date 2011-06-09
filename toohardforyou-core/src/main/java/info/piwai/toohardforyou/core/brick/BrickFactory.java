@@ -31,7 +31,6 @@ public class BrickFactory {
     }
 
     public Brick newRandomBrick(int x, int y) {
-        BrickType[] brickTypes = BrickType.values();
 
         float random = random();
 

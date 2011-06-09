@@ -26,6 +26,9 @@ public abstract class Constants {
     public static final float GAME_WIDTH = 520 * PHYS_UNIT_PER_SCREEN_UNIT;
     public static final float GAME_HEIGHT = 600 * PHYS_UNIT_PER_SCREEN_UNIT;
     
+    public static final float BOARD_WIDTH = 800 * PHYS_UNIT_PER_SCREEN_UNIT;
+    public static final float BOARD_HEIGHT = 600 * PHYS_UNIT_PER_SCREEN_UNIT;
+    
     public static final float BRICK_HEIGHT = 20 * Constants.PHYS_UNIT_PER_SCREEN_UNIT;
 
     public static final float BRICK_WIDTH = 20 * Constants.PHYS_UNIT_PER_SCREEN_UNIT;

@@ -49,10 +49,16 @@ public class Piece {
     public Piece(TooHardForYouEngine engine, Wall wall) {
         this.engine = engine;
         this.wall = wall;
-        x = Constants.WALL_WIDTH / 2;
-        y = 0;
         lastUserMove = 0;
-        lastMoveDown = currentTime();
+        lastMoveDown = 0;
+    }
+    
+    public void startFalling() {
+        moveTo(Constants.WALL_WIDTH / 2, 0);
+    }
+    
+    public void announced() {
+        moveTo(32, 6);
     }
 
     public void update(float delta) {

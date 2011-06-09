@@ -22,6 +22,9 @@ import forplay.core.CanvasLayer;
 import forplay.core.Image;
 
 public class UiTexts {
+    
+    private static final int POS_X = 555;
+    private static final int POS_Y = 185;
 
     private boolean textDataChanged = true;
     private CanvasLayer textLayer;
@@ -43,10 +46,11 @@ public class UiTexts {
             textDataChanged = false;
             Canvas canvas = textLayer.canvas();
             canvas.clear();
-            canvas.drawText("Score: " + score, 550, 60);
-            canvas.drawText("Balls: " + numberOfBalls, 550, 80);
-            canvas.drawText("FPS: " + frameRate, 550, 100);
-            canvas.drawText("NGL: " + newGameListeners, 550, 120);
+            int y = POS_Y;
+            canvas.drawText("Score: " + score, POS_X, y+=20);
+            canvas.drawText("Balls: " + numberOfBalls, POS_X, y+=20);
+            canvas.drawText("FPS: " + frameRate, POS_X, y+=20);
+            canvas.drawText("NGL: " + newGameListeners, POS_X, y+=20);
         }
     }
 

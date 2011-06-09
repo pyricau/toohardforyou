@@ -60,6 +60,8 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
     private final PieceFactory pieceFactory;
 
     private Piece piece;
+    
+    private Piece nextPiece;
 
     private int score;
 
@@ -69,7 +71,7 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
 
         GroupLayer worldlayer = buildWorldLayer();
         Vec2 gravity = new Vec2(0.0f, 0.1f);
-        entityEngine = new EntityEngine(worldlayer, gravity, Constants.GAME_WIDTH, Constants.GAME_HEIGHT, Constants.PHYS_UNIT_PER_SCREEN_UNIT, Constants.DEBUG_DRAW);
+        entityEngine = new EntityEngine(worldlayer, gravity, Constants.BOARD_WIDTH, Constants.BOARD_HEIGHT, Constants.PHYS_UNIT_PER_SCREEN_UNIT, Constants.DEBUG_DRAW);
 
         uiTexts = new UiTexts();
         fpsCounter = new FpsCounter(uiTexts);
@@ -131,9 +133,14 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
 
         if (piece != null) {
             piece.destroy();
+            nextPiece.destroy();
         }
+        
         piece = pieceFactory.newRandomPiece();
-
+        piece.startFalling();
+        nextPiece = pieceFactory.newRandomPiece();
+        nextPiece.announced();
+        
         for (Ball ball : balls) {
             entityEngine.remove(ball);
         }
@@ -289,7 +296,10 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
                 incrementScore((int) (Math.pow(fullLines, Constants.LINE_POWER) * Constants.LINE_SCORE_BASE));
             }
 
-            piece = pieceFactory.newRandomPiece();
+            piece = nextPiece;
+            piece.startFalling();
+            nextPiece = pieceFactory.newRandomPiece();
+            nextPiece.announced();
         }
     }
 
