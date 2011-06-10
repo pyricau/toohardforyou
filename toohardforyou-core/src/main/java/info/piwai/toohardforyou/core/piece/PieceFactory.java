@@ -26,6 +26,8 @@ public class PieceFactory {
     private final TooHardForYouEngine engine;
     private final BrickFactory brickFactory;
     private final Wall wall;
+    
+    
 
     public PieceFactory(TooHardForYouEngine engine, BrickFactory brickFactory, Wall wall) {
         this.engine = engine;

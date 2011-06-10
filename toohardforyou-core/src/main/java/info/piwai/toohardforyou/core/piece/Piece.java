@@ -16,8 +16,8 @@
 package info.piwai.toohardforyou.core.piece;
 
 import static forplay.core.ForPlay.currentTime;
-
 import info.piwai.toohardforyou.core.Constants;
+import info.piwai.toohardforyou.core.Level;
 import info.piwai.toohardforyou.core.TooHardForYouEngine;
 import info.piwai.toohardforyou.core.brick.BrickHolder;
 import info.piwai.toohardforyou.core.wall.Wall;
@@ -46,9 +46,12 @@ public class Piece {
 
     private final TooHardForYouEngine engine;
 
+    private final Level level;
+
     public Piece(TooHardForYouEngine engine, Wall wall) {
         this.engine = engine;
         this.wall = wall;
+        this.level = engine.getLevel();
         lastUserMove = 0;
         lastMoveDown = 0;
     }
@@ -88,7 +91,7 @@ public class Piece {
             }
         }
 
-        if (now - lastMoveDown > 1000) {
+        if (now - lastMoveDown > level.getPiecePauseInMs()) {
             int newY = y + 1;
             boolean free = true;
             for (BrickHolder brickHolder : bricks) {

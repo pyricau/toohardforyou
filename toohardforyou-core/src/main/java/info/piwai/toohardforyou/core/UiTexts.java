@@ -22,17 +22,21 @@ import forplay.core.CanvasLayer;
 import forplay.core.Image;
 
 public class UiTexts {
-    
+
     private static final int POS_X = 555;
     private static final int POS_Y = 185;
 
     private boolean textDataChanged = true;
     private CanvasLayer textLayer;
-    
+
     private int numberOfBalls;
     private int frameRate;
     private int score;
     private int newGameListeners;
+
+    private int bricksToNextLevel;
+    private int linesToNextLevel;
+    private int level;
 
     public UiTexts() {
         Image backgroundImage = assetManager().getImage(Resources.BACKGROUND_IMG);
@@ -47,10 +51,13 @@ public class UiTexts {
             Canvas canvas = textLayer.canvas();
             canvas.clear();
             int y = POS_Y;
-            canvas.drawText("Score: " + score, POS_X, y+=20);
-            canvas.drawText("Balls: " + numberOfBalls, POS_X, y+=20);
-            canvas.drawText("FPS: " + frameRate, POS_X, y+=20);
-            canvas.drawText("NGL: " + newGameListeners, POS_X, y+=20);
+            canvas.drawText("Score: " + score, POS_X, y += 20);
+            canvas.drawText("Balls: " + numberOfBalls, POS_X, y += 20);
+            canvas.drawText("FPS: " + frameRate, POS_X, y += 20);
+            canvas.drawText("NGL: " + newGameListeners, POS_X, y += 20);
+            canvas.drawText("Level: " + level, POS_X, y += 20);
+            canvas.drawText("Lines to do: " + linesToNextLevel, POS_X, y += 20);
+            canvas.drawText("Bricks to break: " + bricksToNextLevel, POS_X, y += 20);
         }
     }
 
@@ -67,7 +74,7 @@ public class UiTexts {
             this.frameRate = frameRate;
         }
     }
-    
+
     public void updateScore(int score) {
         if (this.score != score) {
             textDataChanged = true;
@@ -85,6 +92,27 @@ public class UiTexts {
         if (this.newGameListeners != newGameListeners) {
             textDataChanged = true;
             this.newGameListeners = newGameListeners;
+        }
+    }
+
+    public void updateBricksToNextLevel(int bricksToNextLevel) {
+        if (this.bricksToNextLevel != bricksToNextLevel) {
+            textDataChanged = true;
+            this.bricksToNextLevel = bricksToNextLevel;
+        }
+    }
+
+    public void updateLinesToNextLevel(int linesToNextLevel) {
+        if (this.linesToNextLevel != linesToNextLevel) {
+            textDataChanged = true;
+            this.linesToNextLevel = linesToNextLevel;
+        }
+    }
+
+    public void updateLevel(int level) {
+        if (this.level != level) {
+            textDataChanged = true;
+            this.level = level;
         }
     }
 

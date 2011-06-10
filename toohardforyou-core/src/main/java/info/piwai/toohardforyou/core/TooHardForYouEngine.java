@@ -67,6 +67,8 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
 
     private final EntityEngine entityEngine;
 
+    private Level level;
+
     public TooHardForYouEngine(TooHardForYouGame game) {
 
         GroupLayer worldlayer = buildWorldLayer();
@@ -85,6 +87,8 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
         wall = new Wall(brickFactory);
 
         pieceFactory = new PieceFactory(this, brickFactory, wall);
+        
+        level = new Level(this, uiTexts);
 
         // hook up our pointer listener
         pointer().setListener(this);
@@ -126,6 +130,8 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
         listenersToRemove.clear();
         
         paddle.resetPosition();
+        
+        level.newGame();
 
         score = 0;
 
@@ -163,7 +169,7 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
             Ball ball = new Ball(this, paddle.getPosX(), paddle.getPosY() - paddle.getHeight());
             Vec2 velocity = new Vec2(random() - 0.5f, random() - 1);
             velocity.normalize();
-            velocity.mulLocal(5);
+            velocity.mulLocal(level.getBallSpeed());
             ball.getBody().setLinearVelocity(velocity);
             balls.add(ball);
             uiTexts.updateNumberOfBalls(balls.size());
@@ -294,6 +300,7 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
                 createBallsOnPaddle(fullLines - 1);
 
                 incrementScore((int) (Math.pow(fullLines, Constants.LINE_POWER) * Constants.LINE_SCORE_BASE));
+                level.onFullLines(fullLines);
             }
 
             piece = nextPiece;
@@ -309,6 +316,7 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
 
     public void brickBroken() {
         incrementScore(Constants.BRICK_SCORE_BASE);
+        level.onBrickBroken();
     }
 
     public void newMalus(float x, float y) {
@@ -345,6 +353,14 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
 
     public EntityEngine getEntityEngine() {
         return entityEngine;
+    }
+
+    public void nextLevel() {
+        incrementScore(10000);
+    }
+
+    public Level getLevel() {
+        return level;
     }
     
     
