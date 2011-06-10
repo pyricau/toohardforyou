@@ -157,7 +157,7 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
         balls.clear();
         uiTexts.updateNumberOfBalls(balls.size());
 
-        wall.fillRandomly(5);
+        wall.fillRandomly(2);
 
         createBallOnPaddle();
     }
