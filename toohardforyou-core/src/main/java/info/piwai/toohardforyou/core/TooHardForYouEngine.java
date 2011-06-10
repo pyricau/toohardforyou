@@ -39,6 +39,7 @@ import org.jbox2d.dynamics.World;
 
 import forplay.core.GroupLayer;
 import forplay.core.Image;
+import forplay.core.ImageLayer;
 import forplay.core.Keyboard;
 import forplay.core.Keyboard.Listener;
 import forplay.core.Pointer;
@@ -70,6 +71,9 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
     private Level level;
 
     public TooHardForYouEngine(TooHardForYouGame game) {
+        
+        graphics().setSize(Constants.BOARD_PIXEL_WIDTH, Constants.BOARD_PIXEL_HEIGHT);
+
 
         GroupLayer worldlayer = buildWorldLayer();
         Vec2 gravity = new Vec2(0.0f, 0.1f);
@@ -180,10 +184,12 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
     // main layer that holds the world. note: this gets scaled to world space
     private GroupLayer buildWorldLayer() {
         Image backgroundImage = assetManager().getImage(Resources.BACKGROUND_IMG);
-        graphics().rootLayer().add(graphics().createImageLayer(backgroundImage));
+        ImageLayer backgroundLayer = graphics().createImageLayer(backgroundImage);
+        backgroundLayer.setTranslation(0, Constants.BOARD_OFFSET_Y);
+        graphics().rootLayer().add(backgroundLayer);
 
         GroupLayer worldLayer = graphics().createGroupLayer();
-        worldLayer.setTranslation(2, 0);
+        worldLayer.setTranslation(Constants.BOARD_OFFSET_X, Constants.BOARD_OFFSET_Y);
         worldLayer.setScale(1f / Constants.PHYS_UNIT_PER_SCREEN_UNIT);
         graphics().rootLayer().add(worldLayer);
         return worldLayer;

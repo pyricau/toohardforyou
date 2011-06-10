@@ -24,7 +24,7 @@ import forplay.core.Image;
 public class UiTexts {
 
     private static final int POS_X = 555;
-    private static final int POS_Y = 185;
+    private static final int POS_Y = 245;
 
     private boolean textDataChanged = true;
     private CanvasLayer textLayer;
