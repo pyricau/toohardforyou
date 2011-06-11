@@ -80,7 +80,7 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
     private ImageLayer pauseLayer;
 
     public TooHardForYouEngine(TooHardForYouGame game) {
-        
+
         Image pauseImage = assetManager().getImage(Resources.BACKGROUND_IMG);
         pauseLayer = graphics().createImageLayer(pauseImage);
         pauseLayer.setTranslation(0, Constants.BOARD_OFFSET_Y);
@@ -183,7 +183,7 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
     private void createBallOnPaddle() {
         if (balls.size() < Constants.MAX_BALLS) {
             Ball ball = new Ball(this, paddle.getPosX(), paddle.getPosY() - paddle.getHeight());
-            Vec2 velocity = new Vec2(random() - 0.5f, random() - 1);
+            Vec2 velocity = new Vec2(random() - 0.5f, -1);
             velocity.normalize();
             velocity.mulLocal(level.getBallSpeed());
             ball.getBody().setLinearVelocity(velocity);
