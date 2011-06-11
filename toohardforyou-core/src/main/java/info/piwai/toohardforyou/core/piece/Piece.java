@@ -15,7 +15,6 @@
  */
 package info.piwai.toohardforyou.core.piece;
 
-import static forplay.core.ForPlay.currentTime;
 import info.piwai.toohardforyou.core.Constants;
 import info.piwai.toohardforyou.core.Level;
 import info.piwai.toohardforyou.core.TooHardForYouEngine;
@@ -47,6 +46,8 @@ public class Piece {
     private final TooHardForYouEngine engine;
 
     private final Level level;
+    
+    private float currentTime = 0;
 
     public Piece(TooHardForYouEngine engine, Wall wall) {
         this.engine = engine;
@@ -65,10 +66,10 @@ public class Piece {
     }
 
     public void update(float delta) {
+        
+        currentTime += delta;
 
-        double now = currentTime();
-
-        if (now - lastUserMove > 75) {
+        if (currentTime - lastUserMove > 75) {
             int deltaX = 0;
             int deltaY = 0;
             deltaX += moveLeft ? -1 : 0;
@@ -85,13 +86,13 @@ public class Piece {
                     }
                 }
                 if (free) {
-                    lastUserMove = now;
+                    lastUserMove = currentTime;
                     moveTo(newX, newY);
                 }
             }
         }
 
-        if (now - lastMoveDown > level.getPiecePauseInMs()) {
+        if (currentTime - lastMoveDown > level.getPiecePauseInMs()) {
             int newY = y + 1;
             boolean free = true;
             for (BrickHolder brickHolder : bricks) {
@@ -101,7 +102,7 @@ public class Piece {
                 }
             }
             if (free) {
-                lastMoveDown = now;
+                lastMoveDown = currentTime;
                 moveTo(x, newY);
             } else {
                 freeze();

@@ -19,7 +19,7 @@ import info.piwai.toohardforyou.core.Constants;
 import info.piwai.toohardforyou.core.Resources;
 import info.piwai.toohardforyou.core.entity.DynamicPhysicsEntity;
 import info.piwai.toohardforyou.core.entity.EntityEngine;
-import info.piwai.toohardforyou.core.util.Timer;
+import info.piwai.toohardforyou.core.util.GameTimer;
 
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -31,7 +31,7 @@ import org.jbox2d.dynamics.World;
 
 public class Paddle extends DynamicPhysicsEntity {
 
-    private final Timer frozenTimer = new Timer() {
+    private final GameTimer frozenTimer = new GameTimer() {
         @Override
         public void run() {
             frozen = false;

@@ -65,6 +65,10 @@ public abstract class Constants {
     public static final int KEY_Z = 90;
     public static final int KEY_W = 87;
     public static final int KEY_S = 83;
+
+    public static final int KEY_F2 = 113;
+
+    public static final int KEY_P = 80;
     
     private Constants() {
         throw new UnsupportedOperationException();

@@ -15,7 +15,12 @@
  */
 package info.piwai.toohardforyou.core;
 
-import static forplay.core.ForPlay.*;
+import static forplay.core.ForPlay.assetManager;
+import static forplay.core.ForPlay.graphics;
+import static forplay.core.ForPlay.keyboard;
+import static forplay.core.ForPlay.log;
+import static forplay.core.ForPlay.pointer;
+import static forplay.core.ForPlay.random;
 import info.piwai.toohardforyou.core.ball.Ball;
 import info.piwai.toohardforyou.core.bonus.BiggerPaddleBonus;
 import info.piwai.toohardforyou.core.brick.BrickFactory;
@@ -25,7 +30,7 @@ import info.piwai.toohardforyou.core.paddle.Paddle;
 import info.piwai.toohardforyou.core.piece.Piece;
 import info.piwai.toohardforyou.core.piece.PieceFactory;
 import info.piwai.toohardforyou.core.util.FpsCounter;
-import info.piwai.toohardforyou.core.util.Timer;
+import info.piwai.toohardforyou.core.util.GameTimer;
 import info.piwai.toohardforyou.core.wall.Wall;
 
 import java.util.ArrayList;
@@ -53,7 +58,7 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
     private final FpsCounter fpsCounter;
 
     private final List<Ball> balls = new ArrayList<Ball>();
-    
+
     private final List<NewGameListener> newGamelisteners = new ArrayList<NewGameListener>();
 
     private final Wall wall;
@@ -61,7 +66,7 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
     private final PieceFactory pieceFactory;
 
     private Piece piece;
-    
+
     private Piece nextPiece;
 
     private int score;
@@ -70,10 +75,17 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
 
     private Level level;
 
+    private boolean paused;
+
+    private ImageLayer pauseLayer;
+
     public TooHardForYouEngine(TooHardForYouGame game) {
         
-        graphics().setSize(Constants.BOARD_PIXEL_WIDTH, Constants.BOARD_PIXEL_HEIGHT);
+        Image pauseImage = assetManager().getImage(Resources.BACKGROUND_IMG);
+        pauseLayer = graphics().createImageLayer(pauseImage);
+        pauseLayer.setTranslation(0, Constants.BOARD_OFFSET_Y);
 
+        graphics().setSize(Constants.BOARD_PIXEL_WIDTH, Constants.BOARD_PIXEL_HEIGHT);
 
         GroupLayer worldlayer = buildWorldLayer();
         Vec2 gravity = new Vec2(0.0f, 0.1f);
@@ -91,7 +103,7 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
         wall = new Wall(brickFactory);
 
         pieceFactory = new PieceFactory(this, brickFactory, wall);
-        
+
         level = new Level(this, uiTexts);
 
         // hook up our pointer listener
@@ -120,21 +132,21 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
     }
 
     private void newGame() {
-        
+
         ArrayList<NewGameListener> listenersToRemove = new ArrayList<NewGameListener>();
-        for(NewGameListener listener : new ArrayList<NewGameListener>(newGamelisteners)) {
+        for (NewGameListener listener : new ArrayList<NewGameListener>(newGamelisteners)) {
             boolean remove = listener.onNewGame();
             if (remove) {
                 listenersToRemove.add(listener);
             }
         }
-        
+
         newGamelisteners.removeAll(listenersToRemove);
         uiTexts.updateNewGameListeners(newGamelisteners.size());
         listenersToRemove.clear();
-        
+
         paddle.resetPosition();
-        
+
         level.newGame();
 
         score = 0;
@@ -145,12 +157,12 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
             piece.destroy();
             nextPiece.destroy();
         }
-        
+
         piece = pieceFactory.newRandomPiece();
         piece.startFalling();
         nextPiece = pieceFactory.newRandomPiece();
         nextPiece.announced();
-        
+
         for (Ball ball : balls) {
             entityEngine.remove(ball);
         }
@@ -187,7 +199,6 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
         ImageLayer backgroundLayer = graphics().createImageLayer(backgroundImage);
         backgroundLayer.setTranslation(0, Constants.BOARD_OFFSET_Y);
         graphics().rootLayer().add(backgroundLayer);
-
         GroupLayer worldLayer = graphics().createGroupLayer();
         worldLayer.setTranslation(Constants.BOARD_OFFSET_X, Constants.BOARD_OFFSET_Y);
         worldLayer.setScale(1f / Constants.PHYS_UNIT_PER_SCREEN_UNIT);
@@ -197,16 +208,20 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
 
     @Override
     public void update(float delta) {
-        entityEngine.update(delta);
-        Timer.update();
-        piece.update(delta);
+        if (!paused) {
+            entityEngine.update(delta);
+            GameTimer.update(delta);
+            piece.update(delta);
+        }
     }
 
     @Override
     public void paint(float delta) {
-        entityEngine.paint(delta);
-        fpsCounter.update();
-        uiTexts.mayRedrawTexts();
+        if (!paused) {
+            entityEngine.paint(delta);
+            fpsCounter.update();
+            uiTexts.mayRedrawTexts();
+        }
     }
 
     @Override
@@ -249,6 +264,19 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
         case Keyboard.KEY_RIGHT:
             paddle.moveRight(true);
             break;
+        case Constants.KEY_F2:
+            newGame();
+            break;
+        case Constants.KEY_P:
+            paused = !paused;
+            if (paused) {
+                graphics().rootLayer().add(pauseLayer);
+            } else {
+                graphics().rootLayer().remove(pauseLayer);
+            }
+            break;
+        default:
+            log().debug("Keycode down: " + keyCode);
         }
     }
 
@@ -327,23 +355,23 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
 
     public void newMalus(float x, float y) {
         StaticPaddleMalus malus = new StaticPaddleMalus(this, paddle, x, y);
-        
+
         Vec2 velocity = new Vec2(0, 3);
         malus.getBody().setLinearVelocity(velocity);
     }
 
     public void newBonus(float x, float y) {
         BiggerPaddleBonus bonus = new BiggerPaddleBonus(this, paddle, x, y);
-        
+
         Vec2 velocity = new Vec2(0, 3);
         bonus.getBody().setLinearVelocity(velocity);
     }
-    
+
     public void addNewGameListener(NewGameListener newGamelistener) {
         newGamelisteners.add(newGamelistener);
         uiTexts.updateNewGameListeners(newGamelisteners.size());
     }
-    
+
     public void removeNewGameListener(NewGameListener newGamelistener) {
         newGamelisteners.remove(newGamelistener);
         uiTexts.updateNewGameListeners(newGamelisteners.size());
@@ -368,7 +396,5 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
     public Level getLevel() {
         return level;
     }
-    
-    
 
 }

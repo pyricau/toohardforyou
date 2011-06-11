@@ -18,6 +18,7 @@ package info.piwai.toohardforyou.core.util;
 import static forplay.core.ForPlay.currentTime;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import forplay.core.Game;
 
@@ -31,22 +32,35 @@ import forplay.core.Game;
  * 
  * You MUST call Timer.update() from the {@link Game#update(float)} method.
  */
-public abstract class Timer {
+public abstract class GameTimer {
 
-    private static final ArrayList<Timer> timers = new ArrayList<Timer>();
+    private static final ArrayList<GameTimer> timers = new ArrayList<GameTimer>();
+    private static final Stack<GameTimer> timersToAdd = new Stack<GameTimer>();
+    private static final Stack<GameTimer> timersToCancel = new Stack<GameTimer>();
+    
+    
+    private static float currentTime = 0;
 
-    public static void update() {
-        double currentTime = currentTime();
+    public static void update(float delta) {
+        currentTime += delta;
 
-        for (Timer timer : new ArrayList<Timer>(timers)) {
+        while (!timersToAdd.isEmpty()) {
+            timers.add(timersToAdd.pop());
+        }
+        for (GameTimer timer : timers) {
             if (currentTime > timer.nextExecution) {
-                if (timer.periodMillis > 0) {
-                    timer.nextExecution = currentTime() + timer.periodMillis;
-                } else {
-                    timer.cancel();
+                if (!timersToCancel.contains(timer)) {
+                    if (timer.periodMillis > 0) {
+                        timer.nextExecution = currentTime() + timer.periodMillis;
+                    } else {
+                        timer.cancel();
+                    }
+                    timer.run();
                 }
-                timer.run();
             }
+        }
+        while (!timersToCancel.isEmpty()) {
+            timers.remove(timersToCancel.pop());
         }
     }
 
@@ -58,7 +72,7 @@ public abstract class Timer {
      * Cancels this timer.
      */
     public void cancel() {
-        timers.remove(this);
+        timersToCancel.remove(this);
     }
 
     /**
@@ -84,11 +98,11 @@ public abstract class Timer {
             throw new IllegalArgumentException("must be positive");
         }
     }
-    
+
     private void scheduleInternal(double stepMillis) {
         cancel();
-        nextExecution = currentTime() + stepMillis;
-        timers.add(this);
+        nextExecution = currentTime + stepMillis;
+        timersToAdd.add(this);
     }
 
     /**
