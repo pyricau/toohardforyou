@@ -39,9 +39,9 @@ public class Piece {
 
     private boolean moveDown;
 
-    private double lastUserMove;
+    private double lastUserMove = -10000;
 
-    private double lastMoveDown;
+    private double lastMoveDown = -10000;
 
     private final TooHardForYouEngine engine;
 
