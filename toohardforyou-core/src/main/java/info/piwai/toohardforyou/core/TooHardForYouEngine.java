@@ -83,12 +83,12 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
 
         Image pauseImage = assetManager().getImage(Resources.BACKGROUND_IMG);
         pauseLayer = graphics().createImageLayer(pauseImage);
-        pauseLayer.setTranslation(0, Constants.BOARD_OFFSET_Y);
+        pauseLayer.setTranslation(0, 0);
 
         graphics().setSize(Constants.BOARD_PIXEL_WIDTH, Constants.BOARD_PIXEL_HEIGHT);
 
         GroupLayer worldlayer = buildWorldLayer();
-        Vec2 gravity = new Vec2(0.0f, 0.1f);
+        Vec2 gravity = new Vec2(0.0f, 0.0f);
         entityEngine = new EntityEngine(worldlayer, gravity, Constants.BOARD_WIDTH, Constants.BOARD_HEIGHT, Constants.PHYS_UNIT_PER_SCREEN_UNIT, Constants.DEBUG_DRAW);
 
         uiTexts = new UiTexts();
@@ -118,16 +118,16 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
         // create the ceil
         Body ceil = world.createBody(new BodyDef());
         PolygonShape ceilShape = new PolygonShape();
-        ceilShape.setAsEdge(new Vec2(0, 0), new Vec2(Constants.GAME_WIDTH, 0));
+        ceilShape.setAsEdge(new Vec2(Constants.BOARD_LEFT, Constants.BOARD_TOP), new Vec2(Constants.BOARD_RIGHT, Constants.BOARD_TOP));
         ceil.createFixture(ceilShape, 0.0f);
         // create the walls
         Body wallLeft = world.createBody(new BodyDef());
         PolygonShape wallLeftShape = new PolygonShape();
-        wallLeftShape.setAsEdge(new Vec2(0, 0), new Vec2(0, Constants.GAME_HEIGHT));
+        wallLeftShape.setAsEdge(new Vec2(Constants.BOARD_LEFT, Constants.BOARD_TOP), new Vec2(Constants.BOARD_LEFT, Constants.BOARD_BOTTOM));
         wallLeft.createFixture(wallLeftShape, 0.0f);
         Body wallRight = world.createBody(new BodyDef());
         PolygonShape wallRightShape = new PolygonShape();
-        wallRightShape.setAsEdge(new Vec2(Constants.GAME_WIDTH, 0), new Vec2(Constants.GAME_WIDTH, Constants.GAME_HEIGHT));
+        wallRightShape.setAsEdge(new Vec2(Constants.BOARD_RIGHT, Constants.BOARD_TOP), new Vec2(Constants.BOARD_RIGHT, Constants.BOARD_BOTTOM));
         wallRight.createFixture(wallRightShape, 0f);
     }
 
@@ -197,10 +197,10 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
     private GroupLayer buildWorldLayer() {
         Image backgroundImage = assetManager().getImage(Resources.BACKGROUND_IMG);
         ImageLayer backgroundLayer = graphics().createImageLayer(backgroundImage);
-        backgroundLayer.setTranslation(0, Constants.BOARD_OFFSET_Y);
+        backgroundLayer.setTranslation(0, 0);
         graphics().rootLayer().add(backgroundLayer);
         GroupLayer worldLayer = graphics().createGroupLayer();
-        worldLayer.setTranslation(Constants.BOARD_OFFSET_X, Constants.BOARD_OFFSET_Y);
+//        worldLayer.setTranslation(Constants.BOARD_OFFSET_X, Constants.BOARD_OFFSET_Y);
         worldLayer.setScale(1f / Constants.PHYS_UNIT_PER_SCREEN_UNIT);
         graphics().rootLayer().add(worldLayer);
         return worldLayer;
@@ -209,9 +209,9 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
     @Override
     public void update(float delta) {
         if (!paused) {
+            piece.update(delta);
             entityEngine.update(delta);
             GameTimer.update(delta);
-            piece.update(delta);
         }
     }
 

@@ -37,11 +37,11 @@ public class Brick implements BrokenListener {
     }
     
     private float convertX(int wallX) {
-        return Constants.BRICK_WIDTH / 2 + wallX * Constants.BRICK_WIDTH;
+        return Constants.BOARD_LEFT + Constants.BRICK_WIDTH / 2 + wallX * Constants.BRICK_WIDTH;
     }
 
     private float convertY(int wallY) {
-        return Constants.BRICK_HEIGHT / 2 + wallY * Constants.BRICK_HEIGHT;
+        return Constants.BOARD_TOP + Constants.BRICK_HEIGHT / 2 + wallY * Constants.BRICK_HEIGHT;
     }
     
     public void setPos(int wallX, int wallY) {

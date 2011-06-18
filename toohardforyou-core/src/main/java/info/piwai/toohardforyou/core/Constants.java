@@ -26,8 +26,16 @@ public abstract class Constants {
     public static final float GAME_WIDTH = 520 * PHYS_UNIT_PER_SCREEN_UNIT;
     public static final float GAME_HEIGHT = 600 * PHYS_UNIT_PER_SCREEN_UNIT;
     
-    public static final float BOARD_OFFSET_X = 2;
-    public static final float BOARD_OFFSET_Y = 60;
+    public static final float BOARD_OFFSET_PIXEL_X = 2;
+    public static final float BOARD_OFFSET_PIXEL_Y = 60;
+    
+    public static final float BOARD_LEFT = BOARD_OFFSET_PIXEL_X * PHYS_UNIT_PER_SCREEN_UNIT;
+    public static final float BOARD_TOP = BOARD_OFFSET_PIXEL_Y * PHYS_UNIT_PER_SCREEN_UNIT;
+    
+    public static final float BOARD_RIGHT = BOARD_LEFT + GAME_WIDTH;
+    
+    public static final float BOARD_BOTTOM = BOARD_TOP + GAME_HEIGHT;
+
     
     public static final int BOARD_PIXEL_WIDTH = 800;
     public static final int BOARD_PIXEL_HEIGHT = 660;

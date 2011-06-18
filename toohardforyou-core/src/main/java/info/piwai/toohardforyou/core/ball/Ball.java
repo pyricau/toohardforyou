@@ -32,7 +32,7 @@ public class Ball extends DynamicPhysicsEntity {
 
     private static final float BALL_RADIUS = 10 * Constants.PHYS_UNIT_PER_SCREEN_UNIT;
 
-    private static final float MAX_POS_Y = Constants.GAME_HEIGHT + BALL_RADIUS;
+    private static final float MAX_POS_Y = Constants.BOARD_BOTTOM + BALL_RADIUS;
 
     private static final float BALL_DIAMETER = 2 * BALL_RADIUS;
 
