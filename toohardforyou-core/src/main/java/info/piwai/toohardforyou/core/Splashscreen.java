@@ -30,7 +30,7 @@ import forplay.core.Pointer;
 
 public class Splashscreen implements GameScreen, Pointer.Listener, Keyboard.Listener {
 
-    private static final int SPLASHSCREEN_DURATION = 2000;
+    private static final int SPLASHSCREEN_DURATION = 3000;
 
     private final TooHardForYouGame tooHardForYou;
 
