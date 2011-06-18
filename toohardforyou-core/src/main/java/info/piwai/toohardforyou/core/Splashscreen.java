@@ -15,12 +15,16 @@
  */
 package info.piwai.toohardforyou.core;
 
-import static forplay.core.ForPlay.*;
+import static forplay.core.ForPlay.assetManager;
+import static forplay.core.ForPlay.graphics;
+import static forplay.core.ForPlay.keyboard;
+import static forplay.core.ForPlay.pointer;
 import info.piwai.toohardforyou.core.ball.Ball;
 import info.piwai.toohardforyou.core.brick.BrickType;
 import info.piwai.toohardforyou.core.paddle.Paddle;
 import forplay.core.AssetWatcher;
 import forplay.core.Image;
+import forplay.core.ImageLayer;
 import forplay.core.Keyboard;
 import forplay.core.Pointer;
 
@@ -36,13 +40,9 @@ public class Splashscreen implements GameScreen, Pointer.Listener, Keyboard.List
 
     private boolean animationDone;
 
-    /*
-     * TODO uncomment when able to set an alpha value for a layer. Used for fade
-     * in / fade out
-     */
-    // private ImageLayer blackLayer;
+    private ImageLayer blackLayer;
 
-    private double animationStart;
+    private float animationDuration;
 
     public Splashscreen(TooHardForYouGame tooHardForYou) {
         this.tooHardForYou = tooHardForYou;
@@ -74,13 +74,16 @@ public class Splashscreen implements GameScreen, Pointer.Listener, Keyboard.List
         if (!splashscreenLoaded || animationDone) {
             return;
         }
+        
+        animationDuration += delta;
 
-        if (currentTime() - animationStart > SPLASHSCREEN_DURATION) {
+        if (animationDuration > SPLASHSCREEN_DURATION) {
             animationDone = true;
+            blackLayer.setAlpha(0);
             mayStartGame();
+        } else {
+            blackLayer.setAlpha(1 - animationDuration / SPLASHSCREEN_DURATION);
         }
-
-        // This place begs for being able to set alpha value for a layer
     }
 
     private void initAfterResourcesLoaded() {
@@ -89,16 +92,11 @@ public class Splashscreen implements GameScreen, Pointer.Listener, Keyboard.List
 
         graphics().setSize(backgroundImage.width(), backgroundImage.height());
 
-        /*
-         * TODO uncomment when able to set an alpha value for a layer. Used for
-         * fade in / fade out
-         */
-        // Image blackImage = assetManager().getImage(Resources.BLACK_IMG);
-        //
-        // blackLayer = graphics().createImageLayer(blackImage);
-        // graphics().rootLayer().add(blackLayer);
+        Image blackImage = assetManager().getImage(Resources.BLACK_IMG);
+        blackLayer = graphics().createImageLayer(blackImage);
+        graphics().rootLayer().add(blackLayer);
 
-        animationStart = currentTime();
+        animationDuration = 0;
 
         splashscreenLoaded = true;
     }
