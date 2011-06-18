@@ -23,6 +23,7 @@ public class BiggerPaddleBonus extends AbstractBonus {
     
     public final static String IMAGE = Resources.BONUS_PATH + "8.png";
     
+    @SuppressWarnings("unused")
     private final Paddle paddle;
 
     public BiggerPaddleBonus(TooHardForYouEngine engine, Paddle paddle, float x, float y) {
