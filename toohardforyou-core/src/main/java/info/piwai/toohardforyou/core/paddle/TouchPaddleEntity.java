@@ -34,7 +34,7 @@ public abstract class TouchPaddleEntity extends DynamicPhysicsEntity implements 
 
     private static final float RADIUS = 10 * Constants.PHYS_UNIT_PER_SCREEN_UNIT;
 
-    private static final float MAX_POS_Y = Constants.GAME_HEIGHT + RADIUS;
+    private static final float MAX_POS_Y = Constants.BOARD_BOTTOM + RADIUS;
 
     private static final float DIAMETER = 2 * RADIUS;
 
@@ -47,7 +47,7 @@ public abstract class TouchPaddleEntity extends DynamicPhysicsEntity implements 
     }
 
     @Override
-    protected Body initPhysicsBody(World world, float x, float y, float angle) {
+    protected Body initPhysicsBody(World world, Body groundBody, float x, float y, float angle) {
         FixtureDef fixtureDef = new FixtureDef();
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DYNAMIC;

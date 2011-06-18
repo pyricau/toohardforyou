@@ -89,12 +89,15 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
 
         GroupLayer worldlayer = buildWorldLayer();
         Vec2 gravity = new Vec2(0.0f, 0.0f);
+        
         entityEngine = new EntityEngine(worldlayer, gravity, Constants.BOARD_WIDTH, Constants.BOARD_HEIGHT, Constants.PHYS_UNIT_PER_SCREEN_UNIT, Constants.DEBUG_DRAW);
 
+        createBoundaries();
+        
         uiTexts = new UiTexts();
         fpsCounter = new FpsCounter(uiTexts);
 
-        createBoundaries();
+        
 
         paddle = new Paddle(entityEngine);
 
@@ -115,11 +118,10 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
 
     private void createBoundaries() {
         World world = entityEngine.getWorld();
-        // create the ceil
-        Body ceil = world.createBody(new BodyDef());
+        Body ceilBody = world.createBody(new BodyDef());
         PolygonShape ceilShape = new PolygonShape();
         ceilShape.setAsEdge(new Vec2(Constants.BOARD_LEFT, Constants.BOARD_TOP), new Vec2(Constants.BOARD_RIGHT, Constants.BOARD_TOP));
-        ceil.createFixture(ceilShape, 0.0f);
+        ceilBody.createFixture(ceilShape, 0.0f);
         // create the walls
         Body wallLeft = world.createBody(new BodyDef());
         PolygonShape wallLeftShape = new PolygonShape();
@@ -129,6 +131,8 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
         PolygonShape wallRightShape = new PolygonShape();
         wallRightShape.setAsEdge(new Vec2(Constants.BOARD_RIGHT, Constants.BOARD_TOP), new Vec2(Constants.BOARD_RIGHT, Constants.BOARD_BOTTOM));
         wallRight.createFixture(wallRightShape, 0f);
+        
+        entityEngine.setGroundBody(ceilBody);
     }
 
     private void newGame() {
@@ -186,7 +190,7 @@ public class TooHardForYouEngine implements GameScreen, Pointer.Listener, Listen
             Vec2 velocity = new Vec2(random() - 0.5f, -1);
             velocity.normalize();
             velocity.mulLocal(level.getBallSpeed());
-            ball.getBody().setLinearVelocity(velocity);
+            ball.getBody().applyLinearImpulse(velocity, ball.getBody().getPosition());
             balls.add(ball);
             uiTexts.updateNumberOfBalls(balls.size());
         }

@@ -28,6 +28,7 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
+import org.jbox2d.dynamics.joints.PrismaticJointDef;
 
 public class Paddle extends DynamicPhysicsEntity {
 
@@ -42,6 +43,10 @@ public class Paddle extends DynamicPhysicsEntity {
 
     private static final float PADDLE_WIDTH = 100 * Constants.PHYS_UNIT_PER_SCREEN_UNIT;
 
+    private static final float INIT_TOP = Constants.BOARD_BOTTOM - (PADDLE_HEIGHT / 2);
+
+    private static final float INIT_LEFT = Constants.BOARD_LEFT + Constants.GAME_WIDTH / 2;
+
     public final static String IMAGE = Resources.GAME_PATH + "paddle.png";
 
     private boolean moveLeft;
@@ -51,7 +56,9 @@ public class Paddle extends DynamicPhysicsEntity {
     /**
      * in px/s
      */
-    private float speed = 20;
+    private float speed = 2;
+
+    private Vec2 stop = new Vec2(0, 0);
 
     private float maxX;
 
@@ -63,24 +70,23 @@ public class Paddle extends DynamicPhysicsEntity {
 
     private boolean frozen = false;
 
-    public Paddle(EntityEngine entityEngine) {
-        super(entityEngine, IMAGE, 0, 0, 0);
-        maxX = Constants.BOARD_RIGHT - getWidth() / 2;
-        minX = Constants.BOARD_LEFT + getWidth() / 2;
-        resetPosition();
+    public Paddle(EntityEngine engine) {
+        super(engine, IMAGE, INIT_LEFT, INIT_TOP, 0);
+        maxX = Constants.BOARD_RIGHT - PADDLE_WIDTH / 2;
+        minX = Constants.BOARD_LEFT + PADDLE_WIDTH / 2;
     }
 
     public void resetPosition() {
-        top = Constants.BOARD_BOTTOM - (getHeight() / 2);
-        left = Constants.BOARD_LEFT + Constants.GAME_WIDTH / 2;
+        left = INIT_LEFT;
+        top = INIT_TOP;
         setPos(left, top);
     }
 
     @Override
-    protected Body initPhysicsBody(World world, float x, float y, float angle) {
+    protected Body initPhysicsBody(World world, Body groundBody, float x, float y, float angle) {
         FixtureDef fixtureDef = new FixtureDef();
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyType.STATIC;
+        bodyDef.type = BodyType.DYNAMIC;
         bodyDef.position = new Vec2(0, 0);
         Body body = world.createBody(bodyDef);
 
@@ -92,10 +98,19 @@ public class Paddle extends DynamicPhysicsEntity {
         polygon[3] = new Vec2(-getWidth() / 2f, getHeight() / 2f);
         polygonShape.set(polygon, polygon.length);
         fixtureDef.shape = polygonShape;
-        fixtureDef.friction = 1f;
-        fixtureDef.restitution = 1.05f;
+        fixtureDef.density = 10f;
+        fixtureDef.friction = 0.4f;
+        fixtureDef.restitution = 0.1f;
         body.createFixture(fixtureDef);
-        body.setTransform(new Vec2(x, y), angle);
+        Vec2 position = new Vec2(x, y);
+        body.setTransform(position, angle);
+
+        PrismaticJointDef joint = new PrismaticJointDef();
+        joint.collideConnected = true;
+        Vec2 paddleAxis = new Vec2(1.0f, 0f);
+        joint.initialize(body, groundBody, position, paddleAxis);
+        world.createJoint(joint);
+
         return body;
     }
 
@@ -105,9 +120,11 @@ public class Paddle extends DynamicPhysicsEntity {
 
         if (!frozen) {
             if (moveLeft) {
-                moveTo(left - (speed * delta) / 1000);
+                getBody().applyLinearImpulse(new Vec2(-1 * speed * delta, 0), getBody().getPosition());
+                // moveTo(left - (speed * delta) / 1000);
             } else if (moveRight) {
-                moveTo(left + (speed * delta) / 1000);
+                getBody().applyLinearImpulse(new Vec2(speed * delta, 0), getBody().getPosition());
+                // moveTo(left + (speed * delta) / 1000);
             }
         }
 
@@ -137,15 +154,26 @@ public class Paddle extends DynamicPhysicsEntity {
     }
 
     public void moveLeft(boolean moveLeft) {
+        if (this.moveLeft != moveLeft) {
+            stop();
+        }
         this.moveLeft = moveLeft;
     }
 
+    private void stop() {
+        getBody().setLinearVelocity(stop);
+    }
+
     public void moveRight(boolean moveRight) {
+        if (this.moveRight != moveRight) {
+            stop();
+        }
         this.moveRight = moveRight;
     }
 
     public void freeze() {
         frozen = true;
+        stop();
         frozenTimer.schedule(Constants.PADDLE_FREEZE_TIME);
     }
 }

@@ -76,7 +76,7 @@ public class Level {
         bricksToNextLevel = 50;
 
         piecePauseInMs = (int) (200 + 750f / level);
-        ballSpeed = 4 + 0.2f * level;
+        ballSpeed = 2 + 0.2f * level;
 
         uiTexts.updateBricksToNextLevel(bricksToNextLevel);
         uiTexts.updateLinesToNextLevel(linesToNextLevel);

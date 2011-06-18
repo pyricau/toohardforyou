@@ -31,12 +31,12 @@ public abstract class DynamicPhysicsEntity extends Entity implements PhysicsEnti
   
   public DynamicPhysicsEntity(EntityEngine entityEngine, String imagePath, float x, float y, float angle) {
     super(entityEngine, imagePath, x, y, angle);
-    body = initPhysicsBody(entityEngine.getWorld(), x, y, angle);
+    body = initPhysicsBody(entityEngine.getWorld(), entityEngine.getGroundBody(), x, y, angle);
     setPos(x, y);
     setAngle(angle);
   }
 
-  protected abstract Body initPhysicsBody(World world, float x, float y, float angle);
+  protected abstract Body initPhysicsBody(World world, Body groundBody, float x, float y, float angle);
 
   @Override
   public void paint(float alpha) {

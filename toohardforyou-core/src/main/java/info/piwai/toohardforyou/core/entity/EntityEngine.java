@@ -60,6 +60,7 @@ public class EntityEngine implements ContactListener {
     private final DebugDrawBox2D debugDraw;
     
     protected final GroupLayer scaledLayer;
+    private Body groundBody;
 
     public EntityEngine(GroupLayer scaledLayer, Vec2 gravity, float width, float height, float physicalUnitPerScreenUnit, boolean showDebugDraw) {
         this.scaledLayer = scaledLayer;
@@ -94,6 +95,14 @@ public class EntityEngine implements ContactListener {
             debugDraw = null;
         }
 
+    }
+
+    public Body getGroundBody() {
+        return groundBody;
+    }
+    
+    public void setGroundBody(Body groundBody) {
+        this.groundBody = groundBody;
     }
 
     public void update(float delta) {

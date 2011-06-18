@@ -46,7 +46,7 @@ public class Ball extends DynamicPhysicsEntity {
     }
 
     @Override
-    protected Body initPhysicsBody(World world, float x, float y, float angle) {
+    protected Body initPhysicsBody(World world, Body groundBody, float x, float y, float angle) {
         FixtureDef fixtureDef = new FixtureDef();
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DYNAMIC;
@@ -56,7 +56,7 @@ public class Ball extends DynamicPhysicsEntity {
         CircleShape circleShape = new CircleShape();
         circleShape.m_radius = getRadius();
         fixtureDef.shape = circleShape;
-        fixtureDef.density = 2f;
+        fixtureDef.density = 1f;
         fixtureDef.friction = 0f;
         fixtureDef.restitution = 1f;
         circleShape.m_p.set(0, 0);

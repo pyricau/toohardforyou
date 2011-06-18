@@ -43,7 +43,7 @@ public class SolidBrickEntity extends DynamicPhysicsEntity implements PhysicsEnt
     }
 
     @Override
-    protected Body initPhysicsBody(World world, float x, float y, float angle) {
+    protected Body initPhysicsBody(World world, Body groundBody, float x, float y, float angle) {
         FixtureDef fixtureDef = new FixtureDef();
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.STATIC;
@@ -58,8 +58,9 @@ public class SolidBrickEntity extends DynamicPhysicsEntity implements PhysicsEnt
         polygon[3] = new Vec2(-getWidth() / 2f, getHeight() / 2f);
         polygonShape.set(polygon, polygon.length);
         fixtureDef.shape = polygonShape;
+        fixtureDef.density = 10f;
         fixtureDef.friction = 0f;
-        fixtureDef.restitution = 1.0f;
+        fixtureDef.restitution = 0.1f;
         body.createFixture(fixtureDef);
         body.setTransform(new Vec2(x, y), angle);
         return body;
